@@ -73,7 +73,7 @@ if(!class_exists('VolunteerProjectManagement')):
                         'show_ui' => true,
                         'show_in_menu' => true,
                         'show_in_nav_menus'=>true,
-                        'supports'=>array('title', 'revisions', 'page-attributes'),
+                        'supports'=>array('title', 'revisions'),
                         'rewrite' => array(
                             'slug' => self::URL_QUERY_PARAM,
                             'with_front'=>'false'
@@ -82,6 +82,56 @@ if(!class_exists('VolunteerProjectManagement')):
                         'capability_type' => 'page',
                     )
                 );
+            }
+
+
+            /**
+            * Get the post from the parameter or the main loop
+            * 
+            * @param int|object $post to get the post from
+            * @return object with the post
+            */
+            private static function getPost($post){
+                if ( is_int($post) && absint( $post ))
+                    $post =& get_post($post);
+                if ( !is_object($post) )
+                    $post =& get_post(@get_the_ID());
+
+                return $post;
+            }
+
+            /**
+            * Get the post ID from the parameter or the main loop
+            * @param int|object $post to get the post from
+            * @return int with the post ID 
+            */
+            private static function getPostID($post){
+                if($post = self::getPost($post))
+                    return $post->ID;
+                return 0;
+            }
+
+            /**
+            * Set a custom value associated with a post
+            * 
+            * @param string $key with the key name
+            * @param int|object $post with the post
+            * @param string value with the value to associate with the key in the post
+            */
+            private static function setPostCustomValues($key, $value='', $post=0){
+                update_post_meta(self::getPostID($post), __CLASS__.$key, $value);
+            }
+
+            /**
+            * Get a custom value associated with a post
+            * 
+            * @param string $key with the key name
+            * @param int|object $post with the post
+            * @return string value for the key or boolean false if the key was not found
+            */
+            private static function getPostCustomValues($key, $post=0){
+                $value = get_post_custom_values(__CLASS__.$key, self::getPostID($post));
+                return (!empty($value) && isset($value[0]))?$value[0]:false;
             }
             
 
@@ -95,7 +145,7 @@ if(!class_exists('VolunteerProjectManagement')):
                     wp_enqueue_script(__CLASS__ . '_admin', plugins_url('js/admin.js', __FILE__), array('jquery-ui-datepicker', 'ui-spinner'), '1.0');
 
                     // Localize the script
-                    wp_localize_script(__CLASS__ . '_admin', 'ctdAdmin', array(
+                    wp_localize_script(__CLASS__ . '_admin', 'vpmAdmin', array(
                         'closeText' => __('Done', __CLASS__),
                         'currentText' => __('Today', __CLASS__),
                         'dateFormat' => __('mm/dd/yy', __CLASS__),
@@ -162,31 +212,88 @@ if(!class_exists('VolunteerProjectManagement')):
                     wp_enqueue_style('ui-spinner', plugins_url('css/jquery-ui/ui.spinner.css', __FILE__), array(), '1.20');
                 endif;
             }
-            
-            /**
-             * Add a metabox to the project vol. post type
-             */
-            public static function addMetaBox(){
-                add_meta_box(__CLASS__.'-meta', __('Project settings', __CLASS__), function(){
-                    $postId = get_the_ID();
 
-                    $views = get_post_custom_values(__CLASS__.'_views', $postId);
-                    if(!empty($views) && isset($views[0])):
-                        $views = $views[0];
-                    endif;
+            /**
+            * Add a metabox to the project post type
+            */
+            public function addMetaBox() {
+                // Replace the submit core metabox by ours
+                add_meta_box(__CLASS__.'-meta', __('Project Volunteer configuration'), array(__CLASS__, 'writeSettingsMetaBox'), self::POST_TYPE, 'advanced', 'core');
+                
+            }
+            /**
+            * Output a custom metabox for saving the post
+            * @param Object $post 
+            */
+            public static function writeSettingsMetaBox($post) {
+                $post_type = $post->post_type;
+                $post_type_object = get_post_type_object($post_type);
+                $can_publish = current_user_can($post_type_object->cap->publish_posts);
+                    $postId = get_the_ID();
+                    
 
                     // Retrieve the campaign date and time interval (and convert them back to the localtime)
                         $startDate = self::getStartDate($post)-(current_time('timestamp', true)-current_time('timestamp', false));
                         $endDate = self::getEndDate($post)-(current_time('timestamp', true)-current_time('timestamp', false));
                     
                     
+                    
+                        // Retrieve the campaign date and time interval (and convert them back to the localtime)
+                        $startDate = self::getStartDate($post)-(current_time('timestamp', true)-current_time('timestamp', false));
+                        $endDate = self::getEndDate($post)-(current_time('timestamp', true)-current_time('timestamp', false));
+
+                        // Extract the hours from the timestamp
+                        //if(!self::hasStartDate($post)):
+                            $startHours = array('0');
+                            $startMinutes = array('00');
+                        /*else:
+                            $startHours = array(date('G', $startDate));
+                            $startMinutes = array(date('i', $startDate));
+                        endif;*/
+
+                        // Extract the minutes from the timestamp
+                        //if(!self::hasEndDate($post)):
+                            $endHours = array('0');
+                            $endMinutes = array('00');
+                        /*else:
+                            $endHours = array(date('G', $endDate));
+                            $endMinutes = array(date('i', $endDate));
+                        endif;*/
+                    
+                        $upload_project_file_id    = get_post_meta($post->ID, '$upload_project_file_id', true);
+                        
+                        
+                        
+                        wp_nonce_field(plugin_basename(__FILE__), 'wp_custom_attachment_nonce');  
+  
+                        $html = ' 
+                    <p class="description">';  
+                            $html .= 'Upload your PDF here.';  
+                        $html .= ' 
+
+                    ';  
+                        $html .= ' 
+                    <input type="file" id="wp_custom_attachment" name="wp_custom_attachment" value="" size="25">';  
+
+                        echo $html;  
+                        
+                        
                     ?>
-			<div><label><?php _e('Upload the file project', __CLASS__) ?></label>
-                            <div>
-				<input id="upload_project_file" type="text" size="36" name="upload_project_file" value="" />
-				<input id="upload_project_file_button" type="button" value="<?php _e('Upload File', __CLASS__);?>" />
+                            
+
+
+                            <div id="vpm-upload-container">
+                                <label><?php _e('Upload the file project', __CLASS__) ?></label>
+				<input id="upload_project_file" type="file" size="36" name="upload_project_file" value="" />
+				<!--<input id="upload_project_file_button" type="button" value="<?php _e('Upload File', __CLASS__);?>" />-->
+                                
+                                <?php
+                                if(!empty($upload_project_file_id) && $upload_project_file_id != '0') {
+                                    echo '<p><a href="' . wp_get_attachment_url($upload_project_file_id) . '">View document</a></p>';
+                                }
+                                ?>
                             </div>
-			</div>
+			
                         <fieldset id="vpm-enable-startdate-container" class="vpm-enable-container">
                             <div id="vpm-startdate-container">
                                 <label class="selectit"><?php _e('Start date:', __CLASS__); ?> <input style="width: 6em;" size="8" maxlength="10" title="<?php esc_attr_e('Specify the start date when the project is supposed to start', __CLASS__) ?>" id="vpm-startdate" type="text" /></label>
@@ -203,12 +310,9 @@ if(!class_exists('VolunteerProjectManagement')):
                         </fieldset>			
 
 
-
                     <?php
-                }, self::POST_TYPE, 'advanced', 'high');
             }
             
-
             /**
              * Save the custom data from the metaboxes with the custom post type
              * 
@@ -226,6 +330,39 @@ if(!class_exists('VolunteerProjectManagement')):
 //                        // Save the object in the database
 //                        update_post_meta($postId, __CLASS__.'_fieldname', $field);
 
+                        
+                        
+                        // Make sure the file array isn't empty
+                        if(!empty($_FILES['wp_custom_attachment']['name'])) {
+
+                                // Setup the array of supported file types. In this case, it's just PDF.
+                                // @todo  we want more?
+                                $supported_types = array('application/pdf');
+
+                                // Get the file type of the upload
+                                $arr_file_type = wp_check_filetype(basename($_FILES['wp_custom_attachment']['name']));
+                                $uploaded_type = $arr_file_type['type'];
+
+                                // Check if the type is supported. If not, throw an error.
+                                if(in_array($uploaded_type, $supported_types)) {
+
+                                        // Use the WordPress API to upload the file
+                                        $upload = wp_upload_bits($_FILES['wp_custom_attachment']['name'], null, file_get_contents($_FILES['wp_custom_attachment']['tmp_name']));
+                                        if(isset($upload['error']) && $upload['error'] != 0) {
+                                                wp_die('There was an error uploading your file. The error is: ' . $upload['error']);
+                                        } else {
+                                                add_post_meta($postId, 'wp_custom_attachment', $upload);
+                                                update_post_meta($postId, 'wp_custom_attachment', $upload);
+                                        } // end if/else
+                                } else {
+                                        wp_die("The file type that you've uploaded is not a PDF.");
+                                } // end if/else
+
+                        } // end if             
+                        
+                        
+                        
+                        
                         break;
                 endswitch;
                 return $postId;
@@ -239,7 +376,7 @@ if(!class_exists('VolunteerProjectManagement')):
             */
             public static function getStartDate($post=0){
                 $date = self::getPostCustomValues(self::$startDate, $post);
-                return (int)(!self::hasStartDate($post) || $date===false?current_time('timestamp', false):$date);
+                return (int)($date===false?current_time('timestamp', false):$date);
             }
 
             /**
@@ -251,7 +388,7 @@ if(!class_exists('VolunteerProjectManagement')):
             public static function getEndDate($post=0){
                 $date = self::getPostCustomValues(self::$endDate, $post);
                 // Default is set to current date plus a day
-                return (int)(!self::hasEndDate($post) || $date===false?current_time('timestamp', false)+3600*24:$date);
+                return (int)($date===false?current_time('timestamp', false)+3600*24:$date);
             }
             
             /**
@@ -392,6 +529,15 @@ if(!class_exists('VolunteerProjectManagement')):
                 return false;
             }
             
+            /*
+             * Change form encode type
+             */
+
+            function post_edit_form_tag( ) {
+                echo ' enctype="multipart/form-data"';
+            }
+            
+            
             /**
              * Return the WordPress Database Access Abstraction Object 
              * 
@@ -411,7 +557,6 @@ if(!class_exists('VolunteerProjectManagement')):
 				"date" => "Data",
 				"vpm_project_file" => "File",
 			);
-die("dfsd");
 			return $columns;
 		}
 
@@ -451,7 +596,7 @@ $prefix = self::getWpDB()->prefix;
                 add_action('save_post', array(__CLASS__, 'savePost'));
 
                 // Add thePosts method to filter the_posts
-                add_filter('the_posts', array(__CLASS__, 'thePosts'), 10, 2);
+                //add_filter('the_posts', array(__CLASS__, 'thePosts'), 10, 2);
 
                 // Add mapMetaCapabilities method to filter map_meta_cap  // Maybe we can use this in the module 2
                 //add_filter('map_meta_cap', array(__CLASS__, 'mapMetaCapabilities'), 10, 4);
@@ -461,6 +606,9 @@ $prefix = self::getWpDB()->prefix;
 
                 // Register the adminPrintStyles method to the Wordpress admin_print_styles action hook
                 add_action('admin_print_styles', array(__CLASS__, 'adminPrintStyles'));
+                
+                // Register the form tag so we can upload files
+                add_action( 'post_edit_form_tag' , array(__CLASS__, 'post_edit_form_tag') );
             }
 
 
