@@ -1,0 +1,660 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Click-to-donate\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-05-18 11:17+0100\n"
+"PO-Revision-Date: \n"
+"Last-Translator: Diogo Serra <codedmind@gmail.com>\n"
+"Language-Team: Cláudio Esperança, Diogo Serra <cesperanc@gmail.com>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Poedit-Language: Portuguese\n"
+"X-Poedit-Country: PORTUGAL\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-KeywordsList: __;_e;esc_attr__;__ngettext:1,2;_n:1,2;_n_noop:1,2;_nx:1,2;_nx_noop:1,2\n"
+"X-Poedit-Basepath: .\n"
+"X-Poedit-SearchPath-0: ..\n"
+
+#: ../VolunteerProjectManagement.php:57
+msgid "Vol. Projects"
+msgstr "Projetos Vol."
+
+#: ../VolunteerProjectManagement.php:58
+msgid "Vol. Project"
+msgstr "Projeto Vol."
+
+#: ../VolunteerProjectManagement.php:59
+msgid "Add new"
+msgstr "Adicionar novo"
+
+#: ../VolunteerProjectManagement.php:60
+msgid "Add new Volunteer Project"
+msgstr "Adicionar novo projeto de voluntariado"
+
+#: ../VolunteerProjectManagement.php:61
+msgid "Edit Volunteer Project"
+msgstr "Editar projeto de voluntariado"
+
+#: ../VolunteerProjectManagement.php:62
+msgid "New Volunteer Project"
+msgstr "Novo projeto de voluntariado"
+
+#: ../VolunteerProjectManagement.php:63
+msgid "View Volunteer Project"
+msgstr "Ver projeto de voluntariado"
+
+#: ../VolunteerProjectManagement.php:64
+msgid "Search Volunteer Projects"
+msgstr "Procurar projetos de voluntariado"
+
+#: ../VolunteerProjectManagement.php:65
+msgid "No Volunteer Project found"
+msgstr "Não foram encontrados projetos de voluntariado"
+
+#: ../VolunteerProjectManagement.php:66
+msgid "No Volunteer Projects were found on the recycle bin"
+msgstr "Não foram encontradas projetos de voluntariado na reciclagem"
+
+#: ../VolunteerProjectManagement.php:68
+msgid "Volunteer Projects"
+msgstr "Projetos de voluntariado"
+
+#: ../VolunteerProjectManagement.php:99
+msgid "Done"
+msgstr "Feito"
+
+#: ../VolunteerProjectManagement.php:100
+msgid "Today"
+msgstr "Hoje"
+
+#: ../VolunteerProjectManagement.php:101
+msgid "mm/dd/yy"
+msgstr "dd/mm/yy"
+
+#: ../VolunteerProjectManagement.php:102
+msgid "Sunday"
+msgstr "Domingo"
+
+#: ../VolunteerProjectManagement.php:103
+msgid "Monday"
+msgstr "Segunda-feira"
+
+#: ../VolunteerProjectManagement.php:104
+msgid "Tuesday"
+msgstr "Terça-feira"
+
+#: ../VolunteerProjectManagement.php:105
+msgid "Wednesday"
+msgstr "Quarta-feira"
+
+#: ../VolunteerProjectManagement.php:106
+msgid "Thursday"
+msgstr "Quinta-feira"
+
+#: ../VolunteerProjectManagement.php:107
+msgid "Friday"
+msgstr "Sexta"
+
+#: ../VolunteerProjectManagement.php:108
+msgid "Saturday"
+msgstr "Sábado"
+
+#: ../VolunteerProjectManagement.php:109
+msgid "Su"
+msgstr "Do"
+
+#: ../VolunteerProjectManagement.php:110
+msgid "Mo"
+msgstr "Se"
+
+#: ../VolunteerProjectManagement.php:111
+msgid "Tu"
+msgstr "Te"
+
+#: ../VolunteerProjectManagement.php:112
+msgid "We"
+msgstr "Qu"
+
+#: ../VolunteerProjectManagement.php:113
+msgid "Th"
+msgstr "Qu"
+
+#: ../VolunteerProjectManagement.php:114
+msgid "Fr"
+msgstr "Se"
+
+#: ../VolunteerProjectManagement.php:115
+msgid "Sa"
+msgstr "Sa"
+
+#: ../VolunteerProjectManagement.php:116
+msgid "Sun"
+msgstr "Dom"
+
+#: ../VolunteerProjectManagement.php:117
+msgid "Mon"
+msgstr "Seg"
+
+#: ../VolunteerProjectManagement.php:118
+msgid "Tue"
+msgstr "Ter"
+
+#: ../VolunteerProjectManagement.php:119
+msgid "Wed"
+msgstr "Qua"
+
+#: ../VolunteerProjectManagement.php:120
+msgid "Thu"
+msgstr "Qui"
+
+#: ../VolunteerProjectManagement.php:121
+msgid "Fri"
+msgstr "Sex"
+
+#: ../VolunteerProjectManagement.php:122
+msgid "Sat"
+msgstr "Sáb"
+
+#: ../VolunteerProjectManagement.php:123
+msgid "January"
+msgstr "Janeiro"
+
+#: ../VolunteerProjectManagement.php:124
+msgid "February"
+msgstr "Fevereiro"
+
+#: ../VolunteerProjectManagement.php:125
+msgid "March"
+msgstr "Março"
+
+#: ../VolunteerProjectManagement.php:126
+msgid "April"
+msgstr "Abril"
+
+#: ../VolunteerProjectManagement.php:127
+#: ../VolunteerProjectManagement.php:139
+msgid "May"
+msgstr "Maio"
+
+#: ../VolunteerProjectManagement.php:128
+msgid "June"
+msgstr "Junho"
+
+#: ../VolunteerProjectManagement.php:129
+msgid "July"
+msgstr "Julho"
+
+#: ../VolunteerProjectManagement.php:130
+msgid "August"
+msgstr "Agosto"
+
+#: ../VolunteerProjectManagement.php:131
+msgid "September"
+msgstr "Setembro"
+
+#: ../VolunteerProjectManagement.php:132
+msgid "October"
+msgstr "Outubro"
+
+#: ../VolunteerProjectManagement.php:133
+msgid "November"
+msgstr "Novembro"
+
+#: ../VolunteerProjectManagement.php:134
+msgid "December"
+msgstr "Dezembro"
+
+#: ../VolunteerProjectManagement.php:135
+msgid "Jan"
+msgstr "Jan"
+
+#: ../VolunteerProjectManagement.php:136
+msgid "Feb"
+msgstr "Fev"
+
+#: ../VolunteerProjectManagement.php:137
+msgid "Mar"
+msgstr "Mar"
+
+#: ../VolunteerProjectManagement.php:138
+msgid "Apr"
+msgstr "Abr"
+
+#: ../VolunteerProjectManagement.php:140
+msgid "Jun"
+msgstr "Jun"
+
+#: ../VolunteerProjectManagement.php:141
+msgid "Jul"
+msgstr "Jul"
+
+#: ../VolunteerProjectManagement.php:142
+msgid "Aug"
+msgstr "Ago"
+
+#: ../VolunteerProjectManagement.php:143
+msgid "Sep"
+msgstr "Set"
+
+#: ../VolunteerProjectManagement.php:144
+msgid "Oct"
+msgstr "Out"
+
+#: ../VolunteerProjectManagement.php:145
+msgid "Nov"
+msgstr "Nov"
+
+#: ../VolunteerProjectManagement.php:146
+msgid "Dec"
+msgstr "Dez"
+
+#: ../VolunteerProjectManagement.php:147
+msgid "Next"
+msgstr "Seguinte"
+
+#: ../VolunteerProjectManagement.php:148
+msgid "Prev"
+msgstr "Anterior"
+
+#: ../VolunteerProjectManagement.php:149
+msgid "Wk"
+msgstr "Sm"
+
+#: ../VolunteerProjectManagement.php:170
+msgid "Project settings"
+msgstr "Configurações do projeto"
+
+#: ../VolunteerProjectManagement.php:179
+msgid "Upload the file project"
+msgstr "Enviar ficheiro do projeto"
+
+#: ../VolunteerProjectManagement.php:187
+msgid "Set the campaign start date"
+msgstr "Definir a data de início da campanha"
+
+#: ../VolunteerProjectManagement.php:191
+msgid "Start date:"
+msgstr "Data de início:"
+
+#: ../VolunteerProjectManagement.php:198
+msgid "End date:"
+msgstr "Data de fim:"
+
+#~ msgid "Campaigns"
+#~ msgstr "Campanhas"
+
+#~ msgid "Campaign"
+#~ msgstr "Campanha"
+
+#~ msgid "Add new campaign"
+#~ msgstr "Adicionar nova campanha"
+
+#~ msgid "Edit campaign"
+#~ msgstr "Editar campanhar"
+
+#~ msgid "New campaign"
+#~ msgstr "Nova campanha"
+
+#~ msgid "View campaign"
+#~ msgstr "Ver campanha"
+
+#~ msgid "Search campaigns"
+#~ msgstr "Pesquisar por campanhas"
+
+#~ msgid "No campaign found"
+#~ msgstr "Não foram encontradas campanhas"
+
+#~ msgid "Click to donate campaigns"
+#~ msgstr "Clique para doar para as campanhas"
+
+#~ msgid "Online"
+#~ msgstr "Online"
+
+#~ msgid "Online <span class=\"count\">(%s)</span>"
+
+#~ msgid_plural "Online <span class=\"count\">(%s)</span>"
+#~ msgstr[0] "Online <span class=\"count\">(%s)</span>"
+#~ msgstr[1] "Online <span class=\"count\">(%s)</span>"
+
+#~ msgid "Scheduled"
+#~ msgstr "Agendado"
+
+#~ msgid "Scheduled <span class=\"count\">(%s)</span>"
+
+#~ msgid_plural "Scheduled <span class=\"count\">(%s)</span>"
+#~ msgstr[0] "Agendado <span class=\"count\">(%s)</span>"
+#~ msgstr[1] "Agendado <span class=\"count\">(%s)</span>"
+
+#~ msgid "Finished"
+#~ msgstr "Concluído"
+
+#~ msgid "Finished <span class=\"count\">(%s)</span>"
+
+#~ msgid_plural "Finished <span class=\"count\">(%s)</span>"
+#~ msgstr[0] "Concluído <span class=\"count\">(%s)</span>"
+#~ msgstr[1] "Concluído <span class=\"count\">(%s)</span>"
+
+#~ msgid "Unavailable"
+#~ msgstr "Não disponível"
+
+#~ msgid "Unavailable <span class=\"count\">(%s)</span>"
+
+#~ msgid_plural "Unavailable <span class=\"count\">(%s)</span>"
+#~ msgstr[0] "Não disponível <span class=\"count\">(%s)</span>"
+#~ msgstr[1] "Não disponível <span class=\"count\">(%s)</span>"
+
+#~ msgid "Campaign configuration"
+#~ msgstr "Configuração da campanha"
+
+#~ msgid "Save"
+#~ msgstr "Guardar"
+
+#~ msgid "Preview Changes"
+#~ msgstr "Prever Alterações"
+
+#~ msgid "Preview"
+#~ msgstr "Prever"
+
+#~ msgid "Cooling-off period"
+#~ msgstr "Periodo de espera"
+
+#~ msgid "Cooling-off period:"
+#~ msgstr "Periodo de espera:"
+
+#~ msgid "Second(s)"
+#~ msgstr "Segundo(s)"
+
+#~ msgid "Minute(s)"
+#~ msgstr "Minuto(s)"
+
+#~ msgid "Hour(s)"
+#~ msgstr "Hora(s)"
+
+#~ msgid "Day(s)"
+#~ msgstr "Dia(s)"
+
+#~ msgid "Restrict by cookie"
+#~ msgstr "Restringir por cookie"
+
+#~ msgid "Restrict by login"
+#~ msgstr "Restringir por login"
+
+#~ msgid "Limit the number of clicks"
+#~ msgstr "Limite do número de cliques"
+
+#~ msgid "Clicks limit:"
+#~ msgstr "Limite de cliques:"
+
+#~ msgid "Set the campaign end date"
+#~ msgstr "Definir a data de fim da campanha"
+
+#~ msgid "Status:"
+#~ msgstr "Estado:"
+
+#~ msgid "Delete Permanently"
+#~ msgstr "Eliminar Permanentemente"
+
+#~ msgid "Move to Trash"
+#~ msgstr "Mover para o lixo"
+
+#~ msgid "Schedule"
+#~ msgstr "Agendar"
+
+#~ msgid "Publish"
+#~ msgstr "Publicar"
+
+#~ msgid "Views: %s"
+#~ msgstr "Visualizações: %s"
+
+#~ msgid "Edit"
+#~ msgstr "Editar"
+
+#~ msgid "OK"
+#~ msgstr "OK"
+
+#~ msgid "Cancel"
+#~ msgstr "Cancelar"
+
+#~ msgid "File repository permissions"
+#~ msgstr "Permissões no repositório de ficheiros"
+
+#~ msgid "Permission to view the files on the repository."
+#~ msgstr "Permissão para aceder aos ficheiros no repositório."
+
+#~ msgid "Upload files"
+#~ msgstr "Enviar ficheiros"
+
+#~ msgid "Permission to upload files into the repository."
+#~ msgstr "Permissão para enviar ficheiros para o repositório."
+
+#~ msgid "File repository"
+#~ msgstr "Repositório de ficheiros"
+
+#~ msgid "Repository"
+#~ msgstr "Repositório"
+
+#~ msgid "New file"
+#~ msgstr "Novo ficheiro"
+
+#~ msgid "Create new directory"
+#~ msgstr "Criar nova pasta"
+
+#~ msgid "New directory"
+#~ msgstr "Nova pasta"
+
+#~ msgid "Error while saving the changes."
+#~ msgstr "Erro ao guardar as alterações"
+
+#~ msgid "You do not have permission to view this files."
+#~ msgstr "Não ter permissões para visualizar estes ficheiros."
+
+#~ msgid "Files Repository"
+#~ msgstr "Repositório de Ficheiros"
+
+#~ msgid "%s file(s) deleted"
+#~ msgstr "%s ficheiro(s) eliminado(s)"
+
+#~ msgid "You do not have permission to upload files to this area."
+#~ msgstr "Não tem permissões para enviar ficheiros para esta área"
+
+#~ msgid "File uploaded to the repository"
+#~ msgstr "Ficheiro enviado para o repositório"
+
+#~ msgid "The uploaded file is not readable"
+#~ msgstr "O ficheiro enviado não é legível"
+
+#~ msgid "The uploaded file exceeds the upload_max_filesize"
+#~ msgstr "O ficheiro enviado excede o valor máximo de upload_max_filesize"
+
+#~ msgid ""
+#~ "The uploaded file exceeds the MAX_FILE_SIZE directive that was specified "
+#~ "in the HTML form"
+#~ msgstr ""
+#~ "O ficheiro enviado excede a diretiva MAX_FILE_SIZE especificada no "
+#~ "formulário HTML"
+
+#~ msgid "The uploaded file was only partially uploaded"
+#~ msgstr "O ficheiro foi parcialmente enviado"
+
+#~ msgid "No file was uploaded"
+#~ msgstr "Nenhum ficheiro foi enviado"
+
+#~ msgid "Missing a temporary folder"
+#~ msgstr "Diretório temporário inexistente"
+
+#~ msgid "Failed to write file to disk"
+#~ msgstr "Falhou a escrita do ficheiro para o disco"
+
+#~ msgid "A PHP extension stopped the file upload"
+#~ msgstr "Uma extensão PHP cancelou o envio do ficheiro"
+
+#~ msgid "Error occurred: %s"
+#~ msgstr "Ocorreu um erro: %s"
+
+#~ msgid "Filename (optional)"
+#~ msgstr "Nome do ficheiro (opcional)"
+
+#~ msgid "Parent"
+#~ msgstr "Pasta"
+
+#~ msgid "Upload"
+#~ msgstr "Envio"
+
+#~ msgid "Maximum upload file size: %s"
+#~ msgstr "Tamanho máximo dos ficheiros a enviar: %s"
+
+#~ msgid "File uploads with this method are not supported"
+#~ msgstr "Não são suportados envio de ficheiros com este método"
+
+#~ msgid "Unable to create the directory on the database"
+#~ msgstr "Não foi possível criar a pasta na base de dados"
+
+#~ msgid "A directory name must be specified"
+#~ msgstr "Tem de ser especificado um nome para a oasta"
+
+#~ msgid "Invalid item identifier"
+#~ msgstr "Identificador inválido"
+
+#~ msgid "Directory created on the repository"
+#~ msgstr "Directório criado no repositório"
+
+#~ msgid "Directory name"
+#~ msgstr "Nome da pasta"
+
+#~ msgid "Error!"
+#~ msgstr "Erro!"
+
+#~ msgid "Root"
+#~ msgstr "Raiz"
+
+#~ msgid "Name"
+#~ msgstr "Nome"
+
+#~ msgid "Size"
+#~ msgstr "Tamanho"
+
+#~ msgid "User"
+#~ msgstr "Utilizador"
+
+#~ msgid "Date"
+#~ msgstr "Data"
+
+#~ msgid "Delete"
+#~ msgstr "Eliminar"
+
+#~ msgid "Download"
+#~ msgstr "Transferir"
+
+#~ msgid "Open directory"
+#~ msgstr "Abrir pasta"
+
+#~ msgid "View"
+#~ msgstr "Visualizar"
+
+#~ msgid "(%s items)"
+#~ msgstr "(%s itens)"
+
+#~ msgid "User not found"
+#~ msgstr "Utilizador não encontrado"
+
+#~ msgid "Files View"
+#~ msgstr "Vista de ficheiros"
+
+#~ msgid "Folder View"
+#~ msgstr "Vista de pastas"
+
+#~ msgid "Back"
+#~ msgstr "Voltar"
+
+#~ msgid "Show %d items"
+#~ msgstr "Mostrar %d itens"
+
+#~ msgid "Show all items"
+#~ msgstr "Mostrar todos os itens"
+
+#~ msgid "Filter"
+#~ msgstr "Filtrar"
+
+#~ msgid "Item name (optional)"
+#~ msgstr "Nome do item (opcional)"
+
+#~ msgid "Folder"
+#~ msgstr "Pasta"
+
+#~ msgid "File"
+#~ msgstr "Ficheiro"
+
+#~ msgid "Parent folder"
+#~ msgstr "Pasta pai"
+
+#~ msgid "Login Form Widget"
+#~ msgstr "Formulário de Autenticação"
+
+#~ msgid "A widget with a widget login form"
+#~ msgstr "Um componente com um formulário de autenticação"
+
+#~ msgid "Login Form"
+#~ msgstr "Autenticação"
+
+#~ msgid "Site Admin"
+#~ msgstr "Área reservada do Site"
+
+#~ msgid "Your blogs:"
+#~ msgstr "Os seus blogues:"
+
+#~ msgid "Log Out"
+#~ msgstr "Terminar Sessão"
+
+#~ msgid "Sign In"
+#~ msgstr "Iniciar Sessão"
+
+#~ msgid "Password"
+#~ msgstr "Senha"
+
+#~ msgid "Hello %s!"
+#~ msgstr "Olá %s!"
+
+#~ msgid "A widget to list specific posts under a category"
+#~ msgstr "Um widget para listar os artigos sob uma determinada categoria"
+
+#~ msgid "Posts by Category"
+#~ msgstr "Artigos por Categoria"
+
+#~ msgid "Title:"
+#~ msgstr "Título:"
+
+#~ msgid "Category:"
+#~ msgstr "Categoria:"
+
+#~ msgid "Posts to show:"
+#~ msgstr "Artigos a mostrar:"
+
+#~ msgid "WP_GMaps2 options page"
+#~ msgstr "Página de opções do WP_GMaps2"
+
+#~ msgid "Options saved"
+#~ msgstr "Opções guardadas"
+
+#~ msgid "WP GMaps Options"
+#~ msgstr "Opções do WP GMaps"
+
+#~ msgid "Google Maps Key"
+#~ msgstr "Chave da API do Google Maps"
+
+#~ msgid "Please enter a Google Maps API key. (<a %s>Get your key</a>)"
+#~ msgstr ""
+#~ "Por favor introduza a chave da API do Google Maps. (<a %s>Obtenha a sua "
+#~ "chave</a>)"
+
+#~ msgid "What is this"
+#~ msgstr "O que é isto"
+
+#~ msgid ""
+#~ "You must <a %1$s>enter your Google Maps API key</a> for <strong>WP GMaps</"
+#~ "strong> to work."
+#~ msgstr ""
+#~ "Deve <a %1$s>introduzir a sua chave para a API do Google Maps</a> para "
+#~ "que o <strong>WP GMaps</strong> funcione."
