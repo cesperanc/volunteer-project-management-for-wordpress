@@ -259,39 +259,13 @@ if(!class_exists('VolunteerProjectManagement')):
                             $endHours = array(date('G', $endDate));
                             $endMinutes = array(date('i', $endDate));
                         endif;*/
-                    
-                        $upload_project_file_id    = get_post_meta($post->ID, '$upload_project_file_id', true);
-                        
-                        
-                        
-                        wp_nonce_field(plugin_basename(__FILE__), 'wp_custom_attachment_nonce');  
-  
-                        $html = ' 
-                    <p class="description">';  
-                            $html .= 'Upload your PDF here.';  
-                        $html .= ' 
-
-                    ';  
-                        $html .= ' 
-                    <input type="file" id="wp_custom_attachment" name="wp_custom_attachment" value="" size="25">';  
-
-                        echo $html;  
-                        
-                        
                     ?>
                             
 
 
                             <div id="vpm-upload-container">
-                                <label><?php _e('Upload the file project', __CLASS__) ?></label>
-				<input id="upload_project_file" type="file" size="36" name="upload_project_file" value="" />
-				<!--<input id="upload_project_file_button" type="button" value="<?php _e('Upload File', __CLASS__);?>" />-->
-                                
-                                <?php
-                                if(!empty($upload_project_file_id) && $upload_project_file_id != '0') {
-                                    echo '<p><a href="' . wp_get_attachment_url($upload_project_file_id) . '">View document</a></p>';
-                                }
-                                ?>
+                                <label><?php _e('Project file', __CLASS__) ?></label>
+				<?php echo self::projectFile($postId); ?>
                             </div>
 			
                         <fieldset id="vpm-enable-startdate-container" class="vpm-enable-container">
@@ -307,12 +281,37 @@ if(!class_exists('VolunteerProjectManagement')):
                                 <input id="vpm-hidden-enddate" type="hidden" name="<?php echo(__CLASS__ . self::$endDate); ?>" value="<?php echo(date('Y-n-j', $endDate)); ?>" />
                                 @<input title="<?php esc_attr_e('Specify the volunterr ending hours', __CLASS__) ?>" style="width: 2em;" size="2" maxlength="2" id="vpm-endhours" name="<?php echo(__CLASS__ . '_endHours'); ?>" type="text" value="<?php echo($endHours[0]); ?>" />:<input title="<?php esc_attr_e('Specify the project ending minutes', __CLASS__) ?>" style="width: 2em;" size="2" maxlength="2" id="vpm-endminutes" name="<?php echo(__CLASS__ . '_endMinutes'); ?>" type="text" value="<?php echo($endMinutes[0]); ?>" />
                             </div>
-                        </fieldset>			
-
-
+                        </fieldset>
                     <?php
             }
-            
+            /**
+             * Manage the upload file for the project
+             * 
+             * @param int $postId
+             * @return html
+             */
+            function projectFile($postId) {
+
+                wp_nonce_field(plugin_basename(__FILE__), 'wp_custom_attachment_nonce');
+                
+
+                // Grab the array of file information currently associated with the post
+                $doc = get_post_meta($postId, 'wp_custom_attachment', true);
+
+                $html = '';
+                // Display the 'View' and 'Delete' option if a URL to a file exists else upload option
+                if(@strlen(trim($doc['url'])) > 0) {
+                    // Create the input box and set the file's URL as the text element's value
+                    $html .= '<input type="hidden" id="wp_custom_attachment_url" name="wp_custom_attachment_url" value=" ' . $doc['url'] . '" size="30" />';
+                    $html .= '<a href=" ' . $doc['url'] . '" id="wp_custom_attachment_view" target="_blank">' . __('View') . '</a> ';
+                    $html .= '<a href="javascript:;" id="wp_custom_attachment_delete">' . __('Delete') . '</a>';
+                }else{
+                    $html .= '<input type="file" id="wp_custom_attachment" name="wp_custom_attachment" value="" size="25" />';
+                }
+
+                return $html;
+
+            } 
             /**
              * Save the custom data from the metaboxes with the custom post type
              * 
@@ -345,7 +344,6 @@ if(!class_exists('VolunteerProjectManagement')):
 
                                 // Check if the type is supported. If not, throw an error.
                                 if(in_array($uploaded_type, $supported_types)) {
-
                                         // Use the WordPress API to upload the file
                                         $upload = wp_upload_bits($_FILES['wp_custom_attachment']['name'], null, file_get_contents($_FILES['wp_custom_attachment']['tmp_name']));
                                         if(isset($upload['error']) && $upload['error'] != 0) {
@@ -358,7 +356,31 @@ if(!class_exists('VolunteerProjectManagement')):
                                         wp_die("The file type that you've uploaded is not a PDF.");
                                 } // end if/else
 
-                        } // end if             
+                        }else {  
+
+                            // Grab a reference to the file associated with this post  
+                            $doc = get_post_meta($postId, 'wp_custom_attachment', true); 
+
+                            // Grab the value for the URL to the file stored in the text element 
+                            $delete_flag = get_post_meta($postId, 'wp_custom_attachment_url', true); 
+
+                            // Determine if a file is associated with this post and if the delete flag has been set (by clearing out the input box) 
+                            if(strlen(trim($doc['url'])) > 0 && strlen(trim($delete_flag)) == 0) { 
+
+                                // Attempt to remove the file. If deleting it fails, print a WordPress error. 
+                                if(unlink($doc['file'])) { 
+
+                                    // Delete succeeded so reset the WordPress meta data 
+                                    update_post_meta($postId, 'wp_custom_attachment', null); 
+                                    update_post_meta($postId, 'wp_custom_attachment_url', ''); 
+
+                                } else { 
+                                    wp_die('There was an error trying to delete your file.'); 
+                                } // end if/el;se 
+
+                            } // end if 
+
+                        } // end if/else             
                         
                         
                         
