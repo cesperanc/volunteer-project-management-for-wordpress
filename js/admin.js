@@ -160,27 +160,22 @@ $j(function(){
         }
     })).datepicker("setDate", endDate);
     
-        // Check to see if the 'Delete File' link exists on the page...
-	if($j('a#wp_custom_attachment_delete').length === 1) {
 
 		// Since the link exists, we need to handle the case when the user clicks on it...
-		$j('#wp_custom_attachment_delete').click(function(evt) {
+		$j('#wp_custom_attachment_delete:checkbox').click(function(evt) {
 
-			// We don't want the link to remove us from the current page
-			// so we're going to stop it's normal behavior.
-			evt.preventDefault();
-
-			// Find the text input element that stores the path to the file
-			// and clear it's value.
-			$j('#wp_custom_attachment_url').val('');
-
-			// Hide this link so users can't click on it multiple times
-			$j(this).hide();
-                        // Hide the view link too
-                        $j('a#wp_custom_attachment_view').hide();
+			
+			if($j(this).attr('checked')){
+                            // Hide the view link
+                            $j('a#wp_custom_attachment_view').hide();
+                        }else{
+                            // Show the view link
+                            $j('a#wp_custom_attachment_view').show();
+                            
+                        }
 
 		});
 
-	}
+
     
 });

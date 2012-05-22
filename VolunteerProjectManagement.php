@@ -35,6 +35,7 @@ if(!class_exists('VolunteerProjectManagement')):
             // Table variables
             private static $startDate = '_startDate';
             private static $endDate = '_endDate';
+            private static $num = 0;
 
         // Methods
             /**
@@ -243,22 +244,22 @@ if(!class_exists('VolunteerProjectManagement')):
                         $endDate = self::getEndDate($post)-(current_time('timestamp', true)-current_time('timestamp', false));
 
                         // Extract the hours from the timestamp
-                        //if(!self::hasStartDate($post)):
+                        if(!$startDate):
                             $startHours = array('0');
                             $startMinutes = array('00');
-                        /*else:
+                        else:
                             $startHours = array(date('G', $startDate));
                             $startMinutes = array(date('i', $startDate));
-                        endif;*/
+                        endif;
 
                         // Extract the minutes from the timestamp
-                        //if(!self::hasEndDate($post)):
+                        if(!$endDate):
                             $endHours = array('0');
                             $endMinutes = array('00');
-                        /*else:
+                        else:
                             $endHours = array(date('G', $endDate));
                             $endMinutes = array(date('i', $endDate));
-                        endif;*/
+                        endif;
                     ?>
                             
 
@@ -304,7 +305,7 @@ if(!class_exists('VolunteerProjectManagement')):
                     // Create the input box and set the file's URL as the text element's value
                     $html .= '<input type="hidden" id="wp_custom_attachment_url" name="wp_custom_attachment_url" value=" ' . $doc['url'] . '" size="30" />';
                     $html .= '<a href=" ' . $doc['url'] . '" id="wp_custom_attachment_view" target="_blank">' . __('View') . '</a> ';
-                    $html .= '<a href="javascript:;" id="wp_custom_attachment_delete">' . __('Delete') . '</a>';
+                    $html .= '<input type="checkbox" id="wp_custom_attachment_delete" name="wp_custom_attachment_delete" value="deleteFile"/>' . __('Check if you want delete the file');
                 }else{
                     $html .= '<input type="file" id="wp_custom_attachment" name="wp_custom_attachment" value="" size="25" />';
                 }
@@ -324,13 +325,25 @@ if(!class_exists('VolunteerProjectManagement')):
                 endif;
                 switch(get_post_type($postId)):
                     case self::POST_TYPE:
-//                        // Get the posted data
-//                        $field = isset($_POST[__CLASS__.'_fieldname'])?$_POST[__CLASS__.'_fieldname']:'';
-//                        // Save the object in the database
-//                        update_post_meta($postId, __CLASS__.'_fieldname', $field);
+                        $startDate = isset($_POST[__CLASS__ . self::$startDate]) ? ($_POST[__CLASS__ . self::$startDate]) : '';
+                        list($year, $month, $day) = explode('-', $startDate);
+                        $hours = isset($_POST[__CLASS__ . '_startHours']) ? (int)$_POST[__CLASS__ . '_startHours'] : 0;
+                        $minutes = isset($_POST[__CLASS__ . '_startMinutes']) ? (int)$_POST[__CLASS__ . '_startMinutes'] : 0;
+                        
+                        // Set the timestamp, converting it from local time to UTC
+                        $startDate = mktime($hours, $minutes, 0, $month, $day, $year)+(current_time('timestamp', true)-current_time('timestamp', false));
 
+                        $endDate = isset($_POST[__CLASS__ . self::$endDate]) ? ($_POST[__CLASS__ . self::$endDate]) : '';
+                        list($year, $month, $day) = explode('-', $endDate);
+                        $hours = isset($_POST[__CLASS__ . '_endHours']) ? (int)$_POST[__CLASS__ . '_endHours'] : 0;
+                        $minutes = isset($_POST[__CLASS__ . '_endMinutes']) ? (int)$_POST[__CLASS__ . '_endMinutes'] : 0;
                         
+                        // Set the timestamp, converting it from local time to UTC
+                        $endDate = mktime($hours, $minutes, 0, $month, $day, $year)+(current_time('timestamp', true)-current_time('timestamp', false));
                         
+                    self::setPostCustomValues(self::$startDate, $startDate);
+                    
+                    self::setPostCustomValues(self::$endDate, $endDate);
                         // Make sure the file array isn't empty
                         if(!empty($_FILES['wp_custom_attachment']['name'])) {
 
@@ -346,6 +359,7 @@ if(!class_exists('VolunteerProjectManagement')):
                                 if(in_array($uploaded_type, $supported_types)) {
                                         // Use the WordPress API to upload the file
                                         $upload = wp_upload_bits($_FILES['wp_custom_attachment']['name'], null, file_get_contents($_FILES['wp_custom_attachment']['tmp_name']));
+                                        __CLASS__ . self::$num++;
                                         if(isset($upload['error']) && $upload['error'] != 0) {
                                                 wp_die('There was an error uploading your file. The error is: ' . $upload['error']);
                                         } else {
@@ -355,30 +369,35 @@ if(!class_exists('VolunteerProjectManagement')):
                                 } else {
                                         wp_die("The file type that you've uploaded is not a PDF.");
                                 } // end if/else
+echo "<pre>".print_r($_FILES,true)."</pre>";
+                                //wp_die("fez upload...");//$_FILES = null;
+                                error_log("------".__CLASS__ . self::$num++);
+                        }else{  
+                            
+                            if($_POST['wp_custom_attachment_delete']=="deleteFile"){
 
-                        }else {  
+                                // Grab a reference to the file associated with this post  
+                                $doc = get_post_meta($postId, 'wp_custom_attachment', true); 
 
-                            // Grab a reference to the file associated with this post  
-                            $doc = get_post_meta($postId, 'wp_custom_attachment', true); 
+                                // Grab the value for the URL to the file stored in the text element 
+                                $delete_flag = get_post_meta($postId, 'wp_custom_attachment_url', true); 
 
-                            // Grab the value for the URL to the file stored in the text element 
-                            $delete_flag = get_post_meta($postId, 'wp_custom_attachment_url', true); 
+                                // Determine if a file is associated with this post and if the delete flag has been set (by clearing out the input box) 
+                                if(strlen(trim($doc['url'])) > 0 && strlen(trim($delete_flag)) == 0) { 
 
-                            // Determine if a file is associated with this post and if the delete flag has been set (by clearing out the input box) 
-                            if(strlen(trim($doc['url'])) > 0 && strlen(trim($delete_flag)) == 0) { 
+                                    // Attempt to remove the file. If deleting it fails, print a WordPress error. 
+                                    if(unlink($doc['file'])) { 
 
-                                // Attempt to remove the file. If deleting it fails, print a WordPress error. 
-                                if(unlink($doc['file'])) { 
+                                        // Delete succeeded so reset the WordPress meta data 
+                                        update_post_meta($postId, 'wp_custom_attachment', null); 
+                                        update_post_meta($postId, 'wp_custom_attachment_url', ''); 
 
-                                    // Delete succeeded so reset the WordPress meta data 
-                                    update_post_meta($postId, 'wp_custom_attachment', null); 
-                                    update_post_meta($postId, 'wp_custom_attachment_url', ''); 
+                                    } else { 
+                                        wp_die('There was an error trying to delete your file.'); 
+                                    } // end if/el;se 
 
-                                } else { 
-                                    wp_die('There was an error trying to delete your file.'); 
-                                } // end if/el;se 
-
-                            } // end if 
+                                } // end if 
+                            }
 
                         } // end if/else             
                         
