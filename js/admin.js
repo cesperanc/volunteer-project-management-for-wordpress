@@ -162,16 +162,15 @@ $j(function(){
     
 
 		// Since the link exists, we need to handle the case when the user clicks on it...
-		$j('#wp_custom_attachment_delete:checkbox').click(function(evt) {
+		$j('#vpm_projectFile_delete:checkbox').click(function(evt) {
 
 			
 			if($j(this).attr('checked')){
                             // Hide the view link
-                            $j('a#wp_custom_attachment_view').hide();
+                            $j('a#vpm_projectFile_view').hide();
                         }else{
                             // Show the view link
-                            $j('a#wp_custom_attachment_view').show();
-                            
+                            $j('a#vpm_projectFile_view').show();
                         }
 
 		});

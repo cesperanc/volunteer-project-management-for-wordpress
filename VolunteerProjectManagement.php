@@ -35,6 +35,7 @@ if(!class_exists('VolunteerProjectManagement')):
             // Table variables
             private static $startDate = '_startDate';
             private static $endDate = '_endDate';
+            private static $downloadCounter = '_downloadCounter';
             private static $num = 0;
 
         // Methods
@@ -74,7 +75,7 @@ if(!class_exists('VolunteerProjectManagement')):
                         'show_ui' => true,
                         'show_in_menu' => true,
                         'show_in_nav_menus'=>true,
-                        'supports'=>array('title', 'revisions'),
+                        'supports'=>array('title', 'editor'),
                         'rewrite' => array(
                             'slug' => self::URL_QUERY_PARAM,
                             'with_front'=>'false'
@@ -242,6 +243,7 @@ if(!class_exists('VolunteerProjectManagement')):
                         // Retrieve the campaign date and time interval (and convert them back to the localtime)
                         $startDate = self::getStartDate($post)-(current_time('timestamp', true)-current_time('timestamp', false));
                         $endDate = self::getEndDate($post)-(current_time('timestamp', true)-current_time('timestamp', false));
+                        $downloadCounter = self::getPostCustomValues(self::$downloadCounter, $post);
 
                         // Extract the hours from the timestamp
                         if(!$startDate):
@@ -261,28 +263,30 @@ if(!class_exists('VolunteerProjectManagement')):
                             $endMinutes = array(date('i', $endDate));
                         endif;
                     ?>
-                            
+                        
+                        <div id="vpm-upload-container">
+                            <label><?php _e('Project file', __CLASS__) ?></label>
+                            <?php echo self::projectFile($postId); ?>
+                        </div>
 
 
-                            <div id="vpm-upload-container">
-                                <label><?php _e('Project file', __CLASS__) ?></label>
-				<?php echo self::projectFile($postId); ?>
-                            </div>
-			
-                        <fieldset id="vpm-enable-startdate-container" class="vpm-enable-container">
-                            <div id="vpm-startdate-container">
-                                <label class="selectit"><?php _e('Start date:', __CLASS__); ?> <input style="width: 6em;" size="8" maxlength="10" title="<?php esc_attr_e('Specify the start date when the project is supposed to start', __CLASS__) ?>" id="vpm-startdate" type="text" /></label>
-                                <input id="vpm-hidden-startdate" type="hidden" name="<?php echo(__CLASS__ . self::$startDate); ?>" value="<?php echo(date('Y-n-j', $startDate)); ?>" />
-                                @<input title="<?php esc_attr_e('Specify the project starting hours', __CLASS__) ?>" style="width: 2em;" size="2" maxlength="2" id="vpm-starthours" name="<?php echo(__CLASS__ . '_startHours'); ?>" type="text" value="<?php echo($startHours[0]); ?>" />:<input title="<?php esc_attr_e('Specify the volunteer starting minutes', __CLASS__) ?>" style="width: 2em;" size="2" maxlength="2" id="vpm-startminutes" name="<?php echo(__CLASS__ . '_startMinutes'); ?>" type="text" value="<?php echo($startMinutes[0]); ?>" />
-                            </div>
-                        </fieldset>
-                        <fieldset id="vpm-enable-enddate-container" class="vpm-enable-container">
-                            <div id="vpm-enddate-container">
-                                <label class="selectit"><?php _e('End date:', __CLASS__); ?> <input style="width: 6em;" size="8" maxlength="10" title="<?php esc_attr_e('Specify the end date when the project is supposed to end', __CLASS__) ?>" id="vpm-enddate" type="text" name="<?php echo(__CLASS__ . self::$endDate); ?>" /></label>
-                                <input id="vpm-hidden-enddate" type="hidden" name="<?php echo(__CLASS__ . self::$endDate); ?>" value="<?php echo(date('Y-n-j', $endDate)); ?>" />
-                                @<input title="<?php esc_attr_e('Specify the volunterr ending hours', __CLASS__) ?>" style="width: 2em;" size="2" maxlength="2" id="vpm-endhours" name="<?php echo(__CLASS__ . '_endHours'); ?>" type="text" value="<?php echo($endHours[0]); ?>" />:<input title="<?php esc_attr_e('Specify the project ending minutes', __CLASS__) ?>" style="width: 2em;" size="2" maxlength="2" id="vpm-endminutes" name="<?php echo(__CLASS__ . '_endMinutes'); ?>" type="text" value="<?php echo($endMinutes[0]); ?>" />
-                            </div>
-                        </fieldset>
+                        <div id="vpm-startdate-container">
+                            <label class="selectit"><?php _e('Start date:', __CLASS__); ?> <input style="width: 6em;" size="8" maxlength="10" title="<?php esc_attr_e('Specify the start date when the project is supposed to start', __CLASS__) ?>" id="vpm-startdate" type="text" /></label>
+                            <input id="vpm-hidden-startdate" type="hidden" name="<?php echo(__CLASS__ . self::$startDate); ?>" value="<?php echo(date('Y-n-j', $startDate)); ?>" />
+                            @<input title="<?php esc_attr_e('Specify the project starting hours', __CLASS__) ?>" style="width: 2em;" size="2" maxlength="2" id="vpm-starthours" name="<?php echo(__CLASS__ . '_startHours'); ?>" type="text" value="<?php echo($startHours[0]); ?>" />:<input title="<?php esc_attr_e('Specify the volunteer starting minutes', __CLASS__) ?>" style="width: 2em;" size="2" maxlength="2" id="vpm-startminutes" name="<?php echo(__CLASS__ . '_startMinutes'); ?>" type="text" value="<?php echo($startMinutes[0]); ?>" />
+                        </div>
+
+
+                        <div id="vpm-enddate-container">
+                            <label class="selectit"><?php _e('End date:', __CLASS__); ?> <input style="width: 6em;" size="8" maxlength="10" title="<?php esc_attr_e('Specify the end date when the project is supposed to end', __CLASS__) ?>" id="vpm-enddate" type="text" name="<?php echo(__CLASS__ . self::$endDate); ?>" /></label>
+                            <input id="vpm-hidden-enddate" type="hidden" name="<?php echo(__CLASS__ . self::$endDate); ?>" value="<?php echo(date('Y-n-j', $endDate)); ?>" />
+                            @<input title="<?php esc_attr_e('Specify the volunterr ending hours', __CLASS__) ?>" style="width: 2em;" size="2" maxlength="2" id="vpm-endhours" name="<?php echo(__CLASS__ . '_endHours'); ?>" type="text" value="<?php echo($endHours[0]); ?>" />:<input title="<?php esc_attr_e('Specify the project ending minutes', __CLASS__) ?>" style="width: 2em;" size="2" maxlength="2" id="vpm-endminutes" name="<?php echo(__CLASS__ . '_endMinutes'); ?>" type="text" value="<?php echo($endMinutes[0]); ?>" />
+                        </div>
+                        <div id="vpm-downloadCounter-container">
+                            <label><?php _e('Number of downloads: ', __CLASS__) ?></label>
+                            <?php echo($downloadCounter); ?>
+                        </div>
+
                     <?php
             }
             /**
@@ -293,21 +297,21 @@ if(!class_exists('VolunteerProjectManagement')):
              */
             function projectFile($postId) {
 
-                wp_nonce_field(plugin_basename(__FILE__), 'wp_custom_attachment_nonce');
+                wp_nonce_field(plugin_basename(__FILE__), __CLASS__ . '_projectFile_nonce');
                 
 
                 // Grab the array of file information currently associated with the post
-                $doc = get_post_meta($postId, 'wp_custom_attachment', true);
+                $doc = get_post_meta($postId, __CLASS__ . '_projectFile', true);
 
                 $html = '';
                 // Display the 'View' and 'Delete' option if a URL to a file exists else upload option
                 if(@strlen(trim($doc['url'])) > 0) {
                     // Create the input box and set the file's URL as the text element's value
-                    $html .= '<input type="hidden" id="wp_custom_attachment_url" name="wp_custom_attachment_url" value=" ' . $doc['url'] . '" size="30" />';
-                    $html .= '<a href=" ' . $doc['url'] . '" id="wp_custom_attachment_view" target="_blank">' . __('View') . '</a> ';
-                    $html .= '<input type="checkbox" id="wp_custom_attachment_delete" name="wp_custom_attachment_delete" value="deleteFile"/>' . __('Check if you want delete the file');
+                    $html .= '<input type="hidden" id="'.__CLASS__ . '_projectFile_url" name="'.__CLASS__ . '_projectFile_url" value=" ' . $doc['url'] . '" size="30" />';
+                    $html .= '<a href=" ' . $doc['url'] . '" id="vpm_projectFile_view" target="_blank">' . __('View') . '</a> ';
+                    $html .= '<input type="checkbox" id="vpm_projectFile_delete" name="'.__CLASS__ . '_projectFile_delete" value="deleteFile"/>' . __('Check if you want delete the file');
                 }else{
-                    $html .= '<input type="file" id="wp_custom_attachment" name="wp_custom_attachment" value="" size="25" />';
+                    $html .= '<input type="file" id="'.__CLASS__ . '_projectFile" name="'.__CLASS__ . '_projectFile" value="" size="25" />';
                 }
 
                 return $html;
@@ -345,42 +349,43 @@ if(!class_exists('VolunteerProjectManagement')):
                     
                     self::setPostCustomValues(self::$endDate, $endDate);
                         // Make sure the file array isn't empty
-                        if(!empty($_FILES['wp_custom_attachment']['name'])) {
+                        if(!empty($_FILES[__CLASS__ . '_projectFile']['name'])) {
 
                                 // Setup the array of supported file types. In this case, it's just PDF.
                                 // @todo  we want more?
                                 $supported_types = array('application/pdf');
 
                                 // Get the file type of the upload
-                                $arr_file_type = wp_check_filetype(basename($_FILES['wp_custom_attachment']['name']));
+                                $arr_file_type = wp_check_filetype(basename($_FILES[__CLASS__ . '_projectFile']['name']));
                                 $uploaded_type = $arr_file_type['type'];
 
                                 // Check if the type is supported. If not, throw an error.
                                 if(in_array($uploaded_type, $supported_types)) {
                                         // Use the WordPress API to upload the file
-                                        $upload = wp_upload_bits($_FILES['wp_custom_attachment']['name'], null, file_get_contents($_FILES['wp_custom_attachment']['tmp_name']));
+                                        $upload = wp_upload_bits($_FILES[__CLASS__ . '_projectFile']['name'], null, file_get_contents($_FILES[__CLASS__ . '_projectFile']['tmp_name']));
                                         __CLASS__ . self::$num++;
                                         if(isset($upload['error']) && $upload['error'] != 0) {
                                                 wp_die('There was an error uploading your file. The error is: ' . $upload['error']);
                                         } else {
-                                                add_post_meta($postId, 'wp_custom_attachment', $upload);
-                                                update_post_meta($postId, 'wp_custom_attachment', $upload);
+                                                add_post_meta($postId, __CLASS__ . '_projectFile', $upload);
+                                                update_post_meta($postId, __CLASS__ . '_projectFile', $upload);
                                         } // end if/else
                                 } else {
                                         wp_die("The file type that you've uploaded is not a PDF.");
                                 } // end if/else
-echo "<pre>".print_r($_FILES,true)."</pre>";
+                                echo "<pre>".print_r($_FILES,true)."</pre>";
                                 //wp_die("fez upload...");//$_FILES = null;
-                                error_log("------".__CLASS__ . self::$num++);
+                                error_log("------ ".__CLASS__ . self::$num++." ------------");
+                                self::admin_notice(self::$num++."<-");
                         }else{  
                             
-                            if($_POST['wp_custom_attachment_delete']=="deleteFile"){
+                            if($_POST[__CLASS__ . '_projectFile_delete']=="deleteFile"){
 
                                 // Grab a reference to the file associated with this post  
-                                $doc = get_post_meta($postId, 'wp_custom_attachment', true); 
+                                $doc = get_post_meta($postId, __CLASS__ . '_projectFile', true); 
 
                                 // Grab the value for the URL to the file stored in the text element 
-                                $delete_flag = get_post_meta($postId, 'wp_custom_attachment_url', true); 
+                                $delete_flag = get_post_meta($postId, __CLASS__ . '_projectFile_url', true); 
 
                                 // Determine if a file is associated with this post and if the delete flag has been set (by clearing out the input box) 
                                 if(strlen(trim($doc['url'])) > 0 && strlen(trim($delete_flag)) == 0) { 
@@ -389,8 +394,8 @@ echo "<pre>".print_r($_FILES,true)."</pre>";
                                     if(unlink($doc['file'])) { 
 
                                         // Delete succeeded so reset the WordPress meta data 
-                                        update_post_meta($postId, 'wp_custom_attachment', null); 
-                                        update_post_meta($postId, 'wp_custom_attachment_url', ''); 
+                                        update_post_meta($postId, __CLASS__ . '_projectFile', null); 
+                                        update_post_meta($postId, __CLASS__ . '_projectFile_url', ''); 
 
                                     } else { 
                                         wp_die('There was an error trying to delete your file.'); 
@@ -466,52 +471,6 @@ echo "<pre>".print_r($_FILES,true)."</pre>";
                     // Prepare the SQL queries
                     $queries = array();
                     
-                    /*
-                    $queries[] = "
-                        CREATE TABLE `{$instance->TABLE_FILE_METADATA}` (
-                            `{$instance->TABLE_FILE_METADATA_ID}` bigint(20) NOT NULL AUTO_INCREMENT,
-                            `{$instance->TABLE_FILE_METADATA_PARENT}` bigint(20) DEFAULT NULL,
-                            `{$instance->TABLE_FILE_METADATA_TIME}` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
-                            `{$instance->TABLE_FILE_METADATA_NAME}` text NOT NULL,
-                            `{$instance->TABLE_FILE_METADATA_MIME_TYPE}` varchar(32),
-                            `{$instance->TABLE_FILE_METADATA_ETAG}` tinytext,
-                            `{$instance->TABLE_FILE_METADATA_SIZE}` bigint(10) DEFAULT '0',
-                            `{$instance->TABLE_FILE_METADATA_USER}` bigint(20) DEFAULT '0',
-                            PRIMARY KEY (`{$instance->TABLE_FILE_METADATA_ID}`),
-                            KEY `{$instance->TABLE_FILE_METADATA_USER}` (`{$instance->TABLE_FILE_METADATA_USER}`),
-                            KEY `{$instance->TABLE_FILE_METADATA_PARENT}` (`{$instance->TABLE_FILE_METADATA_PARENT}`)
-                        ) ENGINE=InnoDB {$charset_collate} COMMENT='Database files metatable';
-                    ";
-
-                    $queries[] = "
-                        ALTER TABLE `{$instance->TABLE_FILE_METADATA}`
-                            ADD CONSTRAINT `{$instance->TABLE_FILE_METADATA}_{$instance->TABLE_FILE_METADATA_PARENT}` FOREIGN KEY (`{$instance->TABLE_FILE_METADATA_PARENT}`) REFERENCES `{$instance->TABLE_FILE_METADATA}` (`{$instance->TABLE_FILE_METADATA_ID}`) ON DELETE SET NULL ON UPDATE CASCADE
-                        ;
-                    ";
-
-                    $queries[] = "
-                        CREATE TABLE `{$instance->TABLE_FILE_DATA}` (
-                            `{$instance->TABLE_FILE_DATA_ID}` bigint(20) NOT NULL AUTO_INCREMENT,
-                            `{$instance->TABLE_FILE_DATA_METADATA}` bigint(20) NOT NULL,
-                            `{$instance->TABLE_FILE_DATA_ORDER}` bigint(20) NOT NULL DEFAULT '0',
-                            `{$instance->TABLE_FILE_DATA_DATA}` longblob NOT NULL,
-                            `{$instance->TABLE_FILE_DATA_PREVIOUS}` bigint(20) DEFAULT NULL,
-                            `{$instance->TABLE_FILE_DATA_NEXT}` bigint(20) DEFAULT NULL,
-                            PRIMARY KEY  (`{$instance->TABLE_FILE_DATA_ID}`),
-                            UNIQUE KEY `unique_order` (`{$instance->TABLE_FILE_DATA_METADATA}`,`{$instance->TABLE_FILE_DATA_ORDER}`),
-                            UNIQUE KEY `{$instance->TABLE_FILE_DATA_NEXT}` (`{$instance->TABLE_FILE_DATA_NEXT}`),
-                            UNIQUE KEY `{$instance->TABLE_FILE_DATA_PREVIOUS}` (`{$instance->TABLE_FILE_DATA_PREVIOUS}`)
-                        ) ENGINE=InnoDB {$charset_collate} COMMENT='Database files data table';
-                    ";
-
-                    $queries[] = "
-                        ALTER TABLE `{$instance->TABLE_FILE_DATA}`
-                            ADD CONSTRAINT `{$instance->TABLE_FILE_DATA}_meta` FOREIGN KEY (`file_metadata`) REFERENCES `{$instance->TABLE_FILE_METADATA}` (`{$instance->TABLE_FILE_METADATA_ID}`) ON DELETE CASCADE ON UPDATE CASCADE,
-                            "."
-                            ADD CONSTRAINT `{$instance->TABLE_FILE_DATA}_{$instance->TABLE_FILE_DATA_NEXT}` FOREIGN KEY (`{$instance->TABLE_FILE_DATA_NEXT}`) REFERENCES `{$instance->TABLE_FILE_DATA}` (`{$instance->TABLE_FILE_DATA_ID}`) ON DELETE CASCADE ON UPDATE CASCADE
-                        ;
-                    ";
-                    */
 
                     require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
                     dbDelta($queries);
@@ -578,7 +537,6 @@ echo "<pre>".print_r($_FILES,true)."</pre>";
                 echo ' enctype="multipart/form-data"';
             }
             
-            
             /**
              * Return the WordPress Database Access Abstraction Object 
              * 
@@ -590,34 +548,82 @@ echo "<pre>".print_r($_FILES,true)."</pre>";
                 
                 return $wpdb;
             }
-        function edit_columns($columns)
-		{
-			$columns = array(
-				"cb" => "<input type=\"checkbox\" />",
-				"title" => "Vol. Projects",
-				"date" => "Data",
-				"vpm_project_file" => "File",
-			);
-			return $columns;
-		}
+            function edit_columns($columns){
+                $columns = array(
+                        "cb" => "<input type=\"checkbox\" />",
+                        "title" => "Vol. Projects",
+                        "date" => "Data",
+                        "vpm_project_file" => "File",
+                );
+                return $columns;
+            }
 
-function custom_columns($column)
-	{
-		global $post;
-		switch ($column)
-		{
-			case "vpm_project_file":
-				$custom = get_post_custom();
-				echo $custom["upload_project_file"];
-		}
-	}
+            function custom_columns($column){
+                global $post;
+                switch ($column)
+                {
+                        case "vpm_project_file":
+                                $custom = get_post_custom();
+                                echo $custom["upload_project_file"];
+                }
+            }
 
+            function plugin_settings_page() {
+                if ( function_exists('add_submenu_page') )
+                        add_submenu_page('plugins.php', __('Volunteer project configuration'), __('Volunteer project configuration'), 'manage_options', 'vpm-settings', array(__CLASS__, 'vpm_conf'));
+            }
+
+            function plugin_settings_link( $links, $file ) {
+                if ( $file == plugin_basename( dirname(__FILE__).'/VolunteerProjectManagement.php' ) ) {
+                    $links[] = '<a href="plugins.php?page=vpm-settings">'.__('Settings').'</a>';
+                }
+
+                return $links;
+                
+            }
+            
+            function vpm_conf() {
+
+                if ( isset($_POST['submit']) ) {
+                        if ( function_exists('current_user_can') && !current_user_can('manage_options') )
+                                die(__('Cheatin&#8217; uh?'));
+                }
+                
+                
+                $messages = array(
+                    'new_key_empty' => array('color' => 'aa0', 'text' => __('Your key has been cleared.')),
+                    'new_key_valid' => array('color' => '4AB915', 'text' => __('Your key has been verified. Happy blogging!')),
+                    'new_key_invalid' => array('color' => '888', 'text' => __('The key you entered is invalid. Please double-check it.')),
+                    'new_key_failed' => array('color' => '888', 'text' => __('The key you entered could not be verified because a connection to akismet.com could not be established. Please check your server configuration.')),
+                    'no_connection' => array('color' => '888', 'text' => __('There was a problem connecting to the Akismet server. Please check your server configuration.')),
+                    'key_empty' => array('color' => 'aa0', 'text' => sprintf(__('Please enter an API key. (<a href="%s" style="color:#fff">Get your key.</a>)'), 'http://akismet.com/get/')),
+                    'key_valid' => array('color' => '4AB915', 'text' => __('This key is valid.')),
+                    'key_failed' => array('color' => 'aa0', 'text' => __('The key below was previously validated but a connection to akismet.com can not be established at this time. Please check your server configuration.')),
+                    'bad_home_url' => array('color' => '888', 'text' => sprintf( __('Your WordPress home URL %s is invalid.  Please fix the <a href="%s">home option</a>.'), esc_html( get_bloginfo('url') ), admin_url('options.php#home') ) ),
+                );
+                ?>
+                <?php if ( !empty($_POST['submit'] ) ) : ?>
+                <div id="message" class="updated fade"><p><strong><?php _e('Options saved.') ?></strong></p></div>
+                <?php endif; ?>
+                <div class="wrap">
+                <h2><?php _e('Volunteer project management configuration'); ?></h2>
+                <?php echo _e('Options relating to the Volunteer project plugin.');?>
+                <div class="narrow">
+                    <form action="" method="post" id="vpm-conf" style="margin: auto; width: 400px; ">
+                    </form>
+                </div>
+                <?php
+            }
+            
+                        
+
+        
             /**
              * Register the plugin functions with the Wordpress hooks
              */
             public static function init(){
                 
-$prefix = self::getWpDB()->prefix;
+                $prefix = self::getWpDB()->prefix;
                 // Register the install database method to be executed when the plugin is activated
                 register_activation_hook(__FILE__, array(__CLASS__, 'install'));
 
@@ -632,6 +638,7 @@ $prefix = self::getWpDB()->prefix;
 
                 // Register the addMetaBox method to the Wordpress backoffice administration initialization action hook
                 add_action('admin_init', array(__CLASS__, 'addMetaBox'));
+                //add_action('admin_init', array(__CLASS__, 'optionsSettings'));
 
                 // Register the savePost method to the Wordpress save_post action hook
                 add_action('save_post', array(__CLASS__, 'savePost'));
@@ -649,9 +656,13 @@ $prefix = self::getWpDB()->prefix;
                 add_action('admin_print_styles', array(__CLASS__, 'adminPrintStyles'));
                 
                 // Register the form tag so we can upload files
-                add_action( 'post_edit_form_tag' , array(__CLASS__, 'post_edit_form_tag') );
+                add_action( 'post_edit_form_tag' , array(__CLASS__, 'post_edit_form_tag') );                
+                
+                // Add a link option so we can define plugin settings                
+                add_filter( 'plugin_action_links', array(__CLASS__ , 'plugin_settings_link'), 10, 2 );
+                // Add a link option in links menu so we can define plugin settings
+                add_action( 'admin_menu', array(__CLASS__ , 'plugin_settings_page' ));
             }
-
 
 		
         }
