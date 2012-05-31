@@ -2,7 +2,7 @@
 /*
 Plugin Name: Volunteer Project Management
 Description: This extension provides a system for managing volunteer projects that depend on download and upload files
-Version: 0.1
+Version: 0.5
 Author: Cláudio Esperança, Diogo Serra
 Author URI: http://dei.estg.ipleiria.pt/
 */
@@ -21,6 +21,13 @@ if(!class_exists('VolunteerProjectManagement')):
              * The post type for the Volunteer Project 
              */
             const POST_TYPE = 'vpm-project';
+            
+            /**
+             * The default user role that can contribute
+             * http://codex.wordpress.org/Roles_and_Capabilities#Capability_vs._Role_Table
+             * We will use the author as default because is the lower role that can upload files 
+             */
+            const DEFAULT_ROLE = 'author';
 
             /**
             * The database variable name to store the plugin database version
@@ -36,6 +43,7 @@ if(!class_exists('VolunteerProjectManagement')):
             private static $startDate = '_startDate';
             private static $endDate = '_endDate';
             private static $downloadCounter = '_downloadCounter';
+            private static $projectFile = '_projectFile';
             private static $num = 0;
 
         // Methods
@@ -45,6 +53,19 @@ if(!class_exists('VolunteerProjectManagement')):
             public function __construct(){
 
             }
+            
+            /**
+             * Working role for the plugin
+             * 
+             */
+            public function getAllowedRole(){
+                $options = get_option('vpmOptions');
+                if(isset($options['role_combo']) && $options['role_combo']!=''){
+                    return $options['role_combo'];
+                }
+                return self::DEFAULT_ROLE;
+            }
+            
             
             /**
              * Load the plugin language pack, and register the post type for the Volunteer Projects
@@ -69,23 +90,22 @@ if(!class_exists('VolunteerProjectManagement')):
                         ),
                         'description' => __('Volunteer Projects', __CLASS__),
                         'has_archive' => false,
-                        'public' => true,
-                        'publicly_queryable' => true,
+                        'public' => false,
+                        'publicly_queryable' => false,
                         'exclude_from_search' => true,
                         'show_ui' => true,
                         'show_in_menu' => true,
                         'show_in_nav_menus'=>true,
-                        'supports'=>array('title', 'editor'),
+                        'supports'=>array('title', 'editor', 'page-attributes'),
                         'rewrite' => array(
                             'slug' => self::URL_QUERY_PARAM,
                             'with_front'=>'false'
                         ),
-                        'query_var' => true,
-                        'capability_type' => 'page',
+                        'query_var' => true/*,
+                        'capability_type' => 'page'*/
                     )
                 );
             }
-
 
             /**
             * Get the post from the parameter or the main loop
@@ -120,7 +140,7 @@ if(!class_exists('VolunteerProjectManagement')):
             * @param int|object $post with the post
             * @param string value with the value to associate with the key in the post
             */
-            private static function setPostCustomValues($key, $value='', $post=0){
+            public static function setPostCustomValues($key, $value='', $post=0){
                 update_post_meta(self::getPostID($post), __CLASS__.$key, $value);
             }
 
@@ -131,7 +151,7 @@ if(!class_exists('VolunteerProjectManagement')):
             * @param int|object $post with the post
             * @return string value for the key or boolean false if the key was not found
             */
-            private static function getPostCustomValues($key, $post=0){
+            public static function getPostCustomValues($key, $post=0){
                 $value = get_post_custom_values(__CLASS__.$key, self::getPostID($post));
                 return (!empty($value) && isset($value[0]))?$value[0]:false;
             }
@@ -219,9 +239,9 @@ if(!class_exists('VolunteerProjectManagement')):
             * Add a metabox to the project post type
             */
             public function addMetaBox() {
-                // Replace the submit core metabox by ours
-                add_meta_box(__CLASS__.'-meta', __('Project Volunteer configuration'), array(__CLASS__, 'writeSettingsMetaBox'), self::POST_TYPE, 'advanced', 'core');
                 
+                add_meta_box(__CLASS__.'-meta', __('Project Volunteer configuration'), array(__CLASS__, 'writeSettingsMetaBox'), self::POST_TYPE, 'advanced', 'core');
+                //self::list_hooked_functions();
             }
             /**
             * Output a custom metabox for saving the post
@@ -231,13 +251,7 @@ if(!class_exists('VolunteerProjectManagement')):
                 $post_type = $post->post_type;
                 $post_type_object = get_post_type_object($post_type);
                 $can_publish = current_user_can($post_type_object->cap->publish_posts);
-                    $postId = get_the_ID();
-                    
-
-                    // Retrieve the campaign date and time interval (and convert them back to the localtime)
-                        $startDate = self::getStartDate($post)-(current_time('timestamp', true)-current_time('timestamp', false));
-                        $endDate = self::getEndDate($post)-(current_time('timestamp', true)-current_time('timestamp', false));
-                    
+                    $postId = get_the_ID();                  
                     
                     
                         // Retrieve the campaign date and time interval (and convert them back to the localtime)
@@ -301,17 +315,18 @@ if(!class_exists('VolunteerProjectManagement')):
                 
 
                 // Grab the array of file information currently associated with the post
-                $doc = get_post_meta($postId, __CLASS__ . '_projectFile', true);
+                //$file = self::getPostCustomValues(self::$projectFile, $postId);
+                $file = get_post_meta($postId, __CLASS__ . '_projectFile', true);
 
                 $html = '';
                 // Display the 'View' and 'Delete' option if a URL to a file exists else upload option
-                if(@strlen(trim($doc['url'])) > 0) {
+                if(@strlen(trim($file['url'])) > 0) {
                     // Create the input box and set the file's URL as the text element's value
-                    $html .= '<input type="hidden" id="'.__CLASS__ . '_projectFile_url" name="'.__CLASS__ . '_projectFile_url" value=" ' . $doc['url'] . '" size="30" />';
-                    $html .= '<a href=" ' . $doc['url'] . '" id="vpm_projectFile_view" target="_blank">' . __('View') . '</a> ';
+                    $html .= '<input type="hidden" id="'.self::$projectFile . '_url" name="'.__CLASS__ . '_projectFile_url" value=" ' . $file['url'] . '" size="30" />';
+                    $html .= '<a href=" ' . $file['url'] . '" id="vpm_projectFile_view" target="_blank">' . __('View') . '</a> ';
                     $html .= '<input type="checkbox" id="vpm_projectFile_delete" name="'.__CLASS__ . '_projectFile_delete" value="deleteFile"/>' . __('Check if you want delete the file');
                 }else{
-                    $html .= '<input type="file" id="'.__CLASS__ . '_projectFile" name="'.__CLASS__ . '_projectFile" value="" size="25" />';
+                    $html .= '<input type="file" id="'.self::$projectFile . '" name="'.__CLASS__ . '_projectFile" value="" size="25" />';
                 }
 
                 return $html;
@@ -345,9 +360,11 @@ if(!class_exists('VolunteerProjectManagement')):
                         // Set the timestamp, converting it from local time to UTC
                         $endDate = mktime($hours, $minutes, 0, $month, $day, $year)+(current_time('timestamp', true)-current_time('timestamp', false));
                         
-                    self::setPostCustomValues(self::$startDate, $startDate);
-                    
-                    self::setPostCustomValues(self::$endDate, $endDate);
+                        self::setPostCustomValues(self::$startDate, $startDate);
+
+                        self::setPostCustomValues(self::$endDate, $endDate);
+
+                        
                         // Make sure the file array isn't empty
                         if(!empty($_FILES[__CLASS__ . '_projectFile']['name'])) {
 
@@ -369,6 +386,9 @@ if(!class_exists('VolunteerProjectManagement')):
                                         } else {
                                                 add_post_meta($postId, __CLASS__ . '_projectFile', $upload);
                                                 update_post_meta($postId, __CLASS__ . '_projectFile', $upload);
+                                                // When we update the file we reset the counter
+                                                self::setPostCustomValues(self::$downloadCounter, 0);
+                                                
                                         } // end if/else
                                 } else {
                                         wp_die("The file type that you've uploaded is not a PDF.");
@@ -376,7 +396,6 @@ if(!class_exists('VolunteerProjectManagement')):
                                 echo "<pre>".print_r($_FILES,true)."</pre>";
                                 //wp_die("fez upload...");//$_FILES = null;
                                 error_log("------ ".__CLASS__ . self::$num++." ------------");
-                                self::admin_notice(self::$num++."<-");
                         }else{  
                             
                             if($_POST[__CLASS__ . '_projectFile_delete']=="deleteFile"){
@@ -548,45 +567,253 @@ if(!class_exists('VolunteerProjectManagement')):
                 
                 return $wpdb;
             }
-            function edit_columns($columns){
+            
+            function vpm_columns($column){
                 $columns = array(
-                        "cb" => "<input type=\"checkbox\" />",
-                        "title" => "Vol. Projects",
-                        "date" => "Data",
-                        "vpm_project_file" => "File",
+                    'cb' => '<input type="checkbox" />',
+                    'title' => __( 'Vol. Projects' ),
+                    'vpm_project_file' => __( 'Vol. Projects files'),
+                    'vpm_startDate' => __( 'Start Date' ),
+                    'vpm_endDate' => __( 'End Date'),
+                    'vpm_downloads' => __('Number of downloads ')
                 );
+
                 return $columns;
             }
-
-            function custom_columns($column){
+function list_hooked_functions($tag=false){
+ global $wp_filter;
+ if ($tag) {
+  $hook[$tag]=$wp_filter[$tag];
+  if (!is_array($hook[$tag])) {
+  trigger_error("Nothing found for '$tag' hook", E_USER_WARNING);
+  return;
+  }
+ }
+ else {
+  $hook=$wp_filter;
+  ksort($hook);
+ }
+ echo '<pre>';
+ foreach($hook as $tag => $priority){
+  echo "<br />&gt;&gt;&gt;&gt;&gt;\t<strong>$tag</strong><br />";
+  ksort($priority);
+  foreach($priority as $priority => $function){
+  echo $priority;
+  foreach($function as $name => $properties) echo "\t$name<br />";
+  }
+ }
+ echo '</pre>';
+ return;
+}
+            function vpm_manage_columns( $column, $postId ) {
                 global $post;
-                switch ($column)
-                {
-                        case "vpm_project_file":
-                                $custom = get_post_custom();
-                                echo $custom["upload_project_file"];
+                switch( $column ) {
+
+                        /* If displaying the 'project file' column. */
+                        case 'vpm_project_file' :
+                                /* Get the file for the post. */
+                                $file = get_post_meta($postId, __CLASS__ . '_projectFile');
+                                /* If the file exist. */
+                                if ( !empty( $file ) && isset($file[0]['url']) ) {
+                                    
+                    
+                                    echo '<a href="' . add_query_arg( array( 'post_type' => self::POST_TYPE, 'post' => $post->ID, 'action' => 'edit', 'option'=>'downloadFile'  ), admin_url( 'post.php') ) . '" id="vpm_projectFile_download">' ;
+                                            _e('Download', __CLASS__);
+                                        echo '</a> ';
+                                }
+                                /* If no file were found, output a default message. */
+                                else {
+                                        _e( 'No file uploaded' );
+                                }
+                                break;
+                         case 'vpm_startDate':
+                            // Retrieve the campaign date and time interval (and convert them back to the localtime)
+                            $startDate = self::getStartDate($post)-(current_time('timestamp', true)-current_time('timestamp', false));
+
+                            // Extract the hours from the timestamp
+                            if(!$startDate):
+                                echo _e("No start date");
+                            else:
+                                echo date("m-d-Y@H:i:s", $startDate);
+                            endif;
+
+                            break;
+                        
+                        case 'vpm_endDate':
+                            
+                            // Retrieve the campaign date and time interval (and convert them back to the localtime)
+                            $endDate = self::getEndDate($post)-(current_time('timestamp', true)-current_time('timestamp', false));
+                            // Extract the minutes from the timestamp
+                            if(!$endDate):
+                                echo _e("No end date");
+                            else:
+                                echo date("m-d-Y@H:i:s", $endDate);
+                            endif;
+                        
+                            break;
+                        
+                        case 'vpm_downloads':
+                            echo self::getPostCustomValues(self::$downloadCounter);
+                            break;
+                                 
+                                
+
+                        /* Just break out of the switch statement for everything else. */
+                        default :
+                                break;
                 }
             }
+            
+            function downloadFile($post) {
+                
+                if(isset($_REQUEST['option']) && $_REQUEST['option']=="downloadFile"){
+                    global $post;
+                    
+                    //$post = self::getPost($_REQUEST['post']);
+                    //list_hooked_functions();
+                    $postId = $post->ID;
+                    //echo "<br/><br/><br/><br/><br/>".self::getStartDate($postId)."----#".self::getPostCustomValues(self::$downloadCounter,$postId)."#---<pre>".print_r($post,true)."</pre>";
+                    
+                    if(isset($_REQUEST['post_type']) && $_REQUEST['post_type']== self::POST_TYPE && isset($_REQUEST['post'])){
+                        $_REQUEST['post_type'] = '';
+                        $currentValue = self::getPostCustomValues(self::$downloadCounter,$postId);
+                        //echo("$$$$$$".self::$projectFile."$$$------------");
+                        $file = get_post_meta($postId, __CLASS__ . '_projectFile', true);
+                        $urlFile = $file['url'];
+                        self::setPostCustomValues(self::$downloadCounter, $currentValue+1,$postId);
+                        //echo(get_post_meta($postId, __CLASS__ . '_projectFile', true)."######".$currentValue."......".self::getPostCustomValues(self::$downloadCounter,$postId));
+                        //echo "<pre>".print_r($file,true)."</pre>";
+                        //die("->".$file);
+                        //
+                        // TODO: make open in new page
+                        //Download the file
+                        header('Pragma: public');
+                        header('Expires: 0');
+                        header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+                        header('Cache-Control: private',false);
+                        header('Content-Disposition: attachment; filename="'.basename($urlFile).'"');
+                        header('Content-Transfer-Encoding: binary');
+                        header('Connection: close');
+                        readfile($urlFile);
 
-            function plugin_settings_page() {
+                        wp_redirect( admin_url( 'edit.php?post_type=vpm-project') );
+                    }
+                }
+            } 
+            
+            function vpm_sortable_columns( $columns ) {
+
+                $columns['vpm_startDate'] = 'vpm_startDate';
+                $columns['vpm_endDate'] = 'vpm_endDate';
+                $columns['vpm_downloads'] = 'vpm_downloads';
+
+                return $columns;
+            }
+            
+            
+            function vpm_columns_load() {
+                add_filter( 'request', array(__CLASS__, 'vpm_sort_dates'),10,1 );
+            }
+            
+            function vpm_sort_dates( $vars ) {
+                /* Check if we're viewing our post type. */
+                if ( isset( $vars['post_type'] ) && $vars['post_type'] == self::POST_TYPE ) {
+                    if ( isset( $vars['orderby']) ){
+                        switch ($vars['orderby']) {
+                            case 'vpm_startDate':
+                                /* Merge the query vars with our custom variables. */
+                                $vars = array_merge(
+                                    $vars,
+                                        array(
+                                            'meta_key' => __CLASS__ . self::$startDate,
+                                            'orderby' => 'meta_value_num'
+                                        )
+                                );
+                                break;
+                            case 'vpm_endDate':
+                                /* Merge the query vars with our custom variables. */
+                                $vars = array_merge(
+                                    $vars,
+                                        array(
+                                            'meta_key' => __CLASS__ .  self::$endDate,
+                                            'orderby' => 'meta_value_num'
+                                        )
+                                );
+                                break;
+                            case 'vpm_downloads':
+                                /* Merge the query vars with our custom variables. */
+                                $vars = array_merge(
+                                    $vars,
+                                        array(
+                                            'meta_key' => __CLASS__ .  self::$downloadCounter,
+                                            'orderby' => 'meta_value_num'
+                                        )
+                                );
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                }
+
+                return $vars;
+            }
+            
+            function vpm_settings_page() {
                 if ( function_exists('add_submenu_page') )
-                        add_submenu_page('plugins.php', __('Volunteer project configuration'), __('Volunteer project configuration'), 'manage_options', 'vpm-settings', array(__CLASS__, 'vpm_conf'));
+                        add_submenu_page('plugins.php', __('Volunteer project configuration'), __('Volunteer project configuration', __CLASS__), 'manage_options', 'vpm-settings', array(__CLASS__, 'vpm_conf'));
             }
 
             function plugin_settings_link( $links, $file ) {
                 if ( $file == plugin_basename( dirname(__FILE__).'/VolunteerProjectManagement.php' ) ) {
-                    $links[] = '<a href="plugins.php?page=vpm-settings">'.__('Settings').'</a>';
+                    $links[] = '<a href="plugins.php?page=vpm-settings">'.__('Settings', __CLASS__).'</a>';
                 }
 
                 return $links;
                 
             }
             
-            function vpm_conf() {
+            function optionsSettings() {
+                //register our settings
+                /*register_setting( 'vpm-settings-group', 'new_option_name' );
+                register_setting( 'vpm-settings-group', 'some_other_option' );
+                register_setting( 'vpm-settings-group', 'option_etc' );*/
+                add_settings_section('vpm_main', 'Main Settings', array(__CLASS__,'vpm_section_text'), 'vpm_plugin');
+                add_settings_field('plugin_role_combo', 'Role', array(__CLASS__,'vpm_setting_dropdown'), 'vpm_plugin', 'vpm_main');
+                add_settings_field('plugin_text_string', 'Plugin Text Input', array(__CLASS__,'vpm_setting_string'), 'vpm_plugin', 'vpm_main');
+                register_setting( 'vpmOptions', 'vpmOptions' );
+                //register_setting( 'plugin_options', 'plugin_options', array(__CLASS__,'plugin_options_validate') );
 
+            }
+            
+            function vpm_section_text() {
+                echo '<p>Main description of this section here.</p>';
+            } 
+            function vpm_setting_string() {
+                $options = get_option('vpmOptions');
+                echo "<input id='plugin_text_string' name='vpmOptions[text_string]' size='40' type='text' value='{$options['text_string']}' />";
+            } 
+            function vpm_setting_dropdown() {
+                $options = get_option('vpmOptions');
+                ?>
+                <select name="vpmOptions[role_combo]" id="plugin_role_combo">
+                    <?php wp_dropdown_roles($options['role_combo']) ?>
+                </select>
+                <?php
+            }
+            // validate our options
+            function plugin_options_validate($input) {
+                $newinput['text_string'] = trim($input['text_string']);
+                if(!preg_match('/^[a-z0-9]{32}$/i', $newinput['text_string'])) {
+                    $newinput['text_string'] = '';
+                }
+                return $newinput;
+            }
+            
+            function vpm_conf() {
                 if ( isset($_POST['submit']) ) {
-                        if ( function_exists('current_user_can') && !current_user_can('manage_options') )
-                                die(__('Cheatin&#8217; uh?'));
+                    if ( function_exists('current_user_can') && !current_user_can('manage_options') )
+                        die(__('Cheatin&#8217; uh?'));
                 }
                 
                 
@@ -608,15 +835,65 @@ if(!class_exists('VolunteerProjectManagement')):
                 <div class="wrap">
                 <h2><?php _e('Volunteer project management configuration'); ?></h2>
                 <?php echo _e('Options relating to the Volunteer project plugin.');?>
+                
                 <div class="narrow">
-                    <form action="" method="post" id="vpm-conf" style="margin: auto; width: 400px; ">
+                    <form action="options.php" method="post" id="vpm-conf"> 
+                        <?php settings_fields('vpmOptions'); ?>
+                        <?php do_settings_sections('vpm_plugin'); ?>
+                        <input name="Submit" class="button-primary" type="submit" value="<?php esc_attr_e('Save Changes'); ?>" />
                     </form>
                 </div>
                 <?php
             }
             
-                        
+            /**
+             *
+             * @param string $actions
+             * @param type $post
+             * @return string 
+             */
+            function vpm_row_actions($actions, $post){
+                // only to our post type
+                if ($post->post_type == self::POST_TYPE){
+                    $options = get_option('vpmOptions');
+                    if(isset($options['role_combo'])){
+                        $allowedRole = $options['role_combo'];
+                    }else{
+                        $allowedRole = self::DEFAULT_ROLE;
+                    }
+                    echo("plugin role->".$allowedRole);
+                    // If current user can upload files he can contribute
+                    if(current_user_can('upload_files') || current_user_can($allowedRole)){
+                        $actions['add-contribution'] = '<a href="' . add_query_arg( array( 'action'=>'uploadContribution', 'post_type' => self::POST_TYPE, 'post' => $post->ID ), admin_url( 'post-new.php') ) . '" title="'.esc_attr('Add a contribution').'" rel="permalink">'.__("Add a contribution").'</a>';
+                    }
+                    //$actions["add-contribution"] = '<a href="' . add_query_arg( array( 'action'=>'uploadContribution', 'post_type' => self::POST_TYPE, 'post' => $post->ID ), admin_url( 'post-new.php') ) . '" title="Create a new page with this page as its parent">Create child</a>';  
+                }
+                return $actions;
+            }
 
+            function uploadContribution() {
+                // only to our post type
+                if ($post->post_type == self::POST_TYPE && isset($_GET['post'])){
+                    if($_GET['action']== 'uploadContribution'){
+                        ?>
+                    <div class="wrap">
+                    <h2><?php _e('Volunteer project management configuration'); ?></h2>
+                    <?php echo _e('Options relating to the Volunteer project plugin.');?>
+
+                    <div class="narrow">
+                        <form action="options.php" method="post" id="vpm-conf"> 
+                            <?php //settings_fields('vpmOptions'); ?>
+                            <?php //do_settings_sections('vpm_plugin'); ?>
+                            <input name="Submit" class="button-primary" type="submit" value="<?php esc_attr_e('Save Changes'); ?>" />
+                        </form>
+                    </div>
+                    <?php
+                    }
+                }
+                
+                //wp_redirect( admin_url( 'edit.php?post_type=vpm-project') );
+            } 
+            
         
             /**
              * Register the plugin functions with the Wordpress hooks
@@ -638,11 +915,35 @@ if(!class_exists('VolunteerProjectManagement')):
 
                 // Register the addMetaBox method to the Wordpress backoffice administration initialization action hook
                 add_action('admin_init', array(__CLASS__, 'addMetaBox'));
-                //add_action('admin_init', array(__CLASS__, 'optionsSettings'));
+                add_action('admin_init', array(__CLASS__, 'optionsSettings'));
+                
 
                 // Register the savePost method to the Wordpress save_post action hook
                 add_action('save_post', array(__CLASS__, 'savePost'));
+                
+                // Add custom columns to our post
+                add_filter('manage_edit-'.self::POST_TYPE.'_columns', array(__CLASS__ , 'vpm_columns'), 10, 2);
+                // Add custom columns to our post
+                add_action('manage_'.self::POST_TYPE.'_posts_custom_column', array(__CLASS__ , 'vpm_manage_columns'),10,2);
+                // Add a sortable column
+                add_filter( 'manage_edit-'.self::POST_TYPE.'_sortable_columns', array(__CLASS__, 'vpm_sortable_columns'),10,1);
+                // Only run our customization on the 'edit.php' page in the admin. */
+                add_action( 'load-edit.php', array(__CLASS__, 'vpm_columns_load'),10,1);
+                // Add action so we can count number of downloads
+                //add_action('admin_init', array(__CLASS__ , 'downloadFile'),10,2);
+                // TODO is this the best way?
+                add_filter('post_type_link', array(__CLASS__, 'downloadFile'), 10, 1);
 
+                
+                
+                
+                
+                // Add a custom link action
+                add_filter('page_row_actions', array(__CLASS__ , 'vpm_row_actions' ), 10, 2);
+                // Add action so users can contribute
+                add_action('admin_init', array(__CLASS__ , 'uploadContribution'));
+                
+                
                 // Add thePosts method to filter the_posts
                 //add_filter('the_posts', array(__CLASS__, 'thePosts'), 10, 2);
 
@@ -661,7 +962,11 @@ if(!class_exists('VolunteerProjectManagement')):
                 // Add a link option so we can define plugin settings                
                 add_filter( 'plugin_action_links', array(__CLASS__ , 'plugin_settings_link'), 10, 2 );
                 // Add a link option in links menu so we can define plugin settings
-                add_action( 'admin_menu', array(__CLASS__ , 'plugin_settings_page' ));
+                add_action( 'admin_menu', array(__CLASS__ , 'vpm_settings_page' ));
+                
+                
+                
+
             }
 
 		
