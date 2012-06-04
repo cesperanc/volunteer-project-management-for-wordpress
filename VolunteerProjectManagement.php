@@ -27,7 +27,8 @@ if(!class_exists('VolunteerProjectManagement')):
              * http://codex.wordpress.org/Roles_and_Capabilities#Capability_vs._Role_Table
              * We will use the author as default because is the lower role that can upload files 
              */
-            const DEFAULT_ROLE = 'author';
+            const DEFAULT_CAP = 'upload_files';
+            const CONTRIBUTION_CAP = 'vpm-CanContribute';
 
             /**
             * The database variable name to store the plugin database version
@@ -58,12 +59,12 @@ if(!class_exists('VolunteerProjectManagement')):
              * Working role for the plugin
              * 
              */
-            public function getAllowedRole(){
+            public function getAllowedCap(){
                 $options = get_option('vpmOptions');
-                if(isset($options['role_combo']) && $options['role_combo']!=''){
-                    return $options['role_combo'];
+                if(isset($options['cap_check']) && $options['cap_check']!=''){
+                    return self::CONTRIBUTION_CAP;
                 }
-                return self::DEFAULT_ROLE;
+                return self::DEFAULT_CAP;
             }
             
             
@@ -90,7 +91,7 @@ if(!class_exists('VolunteerProjectManagement')):
                         ),
                         'description' => __('Volunteer Projects', __CLASS__),
                         'has_archive' => false,
-                        'public' => false,
+                        'public' => true,
                         'publicly_queryable' => false,
                         'exclude_from_search' => true,
                         'show_ui' => true,
@@ -221,6 +222,7 @@ if(!class_exists('VolunteerProjectManagement')):
                         'weekHeader' => __('Wk', __CLASS__)
                     ));
                 endif;
+                wp_enqueue_script(__CLASS__ . '_plugin_options', plugins_url('js/options.js', __FILE__));
             }
 
             /**
@@ -233,6 +235,7 @@ if(!class_exists('VolunteerProjectManagement')):
                     wp_enqueue_style('jquery-ui-theme', plugins_url('css/jquery-ui/smoothness/jquery.ui.theme.css', __FILE__), array('jquery-ui-core'), '1.8.20');
                     wp_enqueue_style('ui-spinner', plugins_url('css/jquery-ui/ui.spinner.css', __FILE__), array(), '1.20');
                 endif;
+                wp_enqueue_style('admin', plugins_url('css/admin.css', __FILE__), array(), '1.0');
             }
 
             /**
@@ -294,7 +297,7 @@ if(!class_exists('VolunteerProjectManagement')):
                         <div id="vpm-enddate-container">
                             <label class="selectit"><?php _e('End date:', __CLASS__); ?> <input style="width: 6em;" size="8" maxlength="10" title="<?php esc_attr_e('Specify the end date when the project is supposed to end', __CLASS__) ?>" id="vpm-enddate" type="text" name="<?php echo(__CLASS__ . self::$endDate); ?>" /></label>
                             <input id="vpm-hidden-enddate" type="hidden" name="<?php echo(__CLASS__ . self::$endDate); ?>" value="<?php echo(date('Y-n-j', $endDate)); ?>" />
-                            @<input title="<?php esc_attr_e('Specify the volunterr ending hours', __CLASS__) ?>" style="width: 2em;" size="2" maxlength="2" id="vpm-endhours" name="<?php echo(__CLASS__ . '_endHours'); ?>" type="text" value="<?php echo($endHours[0]); ?>" />:<input title="<?php esc_attr_e('Specify the project ending minutes', __CLASS__) ?>" style="width: 2em;" size="2" maxlength="2" id="vpm-endminutes" name="<?php echo(__CLASS__ . '_endMinutes'); ?>" type="text" value="<?php echo($endMinutes[0]); ?>" />
+                            @<input title="<?php esc_attr_e('Specify the volunteer ending hours', __CLASS__) ?>" style="width: 2em;" size="2" maxlength="2" id="vpm-endhours" name="<?php echo(__CLASS__ . '_endHours'); ?>" type="text" value="<?php echo($endHours[0]); ?>" />:<input title="<?php esc_attr_e('Specify the project ending minutes', __CLASS__) ?>" style="width: 2em;" size="2" maxlength="2" id="vpm-endminutes" name="<?php echo(__CLASS__ . '_endMinutes'); ?>" type="text" value="<?php echo($endMinutes[0]); ?>" />
                         </div>
                         <div id="vpm-downloadCounter-container">
                             <label><?php _e('Number of downloads: ', __CLASS__) ?></label>
@@ -572,7 +575,7 @@ if(!class_exists('VolunteerProjectManagement')):
                 $columns = array(
                     'cb' => '<input type="checkbox" />',
                     'title' => __( 'Vol. Projects' ),
-                    'vpm_project_file' => __( 'Vol. Projects files'),
+                    //'vpm_project_file' => __( 'Vol. Projects files'),
                     'vpm_startDate' => __( 'Start Date' ),
                     'vpm_endDate' => __( 'End Date'),
                     'vpm_downloads' => __('Number of downloads ')
@@ -779,9 +782,9 @@ function list_hooked_functions($tag=false){
                 register_setting( 'vpm-settings-group', 'some_other_option' );
                 register_setting( 'vpm-settings-group', 'option_etc' );*/
                 add_settings_section('vpm_main', 'Main Settings', array(__CLASS__,'vpm_section_text'), 'vpm_plugin');
-                add_settings_field('plugin_role_combo', 'Role', array(__CLASS__,'vpm_setting_dropdown'), 'vpm_plugin', 'vpm_main');
-                add_settings_field('plugin_text_string', 'Plugin Text Input', array(__CLASS__,'vpm_setting_string'), 'vpm_plugin', 'vpm_main');
-                register_setting( 'vpmOptions', 'vpmOptions' );
+                //add_settings_field('plugin_text_string', 'Plugin Text Input', array(__CLASS__,'vpm_setting_string'), 'vpm_plugin', 'vpm_main');
+                add_settings_field('plugin_cap_check', 'Users who can contribute', array(__CLASS__,'vpm_setting_check'), 'vpm_plugin', 'vpm_main');
+                register_setting( 'vpmOptions', 'vpmOptions', array(__CLASS__,'setOurCaps') );
                 //register_setting( 'plugin_options', 'plugin_options', array(__CLASS__,'plugin_options_validate') );
 
             }
@@ -793,25 +796,56 @@ function list_hooked_functions($tag=false){
                 $options = get_option('vpmOptions');
                 echo "<input id='plugin_text_string' name='vpmOptions[text_string]' size='40' type='text' value='{$options['text_string']}' />";
             } 
-            function vpm_setting_dropdown() {
+            function vpm_setting_check() {
                 $options = get_option('vpmOptions');
-                ?>
-                <select name="vpmOptions[role_combo]" id="plugin_role_combo">
-                    <?php wp_dropdown_roles($options['role_combo']) ?>
-                </select>
-                <?php
-            }
+            ?>
+                <fieldset id="vpm-enable-cap-container" class="vpm-enable-container">
+                    <legend>
+                        <?php if(isset($options['cap_check']) && $options['cap_check']=='true'){$checked = "checked='cheked'";}else{$checked = "";} ?>
+                        <input id="plugin_cap_check" name="vpmOptions[cap_check]" value="true" <?php echo $checked?>  type="checkbox"/>
+                        <label for="plugin_cap_check"><?php _e("If this option isn't used only users who have capability to upload files can contribute",__CLASS__);?></label>
+                    </legend>
+                    <div id="vpm-cap-container" class="start-hidden">
+                    <?php
+                        $wproles = get_option('wp_user_roles');
+                        foreach ($wproles as $role_name => $role_specification)
+                        {
+                            if(in_array(self::CONTRIBUTION_CAP, $role_specification['capabilities'])){
+                                if($role_specification['capabilities'][self::CONTRIBUTION_CAP]==1){
+                                    $checked = "checked='checked'";
+                                }else{
+                                    $checked = "";
+                                }
+                            echo "<input name=\"wpu_roles_${role_name}\" type=\"checkbox\" value=\"yes\"" . $checked. "/> " . __($role_specification['name']) . "<br/>";
+                            }
+                        }
+                    ?>
+                    </div>
+                </fieldset>
+
+
+            <?php
+            } 
             // validate our options
-            function plugin_options_validate($input) {
-                $newinput['text_string'] = trim($input['text_string']);
-                if(!preg_match('/^[a-z0-9]{32}$/i', $newinput['text_string'])) {
-                    $newinput['text_string'] = '';
+            function setOurCaps($options) {
+                $wproles = get_option('wp_user_roles');
+                foreach ($wproles as $role_name => $role_specification){
+                    $role = get_role( $role_name ); // get role
+                    if($options['cap_check']=='true'){
+                        if($_POST['wpu_roles_'.$role_name]=='yes'){
+                            $role->add_cap( self::CONTRIBUTION_CAP );
+                        }else{
+                            $role->remove_cap( self::CONTRIBUTION_CAP );
+                        }
+                    }else{
+                        $role->remove_cap( self::CONTRIBUTION_CAP );
+                    }
                 }
-                return $newinput;
+                return $options;
             }
             
             function vpm_conf() {
-                if ( isset($_POST['submit']) ) {
+                if ( isset($_POST['Submit']) ) {
                     if ( function_exists('current_user_can') && !current_user_can('manage_options') )
                         die(__('Cheatin&#8217; uh?'));
                 }
@@ -856,14 +890,14 @@ function list_hooked_functions($tag=false){
                 // only to our post type
                 if ($post->post_type == self::POST_TYPE){
                     $options = get_option('vpmOptions');
-                    if(isset($options['role_combo'])){
-                        $allowedRole = $options['role_combo'];
+                    if(isset($options['cap_check'])){
+                        $allowedRole = self::CONTRIBUTION_CAP;
                     }else{
-                        $allowedRole = self::DEFAULT_ROLE;
+                        $allowedRole = self::DEFAULT_CAP;
                     }
-                    echo("plugin role->".$allowedRole);
+                    echo("capability ->".$allowedRole);
                     // If current user can upload files he can contribute
-                    if(current_user_can('upload_files') || current_user_can($allowedRole)){
+                    if(current_user_can($allowedRole)){
                         $actions['add-contribution'] = '<a href="' . add_query_arg( array( 'action'=>'uploadContribution', 'post_type' => self::POST_TYPE, 'post' => $post->ID ), admin_url( 'post-new.php') ) . '" title="'.esc_attr('Add a contribution').'" rel="permalink">'.__("Add a contribution").'</a>';
                     }
                     //$actions["add-contribution"] = '<a href="' . add_query_arg( array( 'action'=>'uploadContribution', 'post_type' => self::POST_TYPE, 'post' => $post->ID ), admin_url( 'post-new.php') ) . '" title="Create a new page with this page as its parent">Create child</a>';  
@@ -871,7 +905,7 @@ function list_hooked_functions($tag=false){
                 return $actions;
             }
 
-            function uploadContribution() {
+            function uploadContribution($post) {
                 // only to our post type
                 if ($post->post_type == self::POST_TYPE && isset($_GET['post'])){
                     if($_GET['action']== 'uploadContribution'){
@@ -894,6 +928,60 @@ function list_hooked_functions($tag=false){
                 //wp_redirect( admin_url( 'edit.php?post_type=vpm-project') );
             } 
             
+            function register_ContributionPage(){
+                if(current_user_can(self::getAllowedCap())){
+                    add_submenu_page( 'edit.php?post_type='.self::POST_TYPE, 'Contribute', 'Contribute', self::getAllowedCap(), basename(__FILE__), array(__CLASS__,'contributionPage_build') );
+                }
+            }
+            
+            function contributionPage_build(){
+                global $wp_post_types;
+                $poststoList = array();
+                
+                $posts = get_posts( array(
+                    'post_type' => self::POST_TYPE,
+                    'posts_per_page' => -1,
+                    'nopaging' => true
+                ) );
+                foreach ($posts as $post) {
+                    if($post->post_status=='publish')
+                        $put = array(            
+                            'ID'        => $post->ID,
+                            'title'     => $post->post_title,
+                            'vpm_startDate' => self::getPostCustomValues(self::$startDate, $post),
+                            'vpm_endDate' => self::getPostCustomValues(self::$endDate, $post),
+                            'vpm_downloads' => self::getPostCustomValues(self::$downloadCounter, $post)
+                        );
+                        array_push ($poststoList, $put);
+
+                }
+                //echo "<pre>".print_r($poststoList,true)."</pre>";
+                if(!class_exists('contribute_Table')){
+                    require_once( WP_PLUGIN_DIR."/".__CLASS__.'/contributeList.php' );
+                }
+                
+                $contribute_Table = new contribute_Table($poststoList);
+                //Fetch, prepare, sort, and filter our data...
+                $contribute_Table->prepare_items();
+                ?>
+                    <div class="wrap">
+        
+                        <div id="icon-users" class="icon32"><br/></div>
+                        <h2>List Table Test</h2>
+
+                        <!-- Forms are NOT created automatically, so you need to wrap the table in one to use features like bulk actions -->
+                        <form id="contributions-filter" method="get">
+                            <!-- For plugins, we also need to ensure that the form posts back to our current page -->
+                            <input type="hidden" name="page" value="<?php //echo $_REQUEST['page'] ?>" />
+                            <!-- Now we can render the completed list table -->
+                            <?php $contribute_Table->display() ?>
+                        </form>
+
+                    </div>
+                    
+                    
+                <?php   
+            }
         
             /**
              * Register the plugin functions with the Wordpress hooks
@@ -930,18 +1018,21 @@ function list_hooked_functions($tag=false){
                 // Only run our customization on the 'edit.php' page in the admin. */
                 add_action( 'load-edit.php', array(__CLASS__, 'vpm_columns_load'),10,1);
                 // Add action so we can count number of downloads
-                //add_action('admin_init', array(__CLASS__ , 'downloadFile'),10,2);
+                add_action('admin_init', array(__CLASS__ , 'downloadFile'),10,2);
                 // TODO is this the best way?
                 add_filter('post_type_link', array(__CLASS__, 'downloadFile'), 10, 1);
+                
+                // Add submenu page
+                add_action('admin_menu', array(__CLASS__, 'register_ContributionPage'));
 
                 
                 
                 
                 
                 // Add a custom link action
-                add_filter('page_row_actions', array(__CLASS__ , 'vpm_row_actions' ), 10, 2);
+                //add_filter('page_row_actions', array(__CLASS__ , 'vpm_row_actions' ), 10, 2);
                 // Add action so users can contribute
-                add_action('admin_init', array(__CLASS__ , 'uploadContribution'));
+                add_action('admin_init', array(__CLASS__ , 'uploadContribution'), 10, 1);
                 
                 
                 // Add thePosts method to filter the_posts

@@ -127,6 +127,7 @@ $j(function(){
         }
     };
     
+
     
     // Attach the date picker components and set their dates based on the timestamp values
     var startDate = null;

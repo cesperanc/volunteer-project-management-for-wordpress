@@ -1,0 +1,16 @@
+.start-hidden{
+    display: none;
+}
+
+
+.vpm-enable-container{
+    margin: 0 2px;
+    border: 1px none transparent;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.vpm-enable-container.ctd-visible{
+    margin: 0 2px 10px;
+    border: 1px solid #ECECEC;
+}
