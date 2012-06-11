@@ -27,7 +27,7 @@ class contribute_Table extends WP_List_Table {
                     function column_default($item, $column_name){
                         
                         switch($column_name){
-                            case 'vpm_startDate':
+                            case 'vpm_excerpt':
                             case 'vpm_endDate':
                             case 'vpm_downloads':
                                 return $item[$column_name];
@@ -39,38 +39,39 @@ class contribute_Table extends WP_List_Table {
         
                         //Build row actions
                         $actions = array(
-                            'edit'      => sprintf('<a href="?page=%s&action=%s&movie=%s">Edit</a>',$_REQUEST['page'],'edit',$item['ID']),
-                            'delete'    => sprintf('<a href="?page=%s&action=%s&movie=%s">Delete</a>',$_REQUEST['page'],'delete',$item['ID']),
+                            'subscribe'      => sprintf('<a href="?post_type=%s&page=%s&action=%s&post=%s">'.__('View details').'</a>',$_REQUEST['post_type'],$_REQUEST['page'],'view',$item['ID']),
+                            'response'    => sprintf('<a href="?post_type=%s&page=%s&action=%s&post=%s">'.__('Contribute').'</a>',$_REQUEST['post_type'],$_REQUEST['page'],'contribute',$item['ID']),
                         );
 
                         //Return the title contents
-                        return sprintf('%1$s <span style="color:silver">(id:%2$s)</span>%3$s',
+                        //return sprintf('%1$s <span style="color:silver">(id:%2$s)</span>%3$s',
+                        return sprintf('%1$s %3$s',        
                             /*$1%s*/ $item['title'],
                             /*$2%s*/ $item['ID'],
                             /*$3%s*/ $this->row_actions($actions)
                         );
                     }
-                    function column_cb($item){
+                    /*function column_cb($item){
                         return sprintf(
                             '<input type="checkbox" name="%1$s[]" value="%2$s" />',
-                            /*$1%s*/ $this->_args['singular'],  //Let's simply repurpose the table's singular label ("movie")
-                            /*$2%s*/ $item['ID']                //The value of the checkbox should be the record's id
-                        );
-                    }
+                            /*$1%s*/ //$this->_args['singular'],  //Let's simply repurpose the table's singular label ("movie")
+                            /*$2%s*/ //$item['ID']                //The value of the checkbox should be the record's id
+                        //);
+                    //}
                     function get_columns(){
                         $columns = array(
-                            'cb'        => '<input type="checkbox" />', //Render a checkbox instead of text
-                            'title'     => 'Title',
-                            'vpm_startDate' => __( 'Start Date' ),
+                            //'cb'        => '<input type="checkbox" />', //Render a checkbox instead of text
+                            'title'     => __( 'Title'),
+                            'vpm_excerpt' => __( 'Excerpt' ),
                             'vpm_endDate' => __( 'End Date'),
-                            'vpm_downloads' => __('Number of downloads ')
+                            'vpm_downloads' => __('Number of downloads')
                         );
                         return $columns;
                     }
                     function get_sortable_columns() {
                         $sortable_columns = array(
                             'title'     => array('title',true),     //true means its already sorted
-                            'vpm_startDate'    => array('vpm_startDate',false),
+                            'vpm_excerpt'     => array('vpm_excerpt',true),     //true means its already sorted
                             'vpm_endDate'    => array('vpm_endDate',false),
                             'vpm_downloads'  => array('vpm_downloads',false)
                         );
@@ -83,12 +84,10 @@ class contribute_Table extends WP_List_Table {
                         return $actions;
                     }*/
                     function process_bulk_action() {
-
                         //Detect when a bulk action is being triggered...
                         /*if( 'delete'===$this->current_action() ) {
                             wp_die('Items deleted (or they would be if we had items to delete)!');
                         }*/
-
                     }
                     function prepare_items() {
 

@@ -7,6 +7,8 @@ var $j = jQuery.noConflict();
 
 $j(function(){
     
+    
+    
    if($j("#plugin_cap_check").attr('checked')){
        $j("#vpm-cap-container").show();
    }

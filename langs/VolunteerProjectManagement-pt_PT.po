@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Click-to-donate\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-05-30 10:52+0100\n"
+"POT-Creation-Date: 2012-06-11 13:43+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Diogo Serra <codedmind@gmail.com>\n"
 "Language-Team: Cláudio Esperança, Diogo Serra <cesperanc@gmail.com>\n"
@@ -18,391 +18,437 @@ msgstr ""
 "X-Poedit-Basepath: .\n"
 "X-Poedit-SearchPath-0: ..\n"
 
-#: ../VolunteerProjectManagement.php:79
-#: ../VolunteerProjectManagement.php:568
+#: ../VolunteerProjectManagement.php:82
+#: ../VolunteerProjectManagement.php:655
 msgid "Vol. Projects"
 msgstr "Projetos Vol."
 
-#: ../VolunteerProjectManagement.php:80
+#: ../VolunteerProjectManagement.php:83
 msgid "Vol. Project"
 msgstr "Projeto Vol."
 
-#: ../VolunteerProjectManagement.php:81
+#: ../VolunteerProjectManagement.php:84
 msgid "Add new"
 msgstr "Adicionar novo"
 
-#: ../VolunteerProjectManagement.php:82
+#: ../VolunteerProjectManagement.php:85
 msgid "Add new Volunteer Project"
 msgstr "Adicionar novo projeto de voluntariado"
 
-#: ../VolunteerProjectManagement.php:83
+#: ../VolunteerProjectManagement.php:86
 msgid "Edit Volunteer Project"
 msgstr "Editar projeto de voluntariado"
 
-#: ../VolunteerProjectManagement.php:84
+#: ../VolunteerProjectManagement.php:87
 msgid "New Volunteer Project"
 msgstr "Novo projeto de voluntariado"
 
-#: ../VolunteerProjectManagement.php:85
+#: ../VolunteerProjectManagement.php:88
 msgid "View Volunteer Project"
 msgstr "Ver projeto de voluntariado"
 
-#: ../VolunteerProjectManagement.php:86
+#: ../VolunteerProjectManagement.php:89
 msgid "Search Volunteer Projects"
 msgstr "Procurar projetos de voluntariado"
 
-#: ../VolunteerProjectManagement.php:87
+#: ../VolunteerProjectManagement.php:90
 msgid "No Volunteer Project found"
 msgstr "Não foram encontrados projetos de voluntariado"
 
-#: ../VolunteerProjectManagement.php:88
+#: ../VolunteerProjectManagement.php:91
 msgid "No Volunteer Projects were found on the recycle bin"
 msgstr "Não foram encontradas projetos de voluntariado na reciclagem"
 
-#: ../VolunteerProjectManagement.php:90
+#: ../VolunteerProjectManagement.php:93
 msgid "Volunteer Projects"
 msgstr "Projetos de voluntariado"
 
-#: ../VolunteerProjectManagement.php:171
+#: ../VolunteerProjectManagement.php:173
 msgid "Done"
 msgstr "Feito"
 
-#: ../VolunteerProjectManagement.php:172
+#: ../VolunteerProjectManagement.php:174
 msgid "Today"
 msgstr "Hoje"
 
-#: ../VolunteerProjectManagement.php:173
+#: ../VolunteerProjectManagement.php:175
 msgid "mm/dd/yy"
 msgstr "dd/mm/yy"
 
-#: ../VolunteerProjectManagement.php:174
+#: ../VolunteerProjectManagement.php:176
 msgid "Sunday"
 msgstr "Domingo"
 
-#: ../VolunteerProjectManagement.php:175
+#: ../VolunteerProjectManagement.php:177
 msgid "Monday"
 msgstr "Segunda-feira"
 
-#: ../VolunteerProjectManagement.php:176
+#: ../VolunteerProjectManagement.php:178
 msgid "Tuesday"
 msgstr "Terça-feira"
 
-#: ../VolunteerProjectManagement.php:177
+#: ../VolunteerProjectManagement.php:179
 msgid "Wednesday"
 msgstr "Quarta-feira"
 
-#: ../VolunteerProjectManagement.php:178
+#: ../VolunteerProjectManagement.php:180
 msgid "Thursday"
 msgstr "Quinta-feira"
 
-#: ../VolunteerProjectManagement.php:179
+#: ../VolunteerProjectManagement.php:181
 msgid "Friday"
 msgstr "Sexta"
 
-#: ../VolunteerProjectManagement.php:180
+#: ../VolunteerProjectManagement.php:182
 msgid "Saturday"
 msgstr "Sábado"
 
-#: ../VolunteerProjectManagement.php:181
+#: ../VolunteerProjectManagement.php:183
 msgid "Su"
 msgstr "Do"
 
-#: ../VolunteerProjectManagement.php:182
+#: ../VolunteerProjectManagement.php:184
 msgid "Mo"
 msgstr "Se"
 
-#: ../VolunteerProjectManagement.php:183
+#: ../VolunteerProjectManagement.php:185
 msgid "Tu"
 msgstr "Te"
 
-#: ../VolunteerProjectManagement.php:184
+#: ../VolunteerProjectManagement.php:186
 msgid "We"
 msgstr "Qu"
 
-#: ../VolunteerProjectManagement.php:185
+#: ../VolunteerProjectManagement.php:187
 msgid "Th"
 msgstr "Qu"
 
-#: ../VolunteerProjectManagement.php:186
+#: ../VolunteerProjectManagement.php:188
 msgid "Fr"
 msgstr "Se"
 
-#: ../VolunteerProjectManagement.php:187
+#: ../VolunteerProjectManagement.php:189
 msgid "Sa"
 msgstr "Sa"
 
-#: ../VolunteerProjectManagement.php:188
+#: ../VolunteerProjectManagement.php:190
 msgid "Sun"
 msgstr "Dom"
 
-#: ../VolunteerProjectManagement.php:189
+#: ../VolunteerProjectManagement.php:191
 msgid "Mon"
 msgstr "Seg"
 
-#: ../VolunteerProjectManagement.php:190
+#: ../VolunteerProjectManagement.php:192
 msgid "Tue"
 msgstr "Ter"
 
-#: ../VolunteerProjectManagement.php:191
+#: ../VolunteerProjectManagement.php:193
 msgid "Wed"
 msgstr "Qua"
 
-#: ../VolunteerProjectManagement.php:192
+#: ../VolunteerProjectManagement.php:194
 msgid "Thu"
 msgstr "Qui"
 
-#: ../VolunteerProjectManagement.php:193
+#: ../VolunteerProjectManagement.php:195
 msgid "Fri"
 msgstr "Sex"
 
-#: ../VolunteerProjectManagement.php:194
+#: ../VolunteerProjectManagement.php:196
 msgid "Sat"
 msgstr "Sáb"
 
-#: ../VolunteerProjectManagement.php:195
+#: ../VolunteerProjectManagement.php:197
 msgid "January"
 msgstr "Janeiro"
 
-#: ../VolunteerProjectManagement.php:196
+#: ../VolunteerProjectManagement.php:198
 msgid "February"
 msgstr "Fevereiro"
 
-#: ../VolunteerProjectManagement.php:197
+#: ../VolunteerProjectManagement.php:199
 msgid "March"
 msgstr "Março"
 
-#: ../VolunteerProjectManagement.php:198
+#: ../VolunteerProjectManagement.php:200
 msgid "April"
 msgstr "Abril"
 
-#: ../VolunteerProjectManagement.php:199
-#: ../VolunteerProjectManagement.php:211
+#: ../VolunteerProjectManagement.php:201
+#: ../VolunteerProjectManagement.php:213
 msgid "May"
 msgstr "Maio"
 
-#: ../VolunteerProjectManagement.php:200
+#: ../VolunteerProjectManagement.php:202
 msgid "June"
 msgstr "Junho"
 
-#: ../VolunteerProjectManagement.php:201
+#: ../VolunteerProjectManagement.php:203
 msgid "July"
 msgstr "Julho"
 
-#: ../VolunteerProjectManagement.php:202
+#: ../VolunteerProjectManagement.php:204
 msgid "August"
 msgstr "Agosto"
 
-#: ../VolunteerProjectManagement.php:203
+#: ../VolunteerProjectManagement.php:205
 msgid "September"
 msgstr "Setembro"
 
-#: ../VolunteerProjectManagement.php:204
+#: ../VolunteerProjectManagement.php:206
 msgid "October"
 msgstr "Outubro"
 
-#: ../VolunteerProjectManagement.php:205
+#: ../VolunteerProjectManagement.php:207
 msgid "November"
 msgstr "Novembro"
 
-#: ../VolunteerProjectManagement.php:206
+#: ../VolunteerProjectManagement.php:208
 msgid "December"
 msgstr "Dezembro"
 
-#: ../VolunteerProjectManagement.php:207
+#: ../VolunteerProjectManagement.php:209
 msgid "Jan"
 msgstr "Jan"
 
-#: ../VolunteerProjectManagement.php:208
+#: ../VolunteerProjectManagement.php:210
 msgid "Feb"
 msgstr "Fev"
 
-#: ../VolunteerProjectManagement.php:209
+#: ../VolunteerProjectManagement.php:211
 msgid "Mar"
 msgstr "Mar"
 
-#: ../VolunteerProjectManagement.php:210
+#: ../VolunteerProjectManagement.php:212
 msgid "Apr"
 msgstr "Abr"
 
-#: ../VolunteerProjectManagement.php:212
+#: ../VolunteerProjectManagement.php:214
 msgid "Jun"
 msgstr "Jun"
 
-#: ../VolunteerProjectManagement.php:213
+#: ../VolunteerProjectManagement.php:215
 msgid "Jul"
 msgstr "Jul"
 
-#: ../VolunteerProjectManagement.php:214
+#: ../VolunteerProjectManagement.php:216
 msgid "Aug"
 msgstr "Ago"
 
-#: ../VolunteerProjectManagement.php:215
+#: ../VolunteerProjectManagement.php:217
 msgid "Sep"
 msgstr "Set"
 
-#: ../VolunteerProjectManagement.php:216
+#: ../VolunteerProjectManagement.php:218
 msgid "Oct"
 msgstr "Out"
 
-#: ../VolunteerProjectManagement.php:217
+#: ../VolunteerProjectManagement.php:219
 msgid "Nov"
 msgstr "Nov"
 
-#: ../VolunteerProjectManagement.php:218
+#: ../VolunteerProjectManagement.php:220
 msgid "Dec"
 msgstr "Dez"
 
-#: ../VolunteerProjectManagement.php:219
+#: ../VolunteerProjectManagement.php:221
 msgid "Next"
 msgstr "Seguinte"
 
-#: ../VolunteerProjectManagement.php:220
+#: ../VolunteerProjectManagement.php:222
 msgid "Prev"
 msgstr "Anterior"
 
-#: ../VolunteerProjectManagement.php:221
+#: ../VolunteerProjectManagement.php:223
 msgid "Wk"
 msgstr "Sm"
 
-#: ../VolunteerProjectManagement.php:243
+#: ../VolunteerProjectManagement.php:246
 msgid "Project Volunteer configuration"
 msgstr "Configurações do projeto de voluntariado"
 
 #: ../VolunteerProjectManagement.php:282
+#: ../VolunteerProjectManagement.php:1069
 msgid "Project file"
 msgstr "Ficheiro do projeto"
 
 #: ../VolunteerProjectManagement.php:288
+msgid "Set the project start date"
+msgstr "Definir a data de início do projeto"
+
+#: ../VolunteerProjectManagement.php:291
 msgid "Start date:"
 msgstr "Data de início:"
 
-#: ../VolunteerProjectManagement.php:295
+#: ../VolunteerProjectManagement.php:299
+msgid "Set the project end date"
+msgstr "Definir a data de fim do projeto"
+
+#: ../VolunteerProjectManagement.php:302
 msgid "End date:"
 msgstr "Data de fim:"
 
-#: ../VolunteerProjectManagement.php:300
+#: ../VolunteerProjectManagement.php:308
 msgid "Number of downloads: "
 msgstr "Número de downloads: "
 
-#: ../VolunteerProjectManagement.php:325
+#: ../VolunteerProjectManagement.php:334
 msgid "View"
 msgstr "Visualizar"
 
-#: ../VolunteerProjectManagement.php:326
+#: ../VolunteerProjectManagement.php:335
 msgid "Check if you want delete the file"
 msgstr "Marcar se pretender eliminar o ficheiro"
 
-#: ../VolunteerProjectManagement.php:569
-#, fuzzy
-msgid "Vol. Projects files"
-msgstr "Projetos Vol."
-
-#: ../VolunteerProjectManagement.php:570
+#: ../VolunteerProjectManagement.php:657
 #, fuzzy
 msgid "Start Date"
 msgstr "Data de início:"
 
-#: ../VolunteerProjectManagement.php:571
+#: ../VolunteerProjectManagement.php:658
+#: ../VolunteerProjectManagement.php:1067
+#: ../contributeList.php:66
 #, fuzzy
 msgid "End Date"
 msgstr "Data de fim:"
 
-#: ../VolunteerProjectManagement.php:572
+#: ../VolunteerProjectManagement.php:659
+#: ../contributeList.php:67
 msgid "Number of downloads"
 msgstr "Número de transferências: "
 
-#: ../VolunteerProjectManagement.php:589
+#: ../VolunteerProjectManagement.php:702
+#: ../VolunteerProjectManagement.php:1054
 msgid "Download"
 msgstr "Transferir"
 
-#: ../VolunteerProjectManagement.php:595
+#: ../VolunteerProjectManagement.php:707
 #, fuzzy
 msgid "No file uploaded"
 msgstr "Nenhum ficheiro foi enviado"
 
-#: ../VolunteerProjectManagement.php:605
-#, fuzzy
+#: ../VolunteerProjectManagement.php:716
+#: ../VolunteerProjectManagement.php:1133
 msgid "No start date"
-msgstr "Data de início:"
+msgstr "Sem data de início"
 
-#: ../VolunteerProjectManagement.php:618
-#, fuzzy
+#: ../VolunteerProjectManagement.php:729
+#: ../VolunteerProjectManagement.php:1057
+#: ../VolunteerProjectManagement.php:1140
 msgid "No end date"
-msgstr "Data de fim:"
+msgstr "Sem data de fim"
 
-#: ../VolunteerProjectManagement.php:700
+#: ../VolunteerProjectManagement.php:836
 msgid "Volunteer project configuration"
 msgstr "Configurações do plugin projeto de voluntariado"
 
-#: ../VolunteerProjectManagement.php:705
+#: ../VolunteerProjectManagement.php:841
 msgid "Settings"
 msgstr "Opções"
 
-#: ../VolunteerProjectManagement.php:752
+#: ../VolunteerProjectManagement.php:871
+msgid "If this option isn't used only users who have capability to upload files can contribute"
+msgstr "Se esta opção não estiver activa só utilizadores com permissões para fazer upload de ficheiros podem contribuir"
+
+#: ../VolunteerProjectManagement.php:915
+#: ../VolunteerProjectManagement.php:1074
+#: ../VolunteerProjectManagement.php:1105
 msgid "Cheatin&#8217; uh?"
-msgstr ""
+msgstr "A fazer batota?"
 
-#: ../VolunteerProjectManagement.php:757
-msgid "Your key has been cleared."
-msgstr ""
-
-#: ../VolunteerProjectManagement.php:758
-msgid "Your key has been verified. Happy blogging!"
-msgstr ""
-
-#: ../VolunteerProjectManagement.php:759
-msgid "The key you entered is invalid. Please double-check it."
-msgstr ""
-
-#: ../VolunteerProjectManagement.php:760
-msgid "The key you entered could not be verified because a connection to akismet.com could not be established. Please check your server configuration."
-msgstr ""
-
-#: ../VolunteerProjectManagement.php:761
-msgid "There was a problem connecting to the Akismet server. Please check your server configuration."
-msgstr ""
-
-#: ../VolunteerProjectManagement.php:762
-#, fuzzy, php-format
-msgid "Please enter an API key. (<a href=\"%s\" style=\"color:#fff\">Get your key.</a>)"
-msgstr "Por favor introduza a chave da API do Google Maps. (<a %s>Obtenha a sua chave</a>)"
-
-#: ../VolunteerProjectManagement.php:763
-msgid "This key is valid."
-msgstr ""
-
-#: ../VolunteerProjectManagement.php:764
-msgid "The key below was previously validated but a connection to akismet.com can not be established at this time. Please check your server configuration."
-msgstr ""
-
-#: ../VolunteerProjectManagement.php:765
-#, php-format
-msgid "Your WordPress home URL %s is invalid.  Please fix the <a href=\"%s\">home option</a>."
-msgstr ""
-
-#: ../VolunteerProjectManagement.php:769
+#: ../VolunteerProjectManagement.php:919
 #, fuzzy
 msgid "Options saved."
 msgstr "Opções guardadas"
 
-#: ../VolunteerProjectManagement.php:772
+#: ../VolunteerProjectManagement.php:922
+#: ../VolunteerProjectManagement.php:966
 #, fuzzy
 msgid "Volunteer project management configuration"
 msgstr "Configurações do projeto de voluntariado"
 
-#: ../VolunteerProjectManagement.php:773
+#: ../VolunteerProjectManagement.php:923
+#: ../VolunteerProjectManagement.php:967
 msgid "Options relating to the Volunteer project plugin."
-msgstr ""
+msgstr "Opções do plugin projectos de voluntariado"
 
-#: ../VolunteerProjectManagement.php:802
+#: ../VolunteerProjectManagement.php:953
 msgid "Add a contribution"
-msgstr ""
+msgstr "Contribuir"
+
+#: ../VolunteerProjectManagement.php:985
+msgid "Projects list"
+msgstr "Lista de projetos"
+
+#: ../VolunteerProjectManagement.php:991
+msgid "You must set a file to upload."
+msgstr "Tem de fazer upload de um ficheiro"
+
+#: ../VolunteerProjectManagement.php:992
+msgid "You must set a pdf file to upload."
+msgstr "Tem de escolher um ficheiro pdf"
+
+#: ../VolunteerProjectManagement.php:993
+msgid "Upload error, try again please."
+msgstr "Ocorreu um erro a fazer upload, por favor tente novamente."
+
+#: ../VolunteerProjectManagement.php:994
+msgid "Your contribution is saved."
+msgstr "A sua contribuição foi guardada."
+
+#: ../VolunteerProjectManagement.php:1064
+msgid "Project: "
+msgstr "Projeto"
+
+#: ../VolunteerProjectManagement.php:1068
+#, fuzzy
+msgid "Number of downloads "
+msgstr "Número de downloads: "
+
+#: ../VolunteerProjectManagement.php:1081
+msgid "Contribute to Project: "
+msgstr "Contribuir para o projeto:"
+
+#: ../VolunteerProjectManagement.php:1095
+msgid "Contribution file"
+msgstr "Ficheiro de contribuição"
+
+#: ../VolunteerProjectManagement.php:1175
+msgid "Projects that need your contribution"
+msgstr "Projetos que necessitam de contribuição"
+
+#: ../contributeList.php:42
+msgid "View details"
+msgstr "Ver detalhes"
+
+#: ../contributeList.php:43
+msgid "Contribute"
+msgstr "Contribuir"
+
+#: ../contributeList.php:64
+#, fuzzy
+msgid "Title"
+msgstr "Título:"
+
+#: ../contributeList.php:65
+msgid "Excerpt"
+msgstr "Exerto"
+
+#, fuzzy
+#~ msgid ""
+#~ "Please enter an API key. (<a href=\"%s\" style=\"color:#fff\">Get your "
+#~ "key.</a>)"
+#~ msgstr ""
+#~ "Por favor introduza a chave da API do Google Maps. (<a %s>Obtenha a sua "
+#~ "chave</a>)"
+
+#, fuzzy
+#~ msgid "Vol. Projects files"
+#~ msgstr "Projetos Vol."
 
 #~ msgid "Upload the file project"
 #~ msgstr "Enviar ficheiro do projeto"
-
-#~ msgid "Set the campaign start date"
-#~ msgstr "Definir a data de início da campanha"
 
 #~ msgid "Campaigns"
 #~ msgstr "Campanhas"
@@ -508,9 +554,6 @@ msgstr ""
 
 #~ msgid "Clicks limit:"
 #~ msgstr "Limite de cliques:"
-
-#~ msgid "Set the campaign end date"
-#~ msgstr "Definir a data de fim da campanha"
 
 #~ msgid "Status:"
 #~ msgstr "Estado:"
@@ -734,9 +777,6 @@ msgstr ""
 
 #~ msgid "Posts by Category"
 #~ msgstr "Artigos por Categoria"
-
-#~ msgid "Title:"
-#~ msgstr "Título:"
 
 #~ msgid "Category:"
 #~ msgstr "Categoria:"

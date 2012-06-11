@@ -7,174 +7,176 @@ var $j = jQuery.noConflict();
 
 $j(function(){
     
+    
+    
     // Localize and set the common options for the calendars
     var calendarOptions = {
-        closeText: vpmAdmin.closeText,
-        currentText: vpmAdmin.currentText,
-        dateFormat: vpmAdmin.dateFormat,
+        closeText: vpmAdminL10n.closeText,
+        currentText: vpmAdminL10n.currentText,
+        dateFormat: vpmAdminL10n.dateFormat,
         dayNames: [
-            vpmAdmin.dayNamesSunday,
-            vpmAdmin.dayNamesMonday,
-            vpmAdmin.dayNamesTuesday,
-            vpmAdmin.dayNamesWednesday,
-            vpmAdmin.dayNamesThursday,
-            vpmAdmin.dayNamesFriday,
-            vpmAdmin.dayNamesSaturday
+            vpmAdminL10n.dayNamesSunday,
+            vpmAdminL10n.dayNamesMonday,
+            vpmAdminL10n.dayNamesTuesday,
+            vpmAdminL10n.dayNamesWednesday,
+            vpmAdminL10n.dayNamesThursday,
+            vpmAdminL10n.dayNamesFriday,
+            vpmAdminL10n.dayNamesSaturday
         ],
         dayNamesMin: [
-            vpmAdmin.dayNamesMinSu,
-            vpmAdmin.dayNamesMinMo,
-            vpmAdmin.dayNamesMinTu,
-            vpmAdmin.dayNamesMinWe,
-            vpmAdmin.dayNamesMinTh,
-            vpmAdmin.dayNamesMinFr,
-            vpmAdmin.dayNamesMinSa
+            vpmAdminL10n.dayNamesMinSu,
+            vpmAdminL10n.dayNamesMinMo,
+            vpmAdminL10n.dayNamesMinTu,
+            vpmAdminL10n.dayNamesMinWe,
+            vpmAdminL10n.dayNamesMinTh,
+            vpmAdminL10n.dayNamesMinFr,
+            vpmAdminL10n.dayNamesMinSa
         ],
         dayNamesShort: [
-            vpmAdmin.dayNamesShortSun,
-            vpmAdmin.dayNamesShortMon,
-            vpmAdmin.dayNamesShortTue,
-            vpmAdmin.dayNamesShortWed,
-            vpmAdmin.dayNamesShortThu,
-            vpmAdmin.dayNamesShortFri,
-            vpmAdmin.dayNamesShortSat
+            vpmAdminL10n.dayNamesShortSun,
+            vpmAdminL10n.dayNamesShortMon,
+            vpmAdminL10n.dayNamesShortTue,
+            vpmAdminL10n.dayNamesShortWed,
+            vpmAdminL10n.dayNamesShortThu,
+            vpmAdminL10n.dayNamesShortFri,
+            vpmAdminL10n.dayNamesShortSat
         ],
         monthNames: [
-            vpmAdmin.monthNamesJanuary,
-            vpmAdmin.monthNamesFebruary,
-            vpmAdmin.monthNamesMarch,
-            vpmAdmin.monthNamesApril,
-            vpmAdmin.monthNamesMay,
-            vpmAdmin.monthNamesJune,
-            vpmAdmin.monthNamesJuly,
-            vpmAdmin.monthNamesAugust,
-            vpmAdmin.monthNamesSeptember,
-            vpmAdmin.monthNamesOctober,
-            vpmAdmin.monthNamesNovember,
-            vpmAdmin.monthNamesDecember
+            vpmAdminL10n.monthNamesJanuary,
+            vpmAdminL10n.monthNamesFebruary,
+            vpmAdminL10n.monthNamesMarch,
+            vpmAdminL10n.monthNamesApril,
+            vpmAdminL10n.monthNamesMay,
+            vpmAdminL10n.monthNamesJune,
+            vpmAdminL10n.monthNamesJuly,
+            vpmAdminL10n.monthNamesAugust,
+            vpmAdminL10n.monthNamesSeptember,
+            vpmAdminL10n.monthNamesOctober,
+            vpmAdminL10n.monthNamesNovember,
+            vpmAdminL10n.monthNamesDecember
         ],
         monthNamesShort: [
-            vpmAdmin.monthNamesShortJan,
-            vpmAdmin.monthNamesShortFeb,
-            vpmAdmin.monthNamesShortMar,
-            vpmAdmin.monthNamesShortApr,
-            vpmAdmin.monthNamesShortMay,
-            vpmAdmin.monthNamesShortJun,
-            vpmAdmin.monthNamesShortJul,
-            vpmAdmin.monthNamesShortAug,
-            vpmAdmin.monthNamesShortSep,
-            vpmAdmin.monthNamesShortOct,
-            vpmAdmin.monthNamesShortNov,
-            vpmAdmin.monthNamesShortDec
+            vpmAdminL10n.monthNamesShortJan,
+            vpmAdminL10n.monthNamesShortFeb,
+            vpmAdminL10n.monthNamesShortMar,
+            vpmAdminL10n.monthNamesShortApr,
+            vpmAdminL10n.monthNamesShortMay,
+            vpmAdminL10n.monthNamesShortJun,
+            vpmAdminL10n.monthNamesShortJul,
+            vpmAdminL10n.monthNamesShortAug,
+            vpmAdminL10n.monthNamesShortSep,
+            vpmAdminL10n.monthNamesShortOct,
+            vpmAdminL10n.monthNamesShortNov,
+            vpmAdminL10n.monthNamesShortDec
         ],
-        nextText: vpmAdmin.nextText,
-        prevText: vpmAdmin.prevText,
-        weekHeader: vpmAdmin.weekHeader,
+        nextText: vpmAdminL10n.nextText,
+        prevText: vpmAdminL10n.prevText,
+        weekHeader: vpmAdminL10n.weekHeader,
         altFormat: "yy-m-d",
         autoSize: true,
         changeMonth: true,
         changeYear: true
-    };
-    
-    $j('#vpm-project-admin').css({
-        'padding': '6px 10px 8px',
-        'margin-top' : '6px'
-    });
-    
-    // Attach the spinner to the time fields
-    var timeDefaults = {
+    }, 
+    timeDefaults = {
         'min': 0,
         'showOn': 'none',
         'width': 24,
         'mouseWheel': true,
         'step': 1,
         'largeStep': 1
-    };
+    },
+    startDate = null,
+    endDate = null;
     
-    $j('#vpm-starthours, #vpm-endhours').spinner($j.extend(true, {}, timeDefaults, {
-        'max': 23
-    })).css({
-        'margin-right': 0,
-        'text-align': 'right'
-    });
-    
-    $j('#vpm-startminutes, #vpm-endminutes').spinner($j.extend(true, {}, timeDefaults, {
-        'max': 59
-    })).css({
-        'margin-right': 0,
-        'text-align': 'right'
-    });
     
     // Hide the hidden elements
     $j(".start-hidden").hide();
     
-    // Set the CSS for the fieldset
-    $j(".vpm-enable-container").css({
-        'margin': '0 2px',
-        'padding': '5px',
-        'border': '0px none',
-        'border-radius': '5px'
-    });
-    
     // Container function to show and style the fieldsets accordingly
-    var showContainer = function(innerContainer, outerContainer, show){
+    function showContainer(innerContainer, outerContainer, show){
         if(show){
+            $j(outerContainer).addClass("vpm-visible");
             $j(innerContainer).show();
-            $j(outerContainer).css({'margin': '0 2px 10px', 'border': '1px solid #ECECEC'});
         }else{
             $j(innerContainer).hide();
-            $j(outerContainer).css({'margin': '0 2px', 'border': '0px none'});
+            $j(outerContainer).removeClass("vpm-visible");
         }
     };
     
-
+    $j("#vpm-enable-startdate").click(function(){
+        showContainer("#vpm-startdate-container", "#vpm-enable-startdate-container", $j(this).is(":checked"));
+        
+        // Reset the minDate for the other calendar
+        if(!$j(this).is(":checked")){
+            $j("#vpm-enddate").datepicker("option", "minDate", null);
+        }
+    });
+    $j("#vpm-enable-enddate").click(function(){
+        showContainer("#vpm-enddate-container", "#vpm-enable-enddate-container", $j(this).is(":checked"));
+        
+        // Reset the minDate for the other calendar
+        if(!$j(this).is(":checked")){
+            $j("#vpm-startdate").datepicker("option", "maxDate", null);
+        }
+    });
     
     // Attach the date picker components and set their dates based on the timestamp values
-    var startDate = null;
     if($j("#vpm-hidden-startdate").val()){
-        startDate = $j.datepicker.parseDate("yy-m-d", $j("#vpm-hidden-startdate").val()) || null;
+        startDate = $j.datepicker.parseDate(calendarOptions.altFormat, $j("#vpm-hidden-startdate").val()) || null;
     }
-    var endDate = null;
     if($j("#vpm-hidden-enddate").val()){
-        endDate = $j.datepicker.parseDate("yy-m-d", $j("#vpm-hidden-enddate").val()) || null;
+        endDate = $j.datepicker.parseDate(calendarOptions.altFormat, $j("#vpm-hidden-enddate").val()) || null;
     }
     
     $j("#vpm-startdate").datepicker($j.extend(true, {}, calendarOptions, {
         defaultDate: "+1w",
         altField: "#vpm-hidden-startdate",
-        maxDate: endDate,
+        maxDate: $j("#vpm-enable-enddate").is(":checked")?endDate:null,
         onSelect: function( selectedDate ) {
-            var instance = $j(this).data( "datepicker" ), 
+            if($j("#vpm-enable-enddate").is(":checked")){
+                var instance = $j(this).data( "datepicker" ), 
                 date = $j.datepicker.parseDate(instance.settings.dateFormat || $j.datepicker._defaults.dateFormat, selectedDate, instance.settings );
-            $j("#vpm-enddate").datepicker( "option", "minDate", date );
+            
+                $j("#vpm-enddate").datepicker( "option", "minDate", date );
+            }else{
+                $j("#vpm-enddate").datepicker( "option", "minDate", null );
+            }
         }
     })).datepicker("setDate", startDate);
     
     $j("#vpm-enddate").datepicker($j.extend(true, {}, calendarOptions, {
         defaultDate: "+2w",
         altField: "#vpm-hidden-enddate",
-        minDate: startDate,
+        minDate: $j("#vpm-enable-startdate").is(":checked")?startDate:null,
         onSelect: function( selectedDate ) {
-            var instance = $j(this).data( "datepicker" ), 
-                date = $j.datepicker.parseDate(instance.settings.dateFormat || $j.datepicker._defaults.dateFormat, selectedDate, instance.settings );
-            $j("#vpm-startdate").datepicker( "option", "maxDate", date );
+            if($j("#vpm-enable-startdate").is(":checked")){
+                var instance = $j(this).data( "datepicker" ), 
+                    date = $j.datepicker.parseDate(instance.settings.dateFormat || $j.datepicker._defaults.dateFormat, selectedDate, instance.settings );
+                $j("#vpm-startdate").datepicker( "option", "maxDate", date );
+            }else{
+                $j("#vpm-startdate").datepicker( "option", "minDate", null );
+            }
         }
     })).datepicker("setDate", endDate);
     
+    // Set the initial visibility of the fieldsets
+    showContainer("#vpm-startdate-container", "#vpm-enable-startdate-container", $j("#vpm-enable-startdate").is(":checked"));
+    showContainer("#vpm-enddate-container", "#vpm-enable-enddate-container", $j("#vpm-enable-enddate").is(":checked"));
+    
 
-		// Since the link exists, we need to handle the case when the user clicks on it...
-		$j('#vpm_projectFile_delete:checkbox').click(function(evt) {
+    // Since the link exists, we need to handle the case when the user clicks on it...
+    $j('#vpm_projectFile_delete:checkbox').click(function(evt) {
 
-			
-			if($j(this).attr('checked')){
-                            // Hide the view link
-                            $j('a#vpm_projectFile_view').hide();
-                        }else{
-                            // Show the view link
-                            $j('a#vpm_projectFile_view').show();
-                        }
 
-		});
+            if($j(this).attr('checked')){
+                // Hide the view link
+                $j('a#vpm_projectFile_view').hide();
+            }else{
+                // Show the view link
+                $j('a#vpm_projectFile_view').show();
+            }
+
+    });
 
 
     
