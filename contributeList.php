@@ -61,10 +61,10 @@ class contribute_Table extends WP_List_Table {
                     function get_columns(){
                         $columns = array(
                             //'cb'        => '<input type="checkbox" />', //Render a checkbox instead of text
-                            'title'     => __( 'Title'),
+                            'title'     => __( 'Vol. Projects',"VolunteerProjectManagement"),
                             'vpm_excerpt' => __( 'Excerpt' ),
                             'vpm_endDate' => __( 'End Date'),
-                            'vpm_downloads' => __('Number of downloads')
+                            'vpm_downloads' => __('Downloads',"VolunteerProjectManagement")
                         );
                         return $columns;
                     }

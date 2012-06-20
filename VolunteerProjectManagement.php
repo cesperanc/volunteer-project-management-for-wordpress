@@ -74,39 +74,40 @@ if(!class_exists('VolunteerProjectManagement')):
              */
             public function _init(){
                 load_plugin_textdomain(__CLASS__, false, dirname(plugin_basename(__FILE__)).'/langs');
-                
-                register_post_type( self::POST_TYPE,
-                    array(
-                        'hierarchical' => true,
-                        'labels' => array(
-                            'name' => __('Vol. Projects', __CLASS__),
-                            'singular_name' => __('Vol. Project', __CLASS__),
-                            'add_new' => __('Add new', __CLASS__),
-                            'add_new_item' => __('Add new Volunteer Project', __CLASS__),
-                            'edit_item' => __('Edit Volunteer Project', __CLASS__),
-                            'new_item' => __('New Volunteer Project', __CLASS__),
-                            'view_item' => __('View Volunteer Project', __CLASS__),
-                            'search_items' => __('Search Volunteer Projects', __CLASS__),
-                            'not_found' => __('No Volunteer Project found', __CLASS__),
-                            'not_found_in_trash' => __('No Volunteer Projects were found on the recycle bin', __CLASS__)
-                        ),
-                        'description' => __('Volunteer Projects', __CLASS__),
-                        'has_archive' => false,
-                        'public' => false,
-                        'publicly_queryable' => false,
-                        'exclude_from_search' => true,
-                        'show_ui' => true,
-                        'show_in_menu' => true,
-                        'show_in_nav_menus'=>true,
-                        'supports'=>array('title', 'editor', 'page-attributes'),
-                        'rewrite' => array(
-                            'slug' => self::URL_QUERY_PARAM,
-                            'with_front'=>'false'
-                        ),
-                        'query_var' => true,
-                        'capability_type' => 'page'
-                    )
-                );
+                if(function_exists('register_post_type') && !post_type_exists(self::POST_TYPE)):
+                    register_post_type( self::POST_TYPE,
+                        array(
+                            'hierarchical' => true,
+                            'labels' => array(
+                                'name' => __('Vol. Projects', __CLASS__),
+                                'singular_name' => __('Vol. Project', __CLASS__),
+                                'add_new' => __('Add new', __CLASS__),
+                                'add_new_item' => __('Add new Volunteer Project', __CLASS__),
+                                'edit_item' => __('Edit Volunteer Project', __CLASS__),
+                                'new_item' => __('New Volunteer Project', __CLASS__),
+                                'view_item' => __('View Volunteer Project', __CLASS__),
+                                'search_items' => __('Search Volunteer Projects', __CLASS__),
+                                'not_found' => __('No Volunteer Project found', __CLASS__),
+                                'not_found_in_trash' => __('No Volunteer Projects were found on the recycle bin', __CLASS__)
+                            ),
+                            'description' => __('Volunteer Projects', __CLASS__),
+                            'has_archive' => false,
+                            'public' => false,
+                            'publicly_queryable' => false,
+                            'exclude_from_search' => true,
+                            'show_ui' => true,
+                            'show_in_menu' => true,
+                            'show_in_nav_menus'=>true,
+                            'supports'=>array('title', 'editor', 'page-attributes'),
+                            'rewrite' => array(
+                                'slug' => self::URL_QUERY_PARAM,
+                                'with_front'=>'false'
+                            ),
+                            'query_var' => true,
+                            'capability_type' => 'page'
+                        )
+                    );
+                endif;
             }
 
             /**
@@ -305,12 +306,25 @@ if(!class_exists('VolunteerProjectManagement')):
                             </div>
                         </fieldset>
                         <div id="vpm-downloadCounter-container">
-                            <label><?php _e('Number of downloads: ', __CLASS__) ?></label>
-                            <?php echo($downloadCounter); ?>
+                            <label><?php _e('Number of downloads', __CLASS__) ?>:</label>
+                            <span id='vpm-downloadCounter'><?php echo($downloadCounter); ?></span>
                         </div>
 
                     <?php
                  }
+            }
+            public static function hasFile($postId){
+                wp_nonce_field(plugin_basename(__FILE__), __CLASS__ . '_projectFile_nonce');
+                
+
+                // Grab the array of file information currently associated with the post
+                //$file = self::getPostCustomValues(self::$projectFile, $postId);
+                $file = get_post_meta($postId, __CLASS__ . self::$projectFile, true);
+                if(empty($file))
+                    return false;
+                else
+                    return true;
+                
             }
             /**
              * Manage the upload file for the project
@@ -325,8 +339,7 @@ if(!class_exists('VolunteerProjectManagement')):
 
                 // Grab the array of file information currently associated with the post
                 //$file = self::getPostCustomValues(self::$projectFile, $postId);
-                $file = get_post_meta($postId, __CLASS__ . '_projectFile', true);
-
+                $file = get_post_meta($postId, __CLASS__ . self::$projectFile, true);
                 $html = '';
                 // Display the 'View' and 'Delete' option if a URL to a file exists else upload option
                 if(@strlen(trim($file['url'])) > 0) {
@@ -653,10 +666,11 @@ if(!class_exists('VolunteerProjectManagement')):
             function vpm_columns($columns){
                 $columns = array(
                     'cb' => '<input type="checkbox" />',
-                    'title' => __( 'Vol. Projects' ),
+                    'title' => __( 'Vol. Projects', __CLASS__ ),
                     //'vpm_project_file' => __( 'Vol. Projects files'),
                     'author' => __( 'Author' ),
                     'date' => __( 'Date' ),
+                    'hasFile'=> __( 'Has File', __CLASS__ ),
                     //'vpm_startDate' => __( 'Start Date' ),
                     //'vpm_endDate' => __( 'End Date'),
                     //'vpm_downloads' => __('Number of downloads',__CLASS__)
@@ -724,7 +738,15 @@ function list_hooked_functions($tag=false){
                             echo self::getPostCustomValues(self::$downloadCounter);
                             break;
                                  
-                                
+                        case 'hasFile':
+                            if(self::hasFile($postId)):
+                                echo _e("Yes");
+                            else:
+                                echo _e("No");
+                            endif;
+                            break;
+                            
+                        break;
 
                         /* Just break out of the switch statement for everything else. */
                         default :
@@ -763,7 +785,7 @@ function list_hooked_functions($tag=false){
             /*function vpm_sortable_columns( $columns ) {
 
                 //$columns['title'] = 'title';
-                $columns['author'] = 'author';
+                $columns['hasFiles'] = 'Has File';
                 //$columns['date'] = 'date';
                 //$columns['vpm_downloads'] = 'vpm_downloads';
 
@@ -773,9 +795,9 @@ function list_hooked_functions($tag=false){
             
             function vpm_columns_load() {
                 add_filter( 'request', array(__CLASS__, 'vpm_sort_dates'),10,1 );
-            }*/
+            }
             
-            /*function vpm_sort_dates( $vars ) {
+            function vpm_sort_dates( $vars ) {
                 // Check if we're viewing our post type. 
                 if ( isset( $vars['post_type'] ) && $vars['post_type'] == self::POST_TYPE ) {
                     if ( isset( $vars['orderby']) ){
@@ -791,7 +813,7 @@ function list_hooked_functions($tag=false){
                                 );
                                 break;
                             case 'vpm_endDate':
-                                /* Merge the query vars with our custom variables. 
+                                // Merge the query vars with our custom variables. 
                                 $vars = array_merge(
                                     $vars,
                                         array(
@@ -800,8 +822,9 @@ function list_hooked_functions($tag=false){
                                         )
                                 );
                                 break;
+                            
                             case 'vpm_downloads':
-                                /* Merge the query vars with our custom variables. 
+                                // Merge the query vars with our custom variables. 
                                 $vars = array_merge(
                                     $vars,
                                         array(
@@ -810,7 +833,6 @@ function list_hooked_functions($tag=false){
                                         )
                                 );
                                 break;
-                            
                             
                             default:
                                 break;
@@ -1058,8 +1080,10 @@ function list_hooked_functions($tag=false){
                                         <div class="vpm-contribution-content"><?php echo apply_filters('the_content', $post->post_content); ?></div>
                                         <div class="vpm-contribution-content">
                                             <b><?php echo __('End Date',__CLASS__).":</b> ". $endDate;?><br/>
-                                            <b><?php echo __('Number of downloads',__CLASS__).":</b> ".self::getPostCustomValues(self::$downloadCounter, $post);?><br/>
+                                            <?php if(self::hasFile($post->ID)){ ?>
+                                            <b><?php echo __('Number of downloads',__CLASS__).":</b> <span id='vpm-downloadCounter'>".self::getPostCustomValues(self::$downloadCounter, $post);?></span><br/>
                                             <b><?php echo __('Project file',__CLASS__).":</b> ".$html;?><br/>    
+                                            <?php }?>   
                                         </div>
                                 </div>
                             <?php
@@ -1117,7 +1141,7 @@ function list_hooked_functions($tag=false){
                         $currentDate = mktime();
                         //echo $startDate."----".$currentDate."----".$endDate."------".$post->ID."<br/>";
                         //if($post->post_status=='publish' && $startDate<$currentDate && $currentDate<$endDate){
-                        if($post->post_status=='publish'){
+                        if($post->post_status=='publish'&& self::hasFile($post->ID)){
                             $notShow=0;
                             //if($startDate<$currentDate && $currentDate<$endDate){
                             if(self::hasStartDate($post) && $startDate<$currentDate){ 
@@ -1211,7 +1235,7 @@ function list_hooked_functions($tag=false){
                 // Change default columns Names
                 add_filter('manage_edit-'.self::POST_TYPE.'_columns', array(__CLASS__ , 'vpm_columns'), 10, 2);
                 // Add custom columns to our post
-                //add_action('manage_'.self::POST_TYPE.'_posts_custom_column', array(__CLASS__ , 'vpm_manage_columns'),10,2);
+                add_action('manage_'.self::POST_TYPE.'_posts_custom_column', array(__CLASS__ , 'vpm_manage_columns'),10,2);
                 // Add a sortable column
                 //add_filter( 'manage_edit-'.self::POST_TYPE.'_sortable_columns', array(__CLASS__, 'vpm_sortable_columns'),10,1);
                 // Only run our customization on the 'edit.php' page in the admin. */
@@ -1219,7 +1243,7 @@ function list_hooked_functions($tag=false){
                 // Add action so we can count number of downloads
                 add_action('admin_init', array(__CLASS__ , 'downloadFile'),10,2);
                 // TODO is this the best way?
-                //add_filter('post_type_link', array(__CLASS__, 'downloadFile'), 10, 1);
+                //add_filter('post_type_link', array(__CLASS__, 'downloadFile'), 10, 1); BUG
                 
                 // Add submenu page
                 add_action('admin_menu', array(__CLASS__, 'register_ContributionPage'));

@@ -32,3 +32,6 @@
 .column-vpm_endDate, .column-vpm_downloads{
     width:15%;
 }
+.column-hasFile{
+    width:8%;
+}

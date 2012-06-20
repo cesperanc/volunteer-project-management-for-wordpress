@@ -178,6 +178,10 @@ $j(function(){
 
     });
 
-
+    $j("#vpm_projectFile_download").click(function(){
+        var old = parseInt($j('#vpm-downloadCounter').html(),10);
+        $j('#vpm-downloadCounter').html(old+1);
+        return true;
+    });
     
 });
