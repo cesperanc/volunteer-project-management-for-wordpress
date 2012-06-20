@@ -103,8 +103,8 @@ if(!class_exists('VolunteerProjectManagement')):
                             'slug' => self::URL_QUERY_PARAM,
                             'with_front'=>'false'
                         ),
-                        'query_var' => true/*,
-                        'capability_type' => 'page'*/
+                        'query_var' => true,
+                        'capability_type' => 'page'
                     )
                 );
             }
@@ -130,7 +130,7 @@ if(!class_exists('VolunteerProjectManagement')):
             * @return int with the post ID 
             */
             private static function getPostID($post){
-                if($post = self::getPost($post))
+                if($post == self::getPost($post))
                     return $post->ID;
                 return 0;
             }
@@ -254,7 +254,7 @@ if(!class_exists('VolunteerProjectManagement')):
                 $post_type = $post->post_type;
                 $post_type_object = get_post_type_object($post_type);
                     $postId = get_the_ID();                  
-                    
+                 if($post_type == self::POST_TYPE){   
                         // Retrieve the campaign date and time interval (and convert them back to the localtime)
                         $startDate = self::getStartDate($post)-(current_time('timestamp', true)-current_time('timestamp', false));
                         $endDate = self::getEndDate($post)-(current_time('timestamp', true)-current_time('timestamp', false));
@@ -310,6 +310,7 @@ if(!class_exists('VolunteerProjectManagement')):
                         </div>
 
                     <?php
+                 }
             }
             /**
              * Manage the upload file for the project
@@ -390,14 +391,14 @@ if(!class_exists('VolunteerProjectManagement')):
                         // Make sure the file array isn't empty
                         if(!empty($_FILES[__CLASS__ . '_projectFile']['name'])) {
 
-                                // Setup the array of supported file types. In this case, it's just PDF.
-                                // @todo  we want more?
-                                $supported_types = array('application/pdf');
+                                $supported_types = get_allowed_mime_types();//array('application/pdf');
 
                                 // Get the file type of the upload
                                 $arr_file_type = wp_check_filetype(basename($_FILES[__CLASS__ . self::$projectFile]['name']));
                                 $uploaded_type = $arr_file_type['type'];
 
+                                get_allowed_mime_types();
+                                
                                 // Check if the type is supported. If not, throw an error.
                                 if(in_array($uploaded_type, $supported_types)) {
                                         // Use the WordPress API to upload the file
@@ -654,9 +655,11 @@ if(!class_exists('VolunteerProjectManagement')):
                     'cb' => '<input type="checkbox" />',
                     'title' => __( 'Vol. Projects' ),
                     //'vpm_project_file' => __( 'Vol. Projects files'),
-                    'vpm_startDate' => __( 'Start Date' ),
-                    'vpm_endDate' => __( 'End Date'),
-                    'vpm_downloads' => __('Number of downloads')
+                    'author' => __( 'Author' ),
+                    'date' => __( 'Date' ),
+                    //'vpm_startDate' => __( 'Start Date' ),
+                    //'vpm_endDate' => __( 'End Date'),
+                    //'vpm_downloads' => __('Number of downloads',__CLASS__)
                 );
 
                 return $columns;
@@ -691,22 +694,6 @@ function list_hooked_functions($tag=false){
                 switch( $column ) {
 
                         /* If displaying the 'project file' column. */
-                        case 'vpm_project_file' :
-                                /* Get the file for the post. */
-                                $file = get_post_meta($postId, __CLASS__ . '_projectFile');
-                                /* If the file exist. */
-                                if ( !empty( $file ) && isset($file[0]['url']) ) {
-                                    
-                    
-                                    echo '<a href="' . add_query_arg( array( 'post_type' => self::POST_TYPE, 'post' => $post->ID, 'action' => 'edit', 'option'=>'downloadFile'  ), admin_url( 'post.php') ) . '" id="vpm_projectFile_download">' ;
-                                            _e('Download', __CLASS__);
-                                        echo '</a> ';
-                                }
-                                /* If no file were found, output a default message. */
-                                else {
-                                        _e( 'No file uploaded' );
-                                }
-                                break;
                          case 'vpm_startDate':
                             // Retrieve the campaign date and time interval (and convert them back to the localtime)
                             $startDate = self::getStartDate($post)-(current_time('timestamp', true)-current_time('timestamp', false));
@@ -775,9 +762,10 @@ function list_hooked_functions($tag=false){
             
             function vpm_sortable_columns( $columns ) {
 
-                $columns['vpm_startDate'] = 'vpm_startDate';
-                $columns['vpm_endDate'] = 'vpm_endDate';
-                $columns['vpm_downloads'] = 'vpm_downloads';
+                //$columns['title'] = 'title';
+                $columns['author'] = 'author';
+                //$columns['date'] = 'date';
+                //$columns['vpm_downloads'] = 'vpm_downloads';
 
                 return $columns;
             }
@@ -822,6 +810,8 @@ function list_hooked_functions($tag=false){
                                         )
                                 );
                                 break;
+                            
+                            
                             default:
                                 break;
                         }
@@ -847,15 +837,15 @@ function list_hooked_functions($tag=false){
             
             function optionsSettings() {
                 //register our settings
-                add_settings_section('vpm_main', 'Main Settings', array(__CLASS__,'vpm_section_text'), 'vpm_plugin');
+                add_settings_section('vpm_main', __('Main Settings',__CLASS__), array(__CLASS__,'vpm_section_text'), 'vpm_plugin');
                 //add_settings_field('plugin_text_string', 'Plugin Text Input', array(__CLASS__,'vpm_setting_string'), 'vpm_plugin', 'vpm_main');
-                add_settings_field('plugin_cap_check', 'Users who can contribute', array(__CLASS__,'vpm_setting_check'), 'vpm_plugin', 'vpm_main');
+                add_settings_field('plugin_cap_check', __('Users who can contribute',__CLASS__), array(__CLASS__,'vpm_setting_check'), 'vpm_plugin', 'vpm_main');
                 register_setting( 'vpmOptions', 'vpmOptions', array(__CLASS__,'setOurCaps') );
 
             }
             
             function vpm_section_text() {
-                echo '<p>Main description of this section here.</p>';
+                //_e('<p>Main description of this section here.</p>';
             } 
             function vpm_setting_string() {
                 $options = get_option('vpmOptions');
@@ -910,17 +900,17 @@ function list_hooked_functions($tag=false){
             }
             
             function vpm_conf() {
-                if ( isset($_POST['Submit']) ) {
+                if ( isset($_REQUEST['settings-updated']) ) {
                     if ( function_exists('current_user_can') && !current_user_can('manage_options') )
                         die(__('Cheatin&#8217; uh?'));
                 }
                 ?>
-                <?php if ( !empty($_POST['submit'] ) ) : ?>
-                <div id="message" class="updated fade"><p><strong><?php _e('Options saved.') ?></strong></p></div>
+                <?php if ( isset($_REQUEST['settings-updated']) && $_REQUEST['settings-updated'] == "true") : ?>
+                <div id="message" class="updated fade"><p><strong><?php _e('Options saved.',__CLASS__) ?></strong></p></div>
                 <?php endif; ?>
                 <div class="wrap">
-                <h2><?php _e('Volunteer project management configuration'); ?></h2>
-                <?php echo _e('Options relating to the Volunteer project plugin.');?>
+                <h2><?php _e('Volunteer project management configuration', __CLASS__); ?></h2>
+                <?php _e('Options relating to the Volunteer project plugin.',__CLASS__); ?>
                 
                 <div class="narrow">
                     <form action="options.php" method="post" id="vpm-conf"> 
@@ -959,37 +949,39 @@ function list_hooked_functions($tag=false){
 
             function uploadContribution($post) {
                 // only to our post type
-                if ($post->post_type == self::POST_TYPE && isset($_GET['post'])){
-                    if($_GET['action']== 'uploadContribution'){
-                        ?>
-                    <div class="wrap">
-                    <h2><?php _e('Volunteer project management configuration'); ?></h2>
-                    <?php echo _e('Options relating to the Volunteer project plugin.');?>
+                if(!empty($post)){
+                    if ($post->post_type == self::POST_TYPE && isset($_GET['post'])){
+                        if($_GET['action']== 'uploadContribution'){
+                            ?>
+                        <div class="wrap">
+                        <h2><?php _e('Volunteer project management configuration'); ?></h2>
+                        <?php _e('Options relating to the Volunteer project plugin.');?>
 
-                    <div class="narrow">
-                        <form action="options.php" method="post" id="vpm-conf"> 
-                            <?php //settings_fields('vpmOptions'); ?>
-                            <?php //do_settings_sections('vpm_plugin'); ?>
-                            <input name="Submit" class="button-primary" type="submit" value="<?php esc_attr_e('Save Changes'); ?>" />
-                        </form>
-                    </div>
-                    <?php
+                        <div class="narrow">
+                            <form action="options.php" method="post" id="vpm-conf"> 
+                                <?php //settings_fields('vpmOptions'); ?>
+                                <?php //do_settings_sections('vpm_plugin'); ?>
+                                <input name="Submit" class="button-primary" type="submit" value="<?php esc_attr_e('Save Changes'); ?>" />
+                            </form>
+                        </div>
+                        <?php
+                        }
                     }
                 }
                 
                 //wp_redirect( admin_url( 'edit.php?post_type=vpm-project') );
-            } 
+            }
             
             function register_ContributionPage(){
                 if(current_user_can(self::getAllowedCap())){
-                    add_submenu_page( 'edit.php?post_type='.self::POST_TYPE, __('Projects list'), __('Projects list'), self::getAllowedCap(), 'contributionPage', array(__CLASS__,'contributionPage_build') );
+                    add_submenu_page( 'edit.php?post_type='.self::POST_TYPE, __('Projects list',__CLASS__), __('Projects list',__CLASS__), self::getAllowedCap(), 'contributionPage', array(__CLASS__,'contributionPage_build') );
                 }
             }
             
             function contributionPage_build(){
                 $messages = array(
                     'noFile' => array('color' => '#888', 'text' => __('You must set a file to upload.')),
-                    'noPdf' => array('color' => '#888', 'text' => __('You must set a pdf file to upload.')),
+                    'notAllowed' => array('color' => '#888', 'text' => __('That file type is not allowed.')),
                     'uploadError' => array('color' => '#888', 'text' => __('Upload error, try again please.')),
                     'success' => array('color' => '#AA0', 'text' => __('Your contribution is saved.')),
                 );
@@ -998,8 +990,7 @@ function list_hooked_functions($tag=false){
                     if(!empty($_FILES[__CLASS__ . '_projectFile']['name'])) {
                         
                             // Setup the array of supported file types. In this case, it's just PDF.
-                            // @todo  we want more?
-                            $supported_types = array('application/pdf');
+                            $supported_types = get_allowed_mime_types();
 
                             // Get the file type of the upload
                             $arr_file_type = wp_check_filetype(basename($_FILES[__CLASS__ . self::$projectFile]['name']));
@@ -1037,8 +1028,8 @@ function list_hooked_functions($tag=false){
                                             $message = 'success';
                                     } // end if/else
                             } else {
-                                $message = 'noPdf';
-                                wp_die("The file type that you've uploaded is not a PDF.");
+                                $message = 'notAllowed';
+                                wp_die("The file type that you've uploaded is not allowed.");
                             } // end if/else
                     }
                     $message = 'noFile';
@@ -1050,11 +1041,11 @@ function list_hooked_functions($tag=false){
                         case 'view':
                             //echo $_GET['post']."<pre>".print_r($post,true)."</pre>";
                             if($post->post_status=='publish' && $post->post_type==self::POST_TYPE){
-                                $file = get_post_meta($post->ID, __CLASS__.self::$projectFile, true);
+                                //$file = get_post_meta($post->ID, __CLASS__.self::$projectFile, true);
                                 $html = '<a href="' . add_query_arg( array( 'post_type' => self::POST_TYPE, 'post' => $post->ID, 'page' => 'contributionPage','action' => 'downloadFile'  ), admin_url( 'edit.php') ) . '" id="vpm_projectFile_download">'.__('Download', __CLASS__).'</a>';
                                 $endDate = self::getEndDate($post)-(current_time('timestamp', true)-current_time('timestamp', false));
                                 if(!$endDate):
-                                    $endDate = _e("No end date");
+                                    $endDate = __("No end date", __CLASS__);
                                 else:
                                     $endDate = date("m-d-Y@H:i:s", $endDate);
                                 endif;
@@ -1064,9 +1055,9 @@ function list_hooked_functions($tag=false){
                                         <h2><?php _e('Project: ',__CLASS__). $post->post_title;?></h2>
                                         <div class="vpm-contribution-content"><?php echo apply_filters('the_content', $post->post_content); ?></div>
                                         <div class="vpm-contribution-content">
-                                            <b><?php echo __('End Date').":</b> ". $endDate;?><br/>
-                                            <b><?php echo __('Number of downloads ').":</b> ".self::getPostCustomValues(self::$downloadCounter, $post);?><br/>
-                                            <b><?php echo __('Project file').":</b> ".$html;?><br/>    
+                                            <b><?php echo __('End Date',__CLASS__).":</b> ". $endDate;?><br/>
+                                            <b><?php echo __('Number of downloads',__CLASS__).":</b> ".self::getPostCustomValues(self::$downloadCounter, $post);?><br/>
+                                            <b><?php echo __('Project file',__CLASS__).":</b> ".$html;?><br/>    
                                         </div>
                                 </div>
                             <?php
@@ -1085,11 +1076,11 @@ function list_hooked_functions($tag=false){
                                         <input type="hidden" name="parent_id" id="parent_id" value="<?php echo $post->ID?>" />
                                         <div id="titlediv">
                                             <div id="titlewrap">
-                                                <input type="text" autocomplete="off" id="title" size="30" name="post_title">
+                                                <input type="text" autocomplete="off" id="title" size="30" name="post_title" value="<?php _e(date("[Y-m-d]"));_e(" Contribuition")?>">
                                             </div>
                                         </div>
                                         <div class="postarea" id="postdivrich">
-                                            <?php the_editor('','content'); ?>
+                                            <?php wp_editor(__('Write some notes if you like...',__CLASS__),'content'); ?>
                                         </div>
                                         <div id="vpm-upload-container">
                                             <label><?php _e('Contribution file', __CLASS__) ?></label>

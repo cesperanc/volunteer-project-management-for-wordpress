@@ -39,8 +39,8 @@ class contribute_Table extends WP_List_Table {
         
                         //Build row actions
                         $actions = array(
-                            'subscribe'      => sprintf('<a href="?post_type=%s&page=%s&action=%s&post=%s">'.__('View details').'</a>',$_REQUEST['post_type'],$_REQUEST['page'],'view',$item['ID']),
-                            'response'    => sprintf('<a href="?post_type=%s&page=%s&action=%s&post=%s">'.__('Contribute').'</a>',$_REQUEST['post_type'],$_REQUEST['page'],'contribute',$item['ID']),
+                            'subscribe'      => sprintf('<a href="?post_type=vpm-project&page=%s&action=%s&post=%s">'.__('View details').'</a>',$_REQUEST['page'],'view',$item['ID']),
+                            'response'    => sprintf('<a href="?post_type=vpm-project&page=%s&action=%s&post=%s">'.__('Contribute').'</a>',$_REQUEST['page'],'contribute',$item['ID']),
                         );
 
                         //Return the title contents

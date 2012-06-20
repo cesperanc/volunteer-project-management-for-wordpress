@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Click-to-donate\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-06-11 13:43+0100\n"
+"POT-Creation-Date: 2012-06-20 11:01+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Diogo Serra <codedmind@gmail.com>\n"
 "Language-Team: Cláudio Esperança, Diogo Serra <cesperanc@gmail.com>\n"
@@ -269,7 +269,7 @@ msgid "Project Volunteer configuration"
 msgstr "Configurações do projeto de voluntariado"
 
 #: ../VolunteerProjectManagement.php:282
-#: ../VolunteerProjectManagement.php:1069
+#: ../VolunteerProjectManagement.php:1057
 msgid "Project file"
 msgstr "Ficheiro do projeto"
 
@@ -302,119 +302,127 @@ msgid "Check if you want delete the file"
 msgstr "Marcar se pretender eliminar o ficheiro"
 
 #: ../VolunteerProjectManagement.php:657
-#, fuzzy
-msgid "Start Date"
-msgstr "Data de início:"
+msgid "Author"
+msgstr "Autor"
 
 #: ../VolunteerProjectManagement.php:658
-#: ../VolunteerProjectManagement.php:1067
+msgid "Date"
+msgstr "Data"
+
+#: ../VolunteerProjectManagement.php:702
+#: ../VolunteerProjectManagement.php:1121
+msgid "No start date"
+msgstr "Sem data de início"
+
+#: ../VolunteerProjectManagement.php:715
+#: ../VolunteerProjectManagement.php:1045
+#: ../VolunteerProjectManagement.php:1128
+msgid "No end date"
+msgstr "Sem data de fim"
+
+#: ../VolunteerProjectManagement.php:825
+msgid "Volunteer project configuration"
+msgstr "Configurações do plugin projeto de voluntariado"
+
+#: ../VolunteerProjectManagement.php:830
+msgid "Settings"
+msgstr "Opções"
+
+#: ../VolunteerProjectManagement.php:839
+#, fuzzy
+msgid "Main Settings"
+msgstr "Opções"
+
+#: ../VolunteerProjectManagement.php:841
+msgid "Users who can contribute"
+msgstr "Utilizadores que podem contribuir"
+
+#: ../VolunteerProjectManagement.php:860
+msgid "If this option isn't used only users who have capability to upload files can contribute"
+msgstr "Se esta opção não estiver activa só utilizadores com permissões para fazer upload de ficheiros podem contribuir"
+
+#: ../VolunteerProjectManagement.php:904
+#: ../VolunteerProjectManagement.php:1062
+#: ../VolunteerProjectManagement.php:1093
+msgid "Cheatin&#8217; uh?"
+msgstr "A fazer batota?"
+
+#: ../VolunteerProjectManagement.php:908
+#, fuzzy
+msgid "Options saved."
+msgstr "Opções guardadas"
+
+#: ../VolunteerProjectManagement.php:911
+#: ../VolunteerProjectManagement.php:955
+#, fuzzy
+msgid "Volunteer project management configuration"
+msgstr "Configurações do projeto de voluntariado"
+
+#: ../VolunteerProjectManagement.php:912
+#: ../VolunteerProjectManagement.php:956
+msgid "Options relating to the Volunteer project plugin."
+msgstr "Opções do plugin projectos de voluntariado"
+
+#: ../VolunteerProjectManagement.php:942
+msgid "Add a contribution"
+msgstr "Contribuir"
+
+#: ../VolunteerProjectManagement.php:974
+msgid "Projects list"
+msgstr "Lista de projetos"
+
+#: ../VolunteerProjectManagement.php:980
+msgid "You must set a file to upload."
+msgstr "Tem de fazer upload de um ficheiro"
+
+#: ../VolunteerProjectManagement.php:981
+msgid "That file type is not allowed."
+msgstr "O ficheiro enviado não é permitido."
+
+#: ../VolunteerProjectManagement.php:982
+msgid "Upload error, try again please."
+msgstr "Ocorreu um erro a fazer upload, por favor tente novamente."
+
+#: ../VolunteerProjectManagement.php:983
+msgid "Your contribution is saved."
+msgstr "A sua contribuição foi guardada."
+
+#: ../VolunteerProjectManagement.php:1042
+msgid "Download"
+msgstr "Transferir"
+
+#: ../VolunteerProjectManagement.php:1052
+msgid "Project: "
+msgstr "Projeto"
+
+#: ../VolunteerProjectManagement.php:1055
 #: ../contributeList.php:66
 #, fuzzy
 msgid "End Date"
 msgstr "Data de fim:"
 
-#: ../VolunteerProjectManagement.php:659
+#: ../VolunteerProjectManagement.php:1056
 #: ../contributeList.php:67
 msgid "Number of downloads"
 msgstr "Número de transferências: "
 
-#: ../VolunteerProjectManagement.php:702
-#: ../VolunteerProjectManagement.php:1054
-msgid "Download"
-msgstr "Transferir"
-
-#: ../VolunteerProjectManagement.php:707
-#, fuzzy
-msgid "No file uploaded"
-msgstr "Nenhum ficheiro foi enviado"
-
-#: ../VolunteerProjectManagement.php:716
-#: ../VolunteerProjectManagement.php:1133
-msgid "No start date"
-msgstr "Sem data de início"
-
-#: ../VolunteerProjectManagement.php:729
-#: ../VolunteerProjectManagement.php:1057
-#: ../VolunteerProjectManagement.php:1140
-msgid "No end date"
-msgstr "Sem data de fim"
-
-#: ../VolunteerProjectManagement.php:836
-msgid "Volunteer project configuration"
-msgstr "Configurações do plugin projeto de voluntariado"
-
-#: ../VolunteerProjectManagement.php:841
-msgid "Settings"
-msgstr "Opções"
-
-#: ../VolunteerProjectManagement.php:871
-msgid "If this option isn't used only users who have capability to upload files can contribute"
-msgstr "Se esta opção não estiver activa só utilizadores com permissões para fazer upload de ficheiros podem contribuir"
-
-#: ../VolunteerProjectManagement.php:915
-#: ../VolunteerProjectManagement.php:1074
-#: ../VolunteerProjectManagement.php:1105
-msgid "Cheatin&#8217; uh?"
-msgstr "A fazer batota?"
-
-#: ../VolunteerProjectManagement.php:919
-#, fuzzy
-msgid "Options saved."
-msgstr "Opções guardadas"
-
-#: ../VolunteerProjectManagement.php:922
-#: ../VolunteerProjectManagement.php:966
-#, fuzzy
-msgid "Volunteer project management configuration"
-msgstr "Configurações do projeto de voluntariado"
-
-#: ../VolunteerProjectManagement.php:923
-#: ../VolunteerProjectManagement.php:967
-msgid "Options relating to the Volunteer project plugin."
-msgstr "Opções do plugin projectos de voluntariado"
-
-#: ../VolunteerProjectManagement.php:953
-msgid "Add a contribution"
-msgstr "Contribuir"
-
-#: ../VolunteerProjectManagement.php:985
-msgid "Projects list"
-msgstr "Lista de projetos"
-
-#: ../VolunteerProjectManagement.php:991
-msgid "You must set a file to upload."
-msgstr "Tem de fazer upload de um ficheiro"
-
-#: ../VolunteerProjectManagement.php:992
-msgid "You must set a pdf file to upload."
-msgstr "Tem de escolher um ficheiro pdf"
-
-#: ../VolunteerProjectManagement.php:993
-msgid "Upload error, try again please."
-msgstr "Ocorreu um erro a fazer upload, por favor tente novamente."
-
-#: ../VolunteerProjectManagement.php:994
-msgid "Your contribution is saved."
-msgstr "A sua contribuição foi guardada."
-
-#: ../VolunteerProjectManagement.php:1064
-msgid "Project: "
-msgstr "Projeto"
-
-#: ../VolunteerProjectManagement.php:1068
-#, fuzzy
-msgid "Number of downloads "
-msgstr "Número de downloads: "
-
-#: ../VolunteerProjectManagement.php:1081
+#: ../VolunteerProjectManagement.php:1069
 msgid "Contribute to Project: "
 msgstr "Contribuir para o projeto:"
 
-#: ../VolunteerProjectManagement.php:1095
+#: ../VolunteerProjectManagement.php:1076
+msgid " Contribuition"
+msgstr " Contribuição"
+
+#: ../VolunteerProjectManagement.php:1080
+msgid "Write some notes if you like..."
+msgstr "Deixe alguns comentários se achar necessário..."
+
+#: ../VolunteerProjectManagement.php:1083
 msgid "Contribution file"
 msgstr "Ficheiro de contribuição"
 
-#: ../VolunteerProjectManagement.php:1175
+#: ../VolunteerProjectManagement.php:1163
 msgid "Projects that need your contribution"
 msgstr "Projetos que necessitam de contribuição"
 
@@ -434,6 +442,25 @@ msgstr "Título:"
 #: ../contributeList.php:65
 msgid "Excerpt"
 msgstr "Exerto"
+
+#, fuzzy
+#~ msgid " Contribuição"
+#~ msgstr "Contribuir"
+
+#, fuzzy
+#~ msgid "Start Date"
+#~ msgstr "Data de início:"
+
+#, fuzzy
+#~ msgid "No file uploaded"
+#~ msgstr "Nenhum ficheiro foi enviado"
+
+#, fuzzy
+#~ msgid "Number of downloads "
+#~ msgstr "Número de downloads: "
+
+#~ msgid "You must set a pdf file to upload."
+#~ msgstr "Tem de escolher um ficheiro pdf"
 
 #, fuzzy
 #~ msgid ""
@@ -627,9 +654,6 @@ msgstr "Exerto"
 #~ msgid "File uploaded to the repository"
 #~ msgstr "Ficheiro enviado para o repositório"
 
-#~ msgid "The uploaded file is not readable"
-#~ msgstr "O ficheiro enviado não é legível"
-
 #~ msgid "The uploaded file exceeds the upload_max_filesize"
 #~ msgstr "O ficheiro enviado excede o valor máximo de upload_max_filesize"
 
@@ -699,9 +723,6 @@ msgstr "Exerto"
 
 #~ msgid "User"
 #~ msgstr "Utilizador"
-
-#~ msgid "Date"
-#~ msgstr "Data"
 
 #~ msgid "Delete"
 #~ msgstr "Eliminar"
