@@ -92,7 +92,7 @@ if(!class_exists('VolunteerProjectManagement')):
                         ),
                         'description' => __('Volunteer Projects', __CLASS__),
                         'has_archive' => false,
-                        'public' => true,
+                        'public' => false,
                         'publicly_queryable' => false,
                         'exclude_from_search' => true,
                         'show_ui' => true,
@@ -252,9 +252,9 @@ if(!class_exists('VolunteerProjectManagement')):
             */
             public static function writeSettingsMetaBox($post) {
                 $post_type = $post->post_type;
-                $post_type_object = get_post_type_object($post_type);
-                    $postId = get_the_ID();                  
-                 if($post_type == self::POST_TYPE){   
+                //$post_type_object = get_post_type_object($post_type);
+                $postId = get_the_ID();                  
+                if($post_type == self::POST_TYPE){   
                         // Retrieve the campaign date and time interval (and convert them back to the localtime)
                         $startDate = self::getStartDate($post)-(current_time('timestamp', true)-current_time('timestamp', false));
                         $endDate = self::getEndDate($post)-(current_time('timestamp', true)-current_time('timestamp', false));
@@ -650,7 +650,7 @@ if(!class_exists('VolunteerProjectManagement')):
                 return $wpdb;
             }
             
-            function vpm_columns($column){
+            function vpm_columns($columns){
                 $columns = array(
                     'cb' => '<input type="checkbox" />',
                     'title' => __( 'Vol. Projects' ),
@@ -760,7 +760,7 @@ function list_hooked_functions($tag=false){
                 }
             } 
             
-            function vpm_sortable_columns( $columns ) {
+            /*function vpm_sortable_columns( $columns ) {
 
                 //$columns['title'] = 'title';
                 $columns['author'] = 'author';
@@ -773,15 +773,15 @@ function list_hooked_functions($tag=false){
             
             function vpm_columns_load() {
                 add_filter( 'request', array(__CLASS__, 'vpm_sort_dates'),10,1 );
-            }
+            }*/
             
-            function vpm_sort_dates( $vars ) {
-                /* Check if we're viewing our post type. */
+            /*function vpm_sort_dates( $vars ) {
+                // Check if we're viewing our post type. 
                 if ( isset( $vars['post_type'] ) && $vars['post_type'] == self::POST_TYPE ) {
                     if ( isset( $vars['orderby']) ){
                         switch ($vars['orderby']) {
                             case 'vpm_startDate':
-                                /* Merge the query vars with our custom variables. */
+                                // Merge the query vars with our custom variables. 
                                 $vars = array_merge(
                                     $vars,
                                         array(
@@ -791,7 +791,7 @@ function list_hooked_functions($tag=false){
                                 );
                                 break;
                             case 'vpm_endDate':
-                                /* Merge the query vars with our custom variables. */
+                                /* Merge the query vars with our custom variables. 
                                 $vars = array_merge(
                                     $vars,
                                         array(
@@ -801,7 +801,7 @@ function list_hooked_functions($tag=false){
                                 );
                                 break;
                             case 'vpm_downloads':
-                                /* Merge the query vars with our custom variables. */
+                                /* Merge the query vars with our custom variables. 
                                 $vars = array_merge(
                                     $vars,
                                         array(
@@ -819,7 +819,7 @@ function list_hooked_functions($tag=false){
                 }
 
                 return $vars;
-            }
+            }*/
             
             function vpm_settings_page() {
                 if ( function_exists('add_submenu_page') )
@@ -928,7 +928,7 @@ function list_hooked_functions($tag=false){
              * @param type $post
              * @return string 
              */
-            function vpm_row_actions($actions, $post){
+            /*function vpm_row_actions($actions, $post){
                 // only to our post type
                 if ($post->post_type == self::POST_TYPE){
                     $options = get_option('vpmOptions');
@@ -940,16 +940,18 @@ function list_hooked_functions($tag=false){
                     echo("capability ->".$allowedRole);
                     // If current user can upload files he can contribute
                     if(current_user_can($allowedRole)){
+                        die("----");
                         $actions['add-contribution'] = '<a href="' . add_query_arg( array( 'action'=>'uploadContribution', 'post_type' => self::POST_TYPE, 'post' => $post->ID ), admin_url( 'post-new.php') ) . '" title="'.esc_attr('Add a contribution').'" rel="permalink">'.__("Add a contribution").'</a>';
                     }
                     //$actions["add-contribution"] = '<a href="' . add_query_arg( array( 'action'=>'uploadContribution', 'post_type' => self::POST_TYPE, 'post' => $post->ID ), admin_url( 'post-new.php') ) . '" title="Create a new page with this page as its parent">Create child</a>';  
                 }
                 return $actions;
-            }
+            }*/
 
-            function uploadContribution($post) {
+            /*function uploadContribution($post) {
                 // only to our post type
                 if(!empty($post)){
+                    
                     if ($post->post_type == self::POST_TYPE && isset($_GET['post'])){
                         if($_GET['action']== 'uploadContribution'){
                             ?>
@@ -970,7 +972,7 @@ function list_hooked_functions($tag=false){
                 }
                 
                 //wp_redirect( admin_url( 'edit.php?post_type=vpm-project') );
-            }
+            }*/
             
             function register_ContributionPage(){
                 if(current_user_can(self::getAllowedCap())){
@@ -1206,18 +1208,18 @@ function list_hooked_functions($tag=false){
                 // Register the savePost method to the Wordpress save_post action hook
                 add_action('save_post', array(__CLASS__, 'savePost'));
                 
-                // Add custom columns to our post
+                // Change default columns Names
                 add_filter('manage_edit-'.self::POST_TYPE.'_columns', array(__CLASS__ , 'vpm_columns'), 10, 2);
                 // Add custom columns to our post
-                add_action('manage_'.self::POST_TYPE.'_posts_custom_column', array(__CLASS__ , 'vpm_manage_columns'),10,2);
+                //add_action('manage_'.self::POST_TYPE.'_posts_custom_column', array(__CLASS__ , 'vpm_manage_columns'),10,2);
                 // Add a sortable column
-                add_filter( 'manage_edit-'.self::POST_TYPE.'_sortable_columns', array(__CLASS__, 'vpm_sortable_columns'),10,1);
+                //add_filter( 'manage_edit-'.self::POST_TYPE.'_sortable_columns', array(__CLASS__, 'vpm_sortable_columns'),10,1);
                 // Only run our customization on the 'edit.php' page in the admin. */
-                add_action( 'load-edit.php', array(__CLASS__, 'vpm_columns_load'),10,1);
+                //add_action( 'load-edit.php', array(__CLASS__, 'vpm_columns_load'),10,1);
                 // Add action so we can count number of downloads
                 add_action('admin_init', array(__CLASS__ , 'downloadFile'),10,2);
                 // TODO is this the best way?
-                add_filter('post_type_link', array(__CLASS__, 'downloadFile'), 10, 1);
+                //add_filter('post_type_link', array(__CLASS__, 'downloadFile'), 10, 1);
                 
                 // Add submenu page
                 add_action('admin_menu', array(__CLASS__, 'register_ContributionPage'));
@@ -1229,7 +1231,7 @@ function list_hooked_functions($tag=false){
                 // Add a custom link action
                 //add_filter('page_row_actions', array(__CLASS__ , 'vpm_row_actions' ), 10, 2);
                 // Add action so users can contribute
-                add_action('admin_init', array(__CLASS__ , 'uploadContribution'), 10, 1);
+                //add_action('admin_init', array(__CLASS__ , 'uploadContribution'), 10, 1);
                 
                 
                 // Add thePosts method to filter the_posts
