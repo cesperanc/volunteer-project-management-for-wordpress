@@ -34,10 +34,6 @@ if(!class_exists('VolunteerProjectManagement')):
             * The database variable name to store the plugin database version
             */
             const DB_VERSION_FIELD_NAME = 'VolunteerProjectManagement_Database_version';
-            const STATUS_online = 'vpm-online';
-            const STATUS_finished = 'vpm-finished';
-            const STATUS_scheduled = 'vpm-scheduled';
-            const STATUS_unavailable = 'vpm-unavailable';
             
             
             // Table variables
@@ -111,27 +107,12 @@ if(!class_exists('VolunteerProjectManagement')):
             }
 
             /**
-            * Get the post from the parameter or the main loop
-            * 
-            * @param int|object $post to get the post from
-            * @return object with the post
-            */
-            private static function getPost($post){
-                if ( is_int($post) && absint( $post ))
-                    $post =& get_post($post);
-                if ( !is_object($post) )
-                    $post =& get_post(@get_the_ID());
-
-                return $post;
-            }
-
-            /**
             * Get the post ID from the parameter or the main loop
             * @param int|object $post to get the post from
             * @return int with the post ID 
             */
-            private static function getPostID($post){
-                if($post == self::getPost($post))
+            public static function getPostID($post) {
+                if ($post = get_post($post))
                     return $post->ID;
                 return 0;
             }
@@ -240,6 +221,27 @@ if(!class_exists('VolunteerProjectManagement')):
                 wp_enqueue_style('admin', plugins_url('css/admin.css', __FILE__), array(), '1.0');
             }
 
+            /**
+            * Add a metabox to dashboard
+            */
+            public function wpDashboardSetup() {
+                // Add our metabox with the graphics to the dashboard
+                if(current_user_can('read')):
+                    wp_add_dashboard_widget(__CLASS__, __('Vol. Project contribution info', __CLASS__), array(__CLASS__, 'writeDashbMetaBox'));
+                endif;
+            }
+            /**
+            * Output a custom metabox for saving the post
+            * @param Object $post 
+            */
+            public static function writeDashbMetaBox($post) {
+
+                if(current_user_can('read')):
+                    echo "<b>".__("Total projects",__CLASS__).":</b> ".self::countContributions('publish')."<br/>";
+                    echo "<b>".__("Total of contributions",__CLASS__).":</b> ".self::countContributions('draft')."<br/>";
+                    echo "<b>".__("Your contributions",__CLASS__).":</b> ".self::countContributions('draft',null,get_current_user_id())."<br/>";
+                endif;
+            }
             /**
             * Add a metabox to the project post type
             */
@@ -434,7 +436,7 @@ if(!class_exists('VolunteerProjectManagement')):
                                 //error_log("------ ".__CLASS__ . self::$num++." ------------");
                         }else{  
                             
-                            if($_POST[__CLASS__ . self::$projectFile.'_delete']=="deleteFile"){
+                            if(isset($_POST[__CLASS__ . self::$projectFile.'_delete']) &&$_POST[__CLASS__ . self::$projectFile.'_delete']=="deleteFile"){
 
                                 // Grab a reference to the file associated with this post  
                                 $doc = get_post_meta($postId, __CLASS__ . self::$projectFile, true); 
@@ -671,9 +673,6 @@ if(!class_exists('VolunteerProjectManagement')):
                     'author' => __( 'Author' ),
                     'date' => __( 'Date' ),
                     'hasFile'=> __( 'Has File', __CLASS__ ),
-                    //'vpm_startDate' => __( 'Start Date' ),
-                    //'vpm_endDate' => __( 'End Date'),
-                    //'vpm_downloads' => __('Number of downloads',__CLASS__)
                 );
 
                 return $columns;
@@ -782,67 +781,6 @@ function list_hooked_functions($tag=false){
                 }
             } 
             
-            /*function vpm_sortable_columns( $columns ) {
-
-                //$columns['title'] = 'title';
-                $columns['hasFiles'] = 'Has File';
-                //$columns['date'] = 'date';
-                //$columns['vpm_downloads'] = 'vpm_downloads';
-
-                return $columns;
-            }
-            
-            
-            function vpm_columns_load() {
-                add_filter( 'request', array(__CLASS__, 'vpm_sort_dates'),10,1 );
-            }
-            
-            function vpm_sort_dates( $vars ) {
-                // Check if we're viewing our post type. 
-                if ( isset( $vars['post_type'] ) && $vars['post_type'] == self::POST_TYPE ) {
-                    if ( isset( $vars['orderby']) ){
-                        switch ($vars['orderby']) {
-                            case 'vpm_startDate':
-                                // Merge the query vars with our custom variables. 
-                                $vars = array_merge(
-                                    $vars,
-                                        array(
-                                            'meta_key' => __CLASS__ . self::$startDate,
-                                            'orderby' => 'meta_value_num'
-                                        )
-                                );
-                                break;
-                            case 'vpm_endDate':
-                                // Merge the query vars with our custom variables. 
-                                $vars = array_merge(
-                                    $vars,
-                                        array(
-                                            'meta_key' => __CLASS__ .  self::$endDate,
-                                            'orderby' => 'meta_value_num'
-                                        )
-                                );
-                                break;
-                            
-                            case 'vpm_downloads':
-                                // Merge the query vars with our custom variables. 
-                                $vars = array_merge(
-                                    $vars,
-                                        array(
-                                            'meta_key' => __CLASS__ .  self::$downloadCounter,
-                                            'orderby' => 'meta_value_num'
-                                        )
-                                );
-                                break;
-                            
-                            default:
-                                break;
-                        }
-                    }
-                }
-
-                return $vars;
-            }*/
-            
             function vpm_settings_page() {
                 if ( function_exists('add_submenu_page') )
                         add_submenu_page('plugins.php', __('Volunteer project configuration'), __('Volunteer project configuration', __CLASS__), 'manage_options', 'vpm-settings', array(__CLASS__, 'vpm_conf'));
@@ -944,57 +882,6 @@ function list_hooked_functions($tag=false){
                 <?php
             }
             
-            /**
-             *
-             * @param string $actions
-             * @param type $post
-             * @return string 
-             */
-            /*function vpm_row_actions($actions, $post){
-                // only to our post type
-                if ($post->post_type == self::POST_TYPE){
-                    $options = get_option('vpmOptions');
-                    if(isset($options['cap_check'])){
-                        $allowedRole = self::CONTRIBUTION_CAP;
-                    }else{
-                        $allowedRole = self::DEFAULT_CAP;
-                    }
-                    echo("capability ->".$allowedRole);
-                    // If current user can upload files he can contribute
-                    if(current_user_can($allowedRole)){
-                        die("----");
-                        $actions['add-contribution'] = '<a href="' . add_query_arg( array( 'action'=>'uploadContribution', 'post_type' => self::POST_TYPE, 'post' => $post->ID ), admin_url( 'post-new.php') ) . '" title="'.esc_attr('Add a contribution').'" rel="permalink">'.__("Add a contribution").'</a>';
-                    }
-                    //$actions["add-contribution"] = '<a href="' . add_query_arg( array( 'action'=>'uploadContribution', 'post_type' => self::POST_TYPE, 'post' => $post->ID ), admin_url( 'post-new.php') ) . '" title="Create a new page with this page as its parent">Create child</a>';  
-                }
-                return $actions;
-            }*/
-
-            /*function uploadContribution($post) {
-                // only to our post type
-                if(!empty($post)){
-                    
-                    if ($post->post_type == self::POST_TYPE && isset($_GET['post'])){
-                        if($_GET['action']== 'uploadContribution'){
-                            ?>
-                        <div class="wrap">
-                        <h2><?php _e('Volunteer project management configuration'); ?></h2>
-                        <?php _e('Options relating to the Volunteer project plugin.');?>
-
-                        <div class="narrow">
-                            <form action="options.php" method="post" id="vpm-conf"> 
-                                <?php //settings_fields('vpmOptions'); ?>
-                                <?php //do_settings_sections('vpm_plugin'); ?>
-                                <input name="Submit" class="button-primary" type="submit" value="<?php esc_attr_e('Save Changes'); ?>" />
-                            </form>
-                        </div>
-                        <?php
-                        }
-                    }
-                }
-                
-                //wp_redirect( admin_url( 'edit.php?post_type=vpm-project') );
-            }*/
             
             function register_ContributionPage(){
                 if(current_user_can(self::getAllowedCap())){
@@ -1055,8 +942,9 @@ function list_hooked_functions($tag=false){
                                 $message = 'notAllowed';
                                 wp_die("The file type that you've uploaded is not allowed.");
                             } // end if/else
+                    }else{
+                        $message = 'noFile';
                     }
-                    $message = 'noFile';
                 }
                 
                 if(isset($_GET['post']) && $_GET['post']>0){
@@ -1076,15 +964,20 @@ function list_hooked_functions($tag=false){
                             ?>
                                 <div class="wrap">
                                     <div id="icon-edit" class="icon32 icon32-posts-<?php echo self::POST_TYPE?>"><br/></div>
-                                        <h2><?php _e('Project: ',__CLASS__). $post->post_title;?></h2>
+                                        <h2>[<?php _e('Project',__CLASS__);?>] <?php echo $post->post_title;?></h2>
                                         <div class="vpm-contribution-content"><?php echo apply_filters('the_content', $post->post_content); ?></div>
                                         <div class="vpm-contribution-content">
                                             <b><?php echo __('End Date',__CLASS__).":</b> ". $endDate;?><br/>
                                             <?php if(self::hasFile($post->ID)){ ?>
                                             <b><?php echo __('Number of downloads',__CLASS__).":</b> <span id='vpm-downloadCounter'>".self::getPostCustomValues(self::$downloadCounter, $post);?></span><br/>
-                                            <b><?php echo __('Project file',__CLASS__).":</b> ".$html;?><br/>    
+                                            <b><?php echo __('Project file',__CLASS__).":</b> ".$html;?><br/>
+                                                <b><?php echo __('Number of contributions', __CLASS__).":</b> ".self::countContributions('draft',$post->ID);?><br/>
                                             <?php }?>   
                                         </div>
+                                        <p>
+                                            <a href="<?php _e(admin_url( 'edit.php?post_type=vpm-project&page=contributionPage'));?>"><?php _e('Projects list',__CLASS__);?></a>
+                                            <a href="<?php _e(admin_url( 'edit.php?post_type=vpm-project&page=contributionPage&action=contribute&post='.$post->ID));?>"><?php _e('Contribute');?></a>
+                                        </p>
                                 </div>
                             <?php
                             }else{
@@ -1159,12 +1052,18 @@ function list_hooked_functions($tag=false){
                                 $notShow=1;
                             }
                             if($notShow!=1 ){
+                                if(self::getPostCustomValues(self::$downloadCounter, $post)==""){
+                                    $nDown = 0;
+                                    
+                                }else{
+                                    $nDown = self::getPostCustomValues(self::$downloadCounter, $post);}
                                 $put = array(            
                                     'ID'        => $post->ID,
                                     'title'     => $post->post_title,
                                     'vpm_excerpt' => substr($post->post_content, 0, 100),
                                     'vpm_endDate' => $endDate,
-                                    'vpm_downloads' => self::getPostCustomValues(self::$downloadCounter, $post)
+                                    'vpm_downloads' => $nDown,
+                                    'vpm_contributions' => self::countContributions('draft',$post->ID)
                                 );
                                 array_push ($poststoList, $put);
                             }
@@ -1205,6 +1104,50 @@ function list_hooked_functions($tag=false){
                     <?php
                 }
             }
+            
+            
+            /**
+             * Number of child pages in draf 
+             * @param int $postId
+             * @return int Number od contributions
+             */
+            public static function countContributions($postStatus,$postId=null,$authorId=null){
+                $my_wp_query = new WP_Query();
+                $all_vpm_posts = $my_wp_query->query(array('post_type' => self::POST_TYPE));
+                $i=1;
+                //$pageNumber = array();
+                if($postId){
+                    $subPages=get_page_children($postId,$all_vpm_posts);
+                    foreach($subPages as $subs){
+                        if($subs->post_parent == $postId && $subs->post_status == $postStatus)
+                            $pageNumber[$subs->ID] = $i;
+                    }
+                }else{
+                    $subPages =$all_vpm_posts;
+                    //echo "-><pre>".print_r($subPages,true)."</pre>";
+                    foreach($subPages as $subs){
+                        if($subs->post_status == $postStatus){
+                            if(!$authorId){
+                                $authorId;
+                                $pageNumber[$subs->ID] = $i;
+                            }
+                            else{
+                                if($subs->post_author == $authorId)
+                                    $pageNumber[$subs->ID] = $i;
+                            }
+                        }
+                    }
+
+                }
+                //$subPages = get_pages('child_of'=>931);
+                //$i will equal the page number
+                
+                //echo "-><pre>".print_r($subPages,true)."</pre>";
+                if(!isset($pageNumber))
+                    return 0;
+                return count($pageNumber);
+                
+            }
         
             /**
              * Register the plugin functions with the Wordpress hooks
@@ -1227,6 +1170,9 @@ function list_hooked_functions($tag=false){
                 // Register the addMetaBox method to the Wordpress backoffice administration initialization action hook
                 add_action('admin_init', array(__CLASS__, 'addMetaBox'));
                 add_action('admin_init', array(__CLASS__, 'optionsSettings'));
+                
+                // Register the wpDashboardSetup method to the wp_dashboard_setup action hook
+                add_action('wp_dashboard_setup', array(__CLASS__, 'wpDashboardSetup'));
                 
 
                 // Register the savePost method to the Wordpress save_post action hook

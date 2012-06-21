@@ -30,6 +30,7 @@ class contribute_Table extends WP_List_Table {
                             case 'vpm_excerpt':
                             case 'vpm_endDate':
                             case 'vpm_downloads':
+                            case 'vpm_contributions':
                                 return $item[$column_name];
                             default:
                                 return print_r($item,true); //Show the whole array for troubleshooting purposes
@@ -39,8 +40,8 @@ class contribute_Table extends WP_List_Table {
         
                         //Build row actions
                         $actions = array(
-                            'subscribe'      => sprintf('<a href="?post_type=vpm-project&page=%s&action=%s&post=%s">'.__('View details').'</a>',$_REQUEST['page'],'view',$item['ID']),
-                            'response'    => sprintf('<a href="?post_type=vpm-project&page=%s&action=%s&post=%s">'.__('Contribute').'</a>',$_REQUEST['page'],'contribute',$item['ID']),
+                            'view'      => sprintf('<a href="?post_type=vpm-project&page=%s&action=%s&post=%s">'.__('View details').'</a>',$_REQUEST['page'],'view',$item['ID']),
+                            'contribute'    => sprintf('<a href="?post_type=vpm-project&page=%s&action=%s&post=%s">'.__('Contribute').'</a>',$_REQUEST['page'],'contribute',$item['ID']),
                         );
 
                         //Return the title contents
@@ -64,7 +65,8 @@ class contribute_Table extends WP_List_Table {
                             'title'     => __( 'Vol. Projects',"VolunteerProjectManagement"),
                             'vpm_excerpt' => __( 'Excerpt' ),
                             'vpm_endDate' => __( 'End Date'),
-                            'vpm_downloads' => __('Downloads',"VolunteerProjectManagement")
+                            'vpm_downloads' => __('Downloads',"VolunteerProjectManagement"),
+                            'vpm_contributions' => __('Contributions',"VolunteerProjectManagement")
                         );
                         return $columns;
                     }
@@ -73,7 +75,8 @@ class contribute_Table extends WP_List_Table {
                             'title'     => array('title',true),     //true means its already sorted
                             'vpm_excerpt'     => array('vpm_excerpt',true),     //true means its already sorted
                             'vpm_endDate'    => array('vpm_endDate',false),
-                            'vpm_downloads'  => array('vpm_downloads',false)
+                            'vpm_downloads'  => array('vpm_downloads',false),
+                            'vpm_contributions' => array('vpm_contributions',false),
                         );
                         return $sortable_columns;
                     }
