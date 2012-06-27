@@ -145,69 +145,171 @@ if(!class_exists('VolunteerProjectManagement')):
             * Register the scripts to be loaded on the backoffice, on our custom post type
             */
             public function adminEnqueueScripts() {
-                if (is_admin() && ($current_screen = get_current_screen()) && $current_screen->post_type == self::POST_TYPE /*&& $current_screen->base=='post'*/):
-                    // Register the scripts
-                    wp_enqueue_script('ui-spinner', plugins_url('js/jquery-ui/ui.spinner.min.js', __FILE__), array('jquery', 'jquery-ui-core', 'jquery-ui-widget', 'jquery-ui-mouse'), '1.20');
-                    wp_enqueue_script(__CLASS__ . '_admin', plugins_url('js/admin.js', __FILE__), array('jquery-ui-datepicker', 'ui-spinner'), '1.0');
+                if (is_admin()){
+                    
+                    if(($current_screen = get_current_screen()) && $current_screen->post_type == self::POST_TYPE ):
+                        if($current_screen->base=="post"):
+                            
+                        
+                            // Register the scripts
+                            wp_enqueue_script('ui-spinner', plugins_url('js/jquery-ui/ui.spinner.min.js', __FILE__), array('jquery', 'jquery-ui-core', 'jquery-ui-widget', 'jquery-ui-mouse'), '1.20');
+                            wp_enqueue_script(__CLASS__ . '_admin', plugins_url('js/admin.js', __FILE__), array('jquery-ui-datepicker', 'ui-spinner'), '1.0');
 
-                    // Localize the script
-                    wp_localize_script(__CLASS__ . '_admin', 'vpmAdminL10n', array(
-                        'closeText' => __('Done', __CLASS__),
-                        'currentText' => __('Today', __CLASS__),
-                        'dateFormat' => __('mm/dd/yy', __CLASS__),
-                        'dayNamesSunday' => __('Sunday', __CLASS__),
-                        'dayNamesMonday' => __('Monday', __CLASS__),
-                        'dayNamesTuesday' => __('Tuesday', __CLASS__),
-                        'dayNamesWednesday' => __('Wednesday', __CLASS__),
-                        'dayNamesThursday' => __('Thursday', __CLASS__),
-                        'dayNamesFriday' => __('Friday', __CLASS__),
-                        'dayNamesSaturday' => __('Saturday', __CLASS__),
-                        'dayNamesMinSu' => __('Su', __CLASS__),
-                        'dayNamesMinMo' => __('Mo', __CLASS__),
-                        'dayNamesMinTu' => __('Tu', __CLASS__),
-                        'dayNamesMinWe' => __('We', __CLASS__),
-                        'dayNamesMinTh' => __('Th', __CLASS__),
-                        'dayNamesMinFr' => __('Fr', __CLASS__),
-                        'dayNamesMinSa' => __('Sa', __CLASS__),
-                        'dayNamesShortSun' => __('Sun', __CLASS__),
-                        'dayNamesShortMon' => __('Mon', __CLASS__),
-                        'dayNamesShortTue' => __('Tue', __CLASS__),
-                        'dayNamesShortWed' => __('Wed', __CLASS__),
-                        'dayNamesShortThu' => __('Thu', __CLASS__),
-                        'dayNamesShortFri' => __('Fri', __CLASS__),
-                        'dayNamesShortSat' => __('Sat', __CLASS__),
-                        'monthNamesJanuary' => __('January', __CLASS__),
-                        'monthNamesFebruary' => __('February', __CLASS__),
-                        'monthNamesMarch' => __('March', __CLASS__),
-                        'monthNamesApril' => __('April', __CLASS__),
-                        'monthNamesMay' => __('May', __CLASS__),
-                        'monthNamesJune' => __('June', __CLASS__),
-                        'monthNamesJuly' => __('July', __CLASS__),
-                        'monthNamesAugust' => __('August', __CLASS__),
-                        'monthNamesSeptember' => __('September', __CLASS__),
-                        'monthNamesOctober' => __('October', __CLASS__),
-                        'monthNamesNovember' => __('November', __CLASS__),
-                        'monthNamesDecember' => __('December', __CLASS__),
-                        'monthNamesShortJan' => __('Jan', __CLASS__),
-                        'monthNamesShortFeb' => __('Feb', __CLASS__),
-                        'monthNamesShortMar' => __('Mar', __CLASS__),
-                        'monthNamesShortApr' => __('Apr', __CLASS__),
-                        'monthNamesShortMay' => __('May', __CLASS__),
-                        'monthNamesShortJun' => __('Jun', __CLASS__),
-                        'monthNamesShortJul' => __('Jul', __CLASS__),
-                        'monthNamesShortAug' => __('Aug', __CLASS__),
-                        'monthNamesShortSep' => __('Sep', __CLASS__),
-                        'monthNamesShortOct' => __('Oct', __CLASS__),
-                        'monthNamesShortNov' => __('Nov', __CLASS__),
-                        'monthNamesShortDec' => __('Dec', __CLASS__),
-                        'nextText' => __('Next', __CLASS__),
-                        'prevText' => __('Prev', __CLASS__),
-                        'weekHeader' => __('Wk', __CLASS__)
-                    ));
-                endif;
-                wp_enqueue_script(__CLASS__ . '_plugin_options', plugins_url('js/options.js', __FILE__));
+                            // Localize the script
+                            wp_localize_script(__CLASS__ . '_admin', 'vpmAdminL10n', array(
+                                'closeText' => __('Done', __CLASS__),
+                                'currentText' => __('Today', __CLASS__),
+                                'dateFormat' => __('mm/dd/yy', __CLASS__),
+                                'dayNamesSunday' => __('Sunday', __CLASS__),
+                                'dayNamesMonday' => __('Monday', __CLASS__),
+                                'dayNamesTuesday' => __('Tuesday', __CLASS__),
+                                'dayNamesWednesday' => __('Wednesday', __CLASS__),
+                                'dayNamesThursday' => __('Thursday', __CLASS__),
+                                'dayNamesFriday' => __('Friday', __CLASS__),
+                                'dayNamesSaturday' => __('Saturday', __CLASS__),
+                                'dayNamesMinSu' => __('Su', __CLASS__),
+                                'dayNamesMinMo' => __('Mo', __CLASS__),
+                                'dayNamesMinTu' => __('Tu', __CLASS__),
+                                'dayNamesMinWe' => __('We', __CLASS__),
+                                'dayNamesMinTh' => __('Th', __CLASS__),
+                                'dayNamesMinFr' => __('Fr', __CLASS__),
+                                'dayNamesMinSa' => __('Sa', __CLASS__),
+                                'dayNamesShortSun' => __('Sun', __CLASS__),
+                                'dayNamesShortMon' => __('Mon', __CLASS__),
+                                'dayNamesShortTue' => __('Tue', __CLASS__),
+                                'dayNamesShortWed' => __('Wed', __CLASS__),
+                                'dayNamesShortThu' => __('Thu', __CLASS__),
+                                'dayNamesShortFri' => __('Fri', __CLASS__),
+                                'dayNamesShortSat' => __('Sat', __CLASS__),
+                                'monthNamesJanuary' => __('January', __CLASS__),
+                                'monthNamesFebruary' => __('February', __CLASS__),
+                                'monthNamesMarch' => __('March', __CLASS__),
+                                'monthNamesApril' => __('April', __CLASS__),
+                                'monthNamesMay' => __('May', __CLASS__),
+                                'monthNamesJune' => __('June', __CLASS__),
+                                'monthNamesJuly' => __('July', __CLASS__),
+                                'monthNamesAugust' => __('August', __CLASS__),
+                                'monthNamesSeptember' => __('September', __CLASS__),
+                                'monthNamesOctober' => __('October', __CLASS__),
+                                'monthNamesNovember' => __('November', __CLASS__),
+                                'monthNamesDecember' => __('December', __CLASS__),
+                                'monthNamesShortJan' => __('Jan', __CLASS__),
+                                'monthNamesShortFeb' => __('Feb', __CLASS__),
+                                'monthNamesShortMar' => __('Mar', __CLASS__),
+                                'monthNamesShortApr' => __('Apr', __CLASS__),
+                                'monthNamesShortMay' => __('May', __CLASS__),
+                                'monthNamesShortJun' => __('Jun', __CLASS__),
+                                'monthNamesShortJul' => __('Jul', __CLASS__),
+                                'monthNamesShortAug' => __('Aug', __CLASS__),
+                                'monthNamesShortSep' => __('Sep', __CLASS__),
+                                'monthNamesShortOct' => __('Oct', __CLASS__),
+                                'monthNamesShortNov' => __('Nov', __CLASS__),
+                                'monthNamesShortDec' => __('Dec', __CLASS__),
+                                'nextText' => __('Next', __CLASS__),
+                                'prevText' => __('Prev', __CLASS__),
+                                'weekHeader' => __('Wk', __CLASS__)
+                            ));
+                                
+                            $current_screen->add_help_tab( array(
+                                'id'       => __CLASS__.'volProjects'
+                                ,'title'    => __( 'Vol. Projects', __CLASS__ )
+                                ,'callback' => array(__CLASS__, 'contextualHelpForProjects')
+                            ) );
+                            $current_screen->add_help_tab( array(
+                                'id'       => __CLASS__.'addProject'
+                                ,'title'    => __( 'Setup a project', __CLASS__ )
+                                ,'callback' => array(__CLASS__, 'contextualHelpForProjectSetup')
+                            ) );
+                        else:
+                            
+                            if($current_screen && $current_screen->base!="vpm-project_page_contributionPage"):
+                                $current_screen->add_help_tab( array(
+                                    'id'       => __CLASS__.'volProjects'
+                                    ,'title'    => __( 'Vol. Projects', __CLASS__ )
+                                    ,'callback' => array(__CLASS__, 'contextualHelpForProjects')
+                                ) );
+                            endif;
+
+
+                        endif;
+                        
+                        if($current_screen && $current_screen->base=="vpm-project_page_contributionPage" && !isset($_REQUEST['action'])):
+                            $current_screen->add_help_tab( array(
+                                'id'       => __CLASS__.'projectsList'
+                                ,'title'    => __( 'Projects list', __CLASS__ )
+                                ,'callback' => array(__CLASS__, 'contextualHelpForContributorsList')
+                            ) );
+                        endif;
+                        if(isset($_REQUEST['action']) && $_REQUEST['action'] == 'view'):
+                            $current_screen->add_help_tab( array(
+                                'id'       => __CLASS__.'projectView'
+                                ,'title'    => __( 'Projects view', __CLASS__ )
+                                ,'callback' => array(__CLASS__, 'contextualHelpForContributorsView')
+                            ) );
+                        endif;
+                        if(isset($_REQUEST['action']) && $_REQUEST['action'] == 'contribute'):
+                            $current_screen->add_help_tab( array(
+                                'id'       => __CLASS__.'projectContribution'
+                                ,'title'    => __( 'Projects contribution', __CLASS__ )
+                                ,'callback' => array(__CLASS__, 'contextualHelpForContributorsSend')
+                            ) );
+                        endif;
+
+                        
+                    endif;
+                    wp_enqueue_script(__CLASS__ . '_plugin_options', plugins_url('js/options.js', __FILE__));
+                }
             }
-
+            
+            public function contextualHelpForProjects($screen, $tab) {
+                _e("
+                    <p><strong>Volunteer projects</strong> are a special type of content that allow contribuitors help with volunteer work</p>
+                    <p>The most usual way is create <strong>projects</strong>(files) that volunteers can translate and then upload their <strong>contribution</strong>(file) again to the original project for validation.</p>", 'ClickToDonate'
+                );
+                _e("<p>Each project must have a file and must be publish so contribuitors can access it.</p>", __CLASS__);
+                _e("<p>On this screen you can search, edit, delete and create new voluntueer projects.</p>", __CLASS__);
+                _e("<p>All the contributors  contributions will have the <strong>Draft</strong> status and will be child of the project choosen.</p>", __CLASS__);
+            }
+            public function contextualHelpForProjectSetup($screen, $tab) {
+                _e("
+                    <p>The <strong>Project Volunteer Configuration</strong> panel can be used to set the start date and end date of a project:
+                        <ul>
+                            <li><strong>Project file</strong> - set the file that the contributors will donwload (for example, to tranlaste)
+                            <li><strong>Project start date</strong> - set the date (and time) for the beginning of the project, at which time it will be automatically available to contributors.</li>
+                            <li><strong>Project end date</strong> - set the date (and time) for the end of the project, at which time it will no longer be available to contributors.</li>
+                        </ul>
+                    </p>", __CLASS__
+                );
+            }
+            public function contextualHelpForContributorsList($screen, $tab) {
+                _e("
+                    <p>Here you can view a list of <strong>Projects</strong> that need your help, some notes about this screen:
+                        <ul>
+                            <li><strong>Vol. projects</strong> - name of the project
+                                <ul>
+                                    <li><strong>View details</strong> -  the link to view more details of the project</li>
+                                    <li><strong>Contribute</strong> - the link to send your contribution for this project</li>
+                                </ul>
+                            <li><strong>Excerpt</strong> - Excerpt of the project will have some explanation about the project
+                            <li><strong>End date</strong> - the date until when the project will be here so you can send your contribution. Could be not set</li>
+                            <li><strong>Number of downloads</strong> - the number of downloads that the project file have been downloaded. More downloads suggest more volunteers could be working on it.</li>
+                            <li><strong>Number of contributions</strong> - the number of contributions that project already have.</li>
+                        </ul>
+                    </p>", __CLASS__
+                );
+            }
+            public function contextualHelpForContributorsView($screen, $tab) {
+                _e("<p>Here you can view the <strong>Project</strong> details.</p>", __CLASS__);
+                _e("<p>Can read the details about the project and can download the file if you pretend give your contribution on this project.</p>", __CLASS__);
+                _e("<p>Can navigate back to the list or to the page to submit your contribution</p>", __CLASS__);
+            }
+            public function contextualHelpForContributorsSend($screen, $tab) {
+                _e("<p>Here you can submit your <strong>contribution</strong>.</p>", __CLASS__);
+                _e("<p>The title is a suggestion that you can change if you like.</p>", __CLASS__);
+                _e("<p>The editor field is to you write some comments/notes about your work if your pretend.</p>", __CLASS__);
+                _e("<p>And the file input is to you upload your file.</p>", __CLASS__);
+            }
+            
             /**
             * Register the styles to be loaded on the backoffice on our custom post type
             */
@@ -431,9 +533,6 @@ if(!class_exists('VolunteerProjectManagement')):
                                 } else {
                                         wp_die("The file type that you've uploaded is not a PDF.");
                                 } // end if/else
-                                //echo "<pre>".print_r($_FILES,true)."</pre>";
-                                //wp_die("fez upload...");//$_FILES = null;
-                                //error_log("------ ".__CLASS__ . self::$num++." ------------");
                         }else{  
                             
                             if(isset($_POST[__CLASS__ . self::$projectFile.'_delete']) &&$_POST[__CLASS__ . self::$projectFile.'_delete']=="deleteFile"){
@@ -601,13 +700,6 @@ if(!class_exists('VolunteerProjectManagement')):
             function uninstall(){
                 // Get the WordPress database abstration layer instance
                 $wpdb = self::getWpDB();
-                    
-//                //$wpdb->query("DROP TRIGGER IF EXISTS `{$instance->TABLE_FILE_DATA}_set_order`;");
-//                $wpdb->query("ALTER TABLE `{$instance->TABLE_FILE_DATA}` DROP FOREIGN KEY `{$instance->TABLE_FILE_DATA}_meta`;");
-//                $wpdb->query("ALTER TABLE `{$instance->TABLE_FILE_DATA}` DROP FOREIGN KEY `{$instance->TABLE_FILE_DATA}_{$instance->TABLE_FILE_DATA_NEXT}`;");
-//                $wpdb->query("ALTER TABLE `{$instance->TABLE_FILE_METADATA}` DROP FOREIGN KEY `{$instance->TABLE_FILE_METADATA}_{$instance->TABLE_FILE_METADATA_PARENT}`;");
-//                $wpdb->query("DROP TABLE IF EXISTS {$instance->TABLE_FILE_DATA};");
-//                $wpdb->query("DROP TABLE IF EXISTS {$instance->TABLE_FILE_METADATA};");
                 
                 // Remove the plugin version information
                 delete_option(self::DB_VERSION_FIELD_NAME);
@@ -677,31 +769,7 @@ if(!class_exists('VolunteerProjectManagement')):
 
                 return $columns;
             }
-function list_hooked_functions($tag=false){
- global $wp_filter;
- if ($tag) {
-  $hook[$tag]=$wp_filter[$tag];
-  if (!is_array($hook[$tag])) {
-  trigger_error("Nothing found for '$tag' hook", E_USER_WARNING);
-  return;
-  }
- }
- else {
-  $hook=$wp_filter;
-  ksort($hook);
- }
- echo '<pre>';
- foreach($hook as $tag => $priority){
-  echo "<br />&gt;&gt;&gt;&gt;&gt;\t<strong>$tag</strong><br />";
-  ksort($priority);
-  foreach($priority as $priority => $function){
-  echo $priority;
-  foreach($function as $name => $properties) echo "\t$name<br />";
-  }
- }
- echo '</pre>';
- return;
-}
+            
             function vpm_manage_columns( $column, $postId ) {
                 global $post;
                 switch( $column ) {
@@ -765,8 +833,6 @@ function list_hooked_functions($tag=false){
                         $urlFile = $file['url'];
                         self::setPostCustomValues(self::$downloadCounter, $currentValue+1,$post);                        
                         
-                        //
-                        // TODO: make open in new page
                         //Download the file
                         header('Pragma: public');
                         header('Expires: 0');
@@ -1139,10 +1205,6 @@ function list_hooked_functions($tag=false){
                     }
 
                 }
-                //$subPages = get_pages('child_of'=>931);
-                //$i will equal the page number
-                
-                //echo "-><pre>".print_r($subPages,true)."</pre>";
                 if(!isset($pageNumber))
                     return 0;
                 return count($pageNumber);
@@ -1194,21 +1256,6 @@ function list_hooked_functions($tag=false){
                 // Add submenu page
                 add_action('admin_menu', array(__CLASS__, 'register_ContributionPage'));
 
-                
-                
-                
-                
-                // Add a custom link action
-                //add_filter('page_row_actions', array(__CLASS__ , 'vpm_row_actions' ), 10, 2);
-                // Add action so users can contribute
-                //add_action('admin_init', array(__CLASS__ , 'uploadContribution'), 10, 1);
-                
-                
-                // Add thePosts method to filter the_posts
-                //add_filter('the_posts', array(__CLASS__, 'thePosts'), 10, 2);
-
-                // Add mapMetaCapabilities method to filter map_meta_cap  // Maybe we can use this in the module 2
-                //add_filter('map_meta_cap', array(__CLASS__, 'mapMetaCapabilities'), 10, 4);
 
                 // Register the adminEnqueueScripts method to the Wordpress admin_enqueue_scripts action hook
                 add_action('admin_enqueue_scripts', array(__CLASS__, 'adminEnqueueScripts'));
