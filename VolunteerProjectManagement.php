@@ -450,7 +450,7 @@ if(!class_exists('VolunteerProjectManagement')):
                     // Create the input box and set the file's URL as the text element's value
                     $html .= '<input type="hidden" id="'.self::$projectFile . '_url" name="'.__CLASS__ . self::$projectFile.'_url" value=" ' . $file['url'] . '" size="30" />';
                     $html .= '<a href=" ' . $file['url'] . '" id="vpm_projectFile_view" target="_blank">' . __('View') . '</a> ';
-                    $html .= '<input type="checkbox" id="vpm_projectFile_delete" name="'.__CLASS__ . self::$projectFile.'_delete" value="deleteFile"/>' . __('Check if you want delete the file');
+                    $html .= '<input type="checkbox" id="vpm_projectFile_delete" name="'.__CLASS__ . self::$projectFile.'_delete" value="deleteFile"/>' . __('Check if you want delete the file', __CLASS__);
                 }else{
                     $html .= '<input type="file" id="'.self::$projectFile . '" name="'.__CLASS__ . self::$projectFile.'" value="" size="25" />';
                 }
@@ -897,7 +897,7 @@ if(!class_exists('VolunteerProjectManagement')):
                                 }else{
                                     $checked = "";
                                 }
-                            echo "<input name=\"wpu_roles_${role_name}\" type=\"checkbox\" value=\"yes\"" . $checked. "/> " . __($role_specification['name']) . "<br/>";
+                            echo "<input name=\"wpu_roles_${role_name}\" type=\"checkbox\" value=\"yes\"" . $checked. "/> " . __($role_specification['name'], __CLASS__) . "<br/>";
                             }
                         }
                     ?>

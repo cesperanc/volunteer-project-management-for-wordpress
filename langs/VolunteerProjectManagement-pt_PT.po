@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Click-to-donate\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-06-26 15:48+0100\n"
+"POT-Creation-Date: 2012-06-29 09:05+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Diogo Serra <codedmind@gmail.com>\n"
 "Language-Team: Cláudio Esperança, Diogo Serra <cesperanc@gmail.com>\n"
@@ -21,7 +21,7 @@ msgstr ""
 #: ../VolunteerProjectManagement.php:78
 #: ../VolunteerProjectManagement.php:215
 #: ../VolunteerProjectManagement.php:228
-#: ../VolunteerProjectManagement.php:773
+#: ../VolunteerProjectManagement.php:763
 #: ../contributeList.php:65
 msgid "Vol. Projects"
 msgstr "Projetos Vol."
@@ -272,8 +272,8 @@ msgid "Setup a project"
 msgstr "Configuração de um projeto"
 
 #: ../VolunteerProjectManagement.php:239
-#: ../VolunteerProjectManagement.php:966
-#: ../VolunteerProjectManagement.php:1056
+#: ../VolunteerProjectManagement.php:954
+#: ../VolunteerProjectManagement.php:1044
 msgid "Projects list"
 msgstr "Lista de projetos"
 
@@ -330,7 +330,7 @@ msgstr ""
 #: ../VolunteerProjectManagement.php:285
 msgid ""
 "\n"
-"                    <p>Here you can view a list of <strong>Projects</strong> that need your help, some notes on the columns:\n"
+"                    <p>Here you can view a list of <strong>Projects</strong> that need your help, some notes about this screen:\n"
 "                        <ul>\n"
 "                            <li><strong>Vol. projects</strong> - name of the project\n"
 "                                <ul>\n"
@@ -408,7 +408,7 @@ msgid "Project Volunteer configuration"
 msgstr "Configurações do projeto de voluntariado"
 
 #: ../VolunteerProjectManagement.php:387
-#: ../VolunteerProjectManagement.php:1051
+#: ../VolunteerProjectManagement.php:1039
 msgid "Project file"
 msgstr "Ficheiro do projeto"
 
@@ -429,7 +429,7 @@ msgid "End date:"
 msgstr "Data de fim:"
 
 #: ../VolunteerProjectManagement.php:413
-#: ../VolunteerProjectManagement.php:1050
+#: ../VolunteerProjectManagement.php:1038
 msgid "Number of downloads"
 msgstr "Número de transferências"
 
@@ -441,130 +441,130 @@ msgstr "Visualizar"
 msgid "Check if you want delete the file"
 msgstr "Marcar se pretender eliminar o ficheiro"
 
-#: ../VolunteerProjectManagement.php:775
+#: ../VolunteerProjectManagement.php:765
 msgid "Author"
 msgstr "Autor"
 
-#: ../VolunteerProjectManagement.php:776
+#: ../VolunteerProjectManagement.php:766
 msgid "Date"
 msgstr "Data"
 
-#: ../VolunteerProjectManagement.php:777
+#: ../VolunteerProjectManagement.php:767
 msgid "Has File"
 msgstr "Têm Ficheiro"
 
-#: ../VolunteerProjectManagement.php:794
-#: ../VolunteerProjectManagement.php:1121
+#: ../VolunteerProjectManagement.php:784
+#: ../VolunteerProjectManagement.php:1109
 msgid "No start date"
 msgstr "Sem data de início"
 
-#: ../VolunteerProjectManagement.php:807
-#: ../VolunteerProjectManagement.php:1038
-#: ../VolunteerProjectManagement.php:1128
+#: ../VolunteerProjectManagement.php:797
+#: ../VolunteerProjectManagement.php:1026
+#: ../VolunteerProjectManagement.php:1116
 msgid "No end date"
 msgstr "Sem data de fim"
 
-#: ../VolunteerProjectManagement.php:820
+#: ../VolunteerProjectManagement.php:810
 msgid "Yes"
 msgstr "Sim"
 
-#: ../VolunteerProjectManagement.php:822
+#: ../VolunteerProjectManagement.php:812
 msgid "No"
 msgstr "Não"
 
-#: ../VolunteerProjectManagement.php:864
+#: ../VolunteerProjectManagement.php:852
 msgid "Volunteer project configuration"
 msgstr "Configurações do plugin projeto de voluntariado"
 
-#: ../VolunteerProjectManagement.php:869
+#: ../VolunteerProjectManagement.php:857
 msgid "Settings"
 msgstr "Opções"
 
-#: ../VolunteerProjectManagement.php:878
+#: ../VolunteerProjectManagement.php:866
 msgid "Main Settings"
 msgstr "Opções"
 
-#: ../VolunteerProjectManagement.php:880
+#: ../VolunteerProjectManagement.php:868
 msgid "Users who can contribute"
 msgstr "Utilizadores que podem contribuir"
 
-#: ../VolunteerProjectManagement.php:899
+#: ../VolunteerProjectManagement.php:887
 msgid "If this option isn't used only users who have capability to upload files can contribute"
 msgstr "Se esta opção não estiver activa só utilizadores com permissões para fazer upload de ficheiros podem contribuir"
 
-#: ../VolunteerProjectManagement.php:943
-#: ../VolunteerProjectManagement.php:1062
-#: ../VolunteerProjectManagement.php:1093
+#: ../VolunteerProjectManagement.php:931
+#: ../VolunteerProjectManagement.php:1050
+#: ../VolunteerProjectManagement.php:1081
 msgid "Cheatin&#8217; uh?"
 msgstr "A fazer batota?"
 
-#: ../VolunteerProjectManagement.php:947
+#: ../VolunteerProjectManagement.php:935
 msgid "Options saved."
 msgstr "Opções guardadas."
 
-#: ../VolunteerProjectManagement.php:950
+#: ../VolunteerProjectManagement.php:938
 msgid "Volunteer project management configuration"
 msgstr "Configurações do projeto de voluntariado"
 
-#: ../VolunteerProjectManagement.php:951
+#: ../VolunteerProjectManagement.php:939
 msgid "Options relating to the Volunteer project plugin."
 msgstr "Opções do plugin projectos de voluntariado"
 
-#: ../VolunteerProjectManagement.php:972
+#: ../VolunteerProjectManagement.php:960
 msgid "You must set a file to upload."
 msgstr "Tem de fazer upload de um ficheiro"
 
-#: ../VolunteerProjectManagement.php:973
+#: ../VolunteerProjectManagement.php:961
 msgid "That file type is not allowed."
 msgstr "O ficheiro enviado não é permitido."
 
-#: ../VolunteerProjectManagement.php:974
+#: ../VolunteerProjectManagement.php:962
 msgid "Upload error, try again please."
 msgstr "Ocorreu um erro a fazer upload, por favor tente novamente."
 
-#: ../VolunteerProjectManagement.php:975
+#: ../VolunteerProjectManagement.php:963
 msgid "Your contribution is saved."
 msgstr "A sua contribuição foi guardada."
 
-#: ../VolunteerProjectManagement.php:1035
+#: ../VolunteerProjectManagement.php:1023
 msgid "Download"
 msgstr "Transferir"
 
-#: ../VolunteerProjectManagement.php:1045
+#: ../VolunteerProjectManagement.php:1033
 msgid "Project"
 msgstr "Projeto"
 
-#: ../VolunteerProjectManagement.php:1048
+#: ../VolunteerProjectManagement.php:1036
 #: ../contributeList.php:67
 msgid "End Date"
 msgstr "Data de fim"
 
-#: ../VolunteerProjectManagement.php:1052
+#: ../VolunteerProjectManagement.php:1040
 msgid "Number of contributions"
 msgstr "Número de contribuições"
 
-#: ../VolunteerProjectManagement.php:1057
+#: ../VolunteerProjectManagement.php:1045
 #: ../contributeList.php:44
 msgid "Contribute"
 msgstr "Contribuir"
 
-#: ../VolunteerProjectManagement.php:1069
+#: ../VolunteerProjectManagement.php:1057
 msgid "Contribute to Project: "
 msgstr "Contribuir para o projeto:"
 
-#: ../VolunteerProjectManagement.php:1076
+#: ../VolunteerProjectManagement.php:1064
 msgid " Contribuition"
 msgstr " Contribuição"
 
-#: ../VolunteerProjectManagement.php:1080
+#: ../VolunteerProjectManagement.php:1068
 msgid "Write some notes if you like..."
 msgstr "Deixe alguns comentários se achar necessário..."
 
-#: ../VolunteerProjectManagement.php:1083
+#: ../VolunteerProjectManagement.php:1071
 msgid "Contribution file"
 msgstr "Ficheiro de contribuição"
 
-#: ../VolunteerProjectManagement.php:1169
+#: ../VolunteerProjectManagement.php:1157
 msgid "Projects that need your contribution"
 msgstr "Projetos que necessitam de contribuição"
 
