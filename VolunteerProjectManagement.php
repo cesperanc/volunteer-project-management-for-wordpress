@@ -103,6 +103,7 @@ if(!class_exists('VolunteerProjectManagement')):
                             'capability_type' => 'page'
                         )
                     );
+                
                 endif;
             }
 
