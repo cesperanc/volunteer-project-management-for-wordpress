@@ -3,6 +3,7 @@
 Plugin Name: Volunteer Project Management
 Description: This extension provides a system for managing volunteer projects that depend on download and upload files
 Version: 0.9.1
+ Plugin URI: http://code.google.com/p/volunteer-project-management-for-wordpress/
 Author: Cláudio Esperança, Diogo Serra
 Author URI: http://dei.estg.ipleiria.pt/
 */
