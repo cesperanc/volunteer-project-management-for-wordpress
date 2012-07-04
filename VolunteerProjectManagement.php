@@ -2,7 +2,7 @@
 /*
 Plugin Name: Volunteer Project Management
 Description: This extension provides a system for managing volunteer projects that depend on download and upload files
-Version: 0.9
+Version: 0.9.1
 Author: Cláudio Esperança, Diogo Serra
 Author URI: http://dei.estg.ipleiria.pt/
 */
