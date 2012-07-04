@@ -94,7 +94,7 @@ if(!class_exists('VolunteerProjectManagement')):
                             'show_ui' => true,
                             'show_in_menu' => true,
                             'show_in_nav_menus'=>true,
-                            'supports'=>array('title', 'editor', 'revisions', 'page-attributes'),
+                            'supports'=>array('title', 'editor', 'revisions' , 'page-attributes'),
                             'rewrite' => array(
                                 'slug' => self::URL_QUERY_PARAM,
                                 'with_front'=>'false'
