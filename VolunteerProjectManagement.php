@@ -94,7 +94,7 @@ if(!class_exists('VolunteerProjectManagement')):
                             'show_ui' => true,
                             'show_in_menu' => true,
                             'show_in_nav_menus'=>true,
-                            'supports'=>array('title', 'editor', 'page-attributes'),
+                            'supports'=>array('title', 'editor', 'revisions', 'page-attributes'),
                             'rewrite' => array(
                                 'slug' => self::URL_QUERY_PARAM,
                                 'with_front'=>'false'
@@ -597,8 +597,12 @@ if(!class_exists('VolunteerProjectManagement')):
             * @return int with timestamp of the start date
             */
             public static function getStartDate($post=0){
+                /*$date = self::getPostCustomValues(self::$startDate, $post);
+                return (int)($date===false?current_time('timestamp', false):$date);*/
+                
                 $date = self::getPostCustomValues(self::$startDate, $post);
-                return (int)($date===false?current_time('timestamp', false):$date);
+                return (int) (!self::hasStartDate($post) || $date === false ? current_time('timestamp', false) : $date);
+        
             }
             
 
@@ -640,7 +644,7 @@ if(!class_exists('VolunteerProjectManagement')):
             public static function getEndDate($post=0){
                 $date = self::getPostCustomValues(self::$endDate, $post);
                 // Default is set to current date plus a day
-                return (int)($date===false?current_time('timestamp', false)+3600*24:$date);
+                return (int) (!self::hasEndDate($post) || $date === false ? current_time('timestamp', false) + 3600 * 24 : $date);
             }
 
             /**
