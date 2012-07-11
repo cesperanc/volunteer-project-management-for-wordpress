@@ -3,7 +3,7 @@ Contributors: cesperanc, codedmind
 Tags: Project management, upload, revision, volunteer, translate, NGO, ONG, plugin, extension
 Requires at least: 3.2.0
 Tested up to: 3.4
-Stable tag: 0.9.1
+Stable tag: 0.9.2
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -27,6 +27,8 @@ For the backoffice, Internet Explorer 8+, Mozilla Firefox, Google Chrome, etc, s
 
 == Changelog ==
 
+= 0.9.2 =
+* Bug with plugin dir name solved
 = 0.9.1 =
 * Start and End Date bug fixed
 * Revisions options added

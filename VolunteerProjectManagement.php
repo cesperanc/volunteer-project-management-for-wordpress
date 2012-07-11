@@ -2,7 +2,7 @@
 /*
 Plugin Name: Volunteer Project Management
 Description: This extension provides a system for managing volunteer projects that depend on download and upload files
-Version: 0.9.1
+Version: 0.9.2
  Plugin URI: http://code.google.com/p/volunteer-project-management-for-wordpress/
 Author: Cláudio Esperança, Diogo Serra
 Author URI: http://dei.estg.ipleiria.pt/
@@ -1144,7 +1144,7 @@ if(!class_exists('VolunteerProjectManagement')):
                     }
                     //echo "<pre>".print_r($poststoList,true)."</pre>";
                     if(!class_exists('contribute_Table')){
-                        require_once( WP_PLUGIN_DIR."/".__CLASS__.'/contributeList.php' );
+                        require_once( plugin_dir_path( __FILE__).'/contributeList.php' );
                     }
 
                     $contribute_Table = new contribute_Table($poststoList);
