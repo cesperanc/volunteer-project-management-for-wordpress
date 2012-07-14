@@ -266,7 +266,7 @@ if(!class_exists('VolunteerProjectManagement')):
             public function contextualHelpForProjects($screen, $tab) {
                 _e("
                     <p><strong>Volunteer projects</strong> are a special type of content that allow contribuitors help with volunteer work</p>
-                    <p>The most usual way is create <strong>projects</strong>(files) that volunteers can translate and then upload their <strong>contribution</strong>(file) again to the original project for validation.</p>", 'ClickToDonate'
+                    <p>The most usual way is create <strong>projects</strong>(files) that volunteers can translate and then upload their <strong>contribution</strong>(file) again to the original project for validation.</p>", __CLASS__
                 );
                 _e("<p>Each project must have a file and must be publish so contribuitors can access it.</p>", __CLASS__);
                 _e("<p>On this screen you can search, edit, delete and create new voluntueer projects.</p>", __CLASS__);
