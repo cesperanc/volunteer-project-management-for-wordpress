@@ -7,7 +7,7 @@ Stable tag: 0.9.2
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
-Provides the required functionality where registered users can download a project (file), do some work on that file, and upload it back to the site for revision.
+Provides the functionality where registered users can download a project, do some work on that file, and upload it back to the site for revision.
 
 
 == Description ==
