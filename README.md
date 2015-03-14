@@ -11,20 +11,16 @@ This was an academic project developped on the [School of Technology and Managem
 # Screenshots #
 
 1. Contributors can pick from a list what project(s) they want help
-
-![http://volunteer-project-management-for-wordpress.googlecode.com/git/screenshot-1.png](http://volunteer-project-management-for-wordpress.googlecode.com/git/screenshot-1.png)
+![](https://raw.githubusercontent.com/cesperanc/volunteer-project-management-for-wordpress/master/screenshot-1.png)
 
 
 2. Contributors can view detail information about a project
-
-![http://volunteer-project-management-for-wordpress.googlecode.com/git/screenshot-2.png](http://volunteer-project-management-for-wordpress.googlecode.com/git/screenshot-2.png)
+![](https://raw.githubusercontent.com/cesperanc/volunteer-project-management-for-wordpress/master/screenshot-2.png)
 
 
 3. Window to create a project (set date interval if needed) and the file, only projects with files and with valid dates (if set) are displayed in contributors list
-
-![http://volunteer-project-management-for-wordpress.googlecode.com/git/screenshot-3.png](http://volunteer-project-management-for-wordpress.googlecode.com/git/screenshot-3.png)
+![](https://raw.githubusercontent.com/cesperanc/volunteer-project-management-for-wordpress/master/screenshot-3.png)
 
 
 4. Little panel widget with contributions informations
-
-![http://volunteer-project-management-for-wordpress.googlecode.com/git/screenshot-4.png](http://volunteer-project-management-for-wordpress.googlecode.com/git/screenshot-4.png)
+![](https://raw.githubusercontent.com/cesperanc/volunteer-project-management-for-wordpress/master/screenshot-4.png)
