@@ -1,3 +1,5 @@
+# Introduction #
+
 This extension provides the functionality to create and manage volunteer work, where a content administrator creates file based activities that a collaborator can download, do some work over them, and upload these files back to the site for revision. Then, the content administrator can put these files back online for revision by other volunteers.
 
 <a href='http://www.youtube.com/watch?feature=player_embedded&v=tsrWOPTFO9w' target='_blank'><img src='http://img.youtube.com/vi/tsrWOPTFO9w/0.jpg' width='830' height=500 /></a>
